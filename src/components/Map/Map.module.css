@@ -1,0 +1,18 @@
+/* TODO: Depend on SIDE_LENGTH? */
+.container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    grid-auto-flow: column;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+}
+
+/* Move to separate component or jetison this entirely */
+/* See if there's a way to provide a variable rather than doing the grid-template stuff in inline styling */
+.debugContainer {
+    display: grid;
+    grid-auto-flow: column;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+}

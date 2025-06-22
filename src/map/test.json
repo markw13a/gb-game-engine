@@ -1,0 +1,102 @@
+[
+    {
+        "type": "boundary",
+        "color": "black"
+    },
+    {
+        "type": "boundary",
+        "color": "black"
+    },
+    {
+        "type": "boundary",
+        "color": "black"
+    },
+    {
+        "type": "boundary",
+        "color": "black"
+    },
+    {
+        "type": "boundary",
+        "color": "black"
+    },
+    {
+        "type": "boundary",
+        "color": "black"
+    },
+    {
+        "type": "grassland",
+        "color": "white"
+    },
+    {
+        "type": "grassland",
+        "color": "blue"
+    },
+    {
+        "type": "grassland",
+        "color": "white"
+    },
+    {
+        "type": "boundary",
+        "color": "black"
+    },
+    {
+        "type": "boundary",
+        "color": "black"
+    },
+    {
+        "type": "grassland",
+        "color": "blue"
+    },
+    {
+        "type": "grassland",
+        "color": "white"
+    },
+    {
+        "type": "grassland",
+        "color": "blue"
+    },
+    {
+        "type": "boundary",
+        "color": "black"
+    },
+    {
+        "type": "boundary",
+        "color": "black"
+    },
+    {
+        "type": "grassland",
+        "color": "white"
+    },
+    {
+        "type": "grassland",
+        "color": "blue"
+    },
+    {
+        "type": "grassland",
+        "color": "white"
+    },
+    {
+        "type": "boundary",
+        "color": "black"
+    },
+    {
+        "type": "boundary",
+        "color": "black"
+    },
+    {
+        "type": "boundary",
+        "color": "black"
+    },
+    {
+        "type": "boundary",
+        "color": "black"
+    },
+    {
+        "type": "boundary",
+        "color": "black"
+    },
+    {
+        "type": "boundary",
+        "color": "black"
+    }
+]
