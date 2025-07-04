@@ -17,8 +17,9 @@ const MAP_SIDE_LENGTH = Math.sqrt(map.length);
 const getNextTileRight = (pos: number) => pos + MAP_SIDE_LENGTH;
 
 // Character moves in straight line back-and-forth
-const useDebugMovement = (): { characterPos: number } => {
-    const [characterPos, setCharacterPos] = useState(12);
+const useDebugMovement = (): { characterPos: number; isMoving: boolean; } => {
+    const [characterPos, setCharacterPos] = useState(7);
+    const [isMoving, setIsMoving] = useState(true);
 
     useEffect(() => {
         // TODO: This coords system is pretty bad
@@ -37,11 +38,11 @@ const useDebugMovement = (): { characterPos: number } => {
         return () => clearInterval(id);
     }, [characterPos]);
 
-    return { characterPos };
+    return { characterPos, isMoving };
 };
 
 export const Map = () => {
-    const { characterPos } = useDebugMovement();
+    const { characterPos, isMoving } = useDebugMovement();
 
     if (characterPos < 0 || characterPos >= map.length) {
         throw new Error("Character out of bounds");
@@ -49,8 +50,6 @@ export const Map = () => {
 
     if (DEBUG_MAP) {
         const sideLength = Math.sqrt(map.length);
-
-        console.log(map.length)
 
         return (
             <div className={styles.debugContainer} style={{ gridTemplateColumns: `repeat(${sideLength}, 1fr)`, gridTemplateRows: `repeat(${sideLength}, 1fr)` }}>
@@ -64,18 +63,27 @@ export const Map = () => {
     }
 
     const mapIndex = (i: number) => {
-        const mapSideLength = Math.sqrt(map.length);
         const coefficient = ((-1 + i) + 2 * (Math.floor(i / VIEW_AREA_SIDE_LENGTH)));
 
-        return characterPos - mapSideLength + coefficient;
+        return characterPos - MAP_SIDE_LENGTH + coefficient;
     };
 
+    console.log({characterPos, next: characterPos + (MAP_SIDE_LENGTH * 2)})
+
     return (
-        <div className={styles.container}>
+        <div className={styles.container} data-movement={isMoving}>
             {
                 Array.from({ length: Math.pow(VIEW_AREA_SIDE_LENGTH, 2) }).map((_, i) => (
                     <Tile key={i} mapIndex={mapIndex(i)} />
                 ))
+            }
+            { isMoving && (
+                    <>
+                        <Tile key="ani-column-row-1" mapIndex={(characterPos - 1 + (MAP_SIDE_LENGTH * 2))} />
+                        <Tile key="ani-column-row-2" mapIndex={characterPos + (MAP_SIDE_LENGTH * 2)} />
+                        <Tile key="ani-column-row-3" mapIndex={characterPos + 1 + (MAP_SIDE_LENGTH * 2)} />
+                    </>
+                )
             }
         </div>
     );
