@@ -7,13 +7,10 @@ import styles from './Tile.module.css';
 
 type TileProps = {
     mapIndex: number;
-    tileIndex: number;
 };
 
-export const Tile = ({ mapIndex, tileIndex }: TileProps) => {
+export const Tile = ({ mapIndex }: TileProps) => {
     const props = map?.[mapIndex];
-
-    // console.log({ mapIndex, tileIndex, props });
 
     if (!props) {
         return <div className={styles.tile} style={{ backgroundColor: 'black' }} />
