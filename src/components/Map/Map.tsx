@@ -68,8 +68,6 @@ export const Map = () => {
         return characterPos - MAP_SIDE_LENGTH + coefficient;
     };
 
-    console.log({characterPos, next: characterPos + (MAP_SIDE_LENGTH * 2)})
-
     return (
         <div className={styles.container} data-movement={isMoving}>
             {

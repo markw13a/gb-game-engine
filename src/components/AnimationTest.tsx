@@ -2,29 +2,55 @@ import { useEffect, useRef } from "react";
 
 import styles from "./AnimationTest.module.css";
 
-let xpos = 0;
+const MOVE_SPEED = 0.01;
 
 export const AnimationTest = () => {
-    const spanRef = useRef<HTMLDivElement | null>(null);
+    const ref = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
+        let lastFrameTimestamp: number = Date.now();
+        let currentScrollPos = 0;
+
         const move = () => {
-            if (!spanRef.current) return;
+            if (!ref.current) return;
 
-            xpos++;
-            spanRef.current.style.transform = `translateX(${xpos}px)`;
+            // Can't rely on offsetWidth because it's rounded to nearest integer -- it's actually not possible to set scrollLeft this high!
+            // Therefore, need to figure out an alternative method of determining whether the element has finished scrolling
+            // Browser renders 3 sub-pixels -- no visible difference in position beyond offsetWidth - 0.33
+            const scrollLeftMax = ref.current.scrollWidth - 0.33;
 
-            if (xpos < 300) {
-                requestAnimationFrame(move)
+            const timestamp = Date.now();
+            const timeElapsed = timestamp - lastFrameTimestamp;
+            const distanceToScroll = MOVE_SPEED * timeElapsed;
+
+            const nextScrollPos = currentScrollPos + distanceToScroll;
+
+            ref.current.scrollLeft = nextScrollPos;
+            currentScrollPos = nextScrollPos;
+            lastFrameTimestamp = timestamp;
+
+            // Scrolling beyond this point has no effect on rendered output, so stop
+            if (currentScrollPos >= scrollLeftMax) {
+                return;
             }
-        };
 
+            requestAnimationFrame(move)
+        };
+ 
         requestAnimationFrame(move);
     }, [])
 
     return (
-        <div>
-            <div className={styles.animationTest} ref={spanRef} />
+        <div className={styles.container}>
+            <div className={styles.subContainer} ref={ref}>
+                <div className={`${styles.animationTest} ${styles.red}`} />
+                <div className={`${styles.animationTest} ${styles.orange}`} />
+                <div className={`${styles.animationTest} ${styles.yellow}`} />
+                <div className={`${styles.animationTest} ${styles.green}`} />
+                <div className={`${styles.animationTest} ${styles.blue}`} />
+                <div className={`${styles.animationTest} ${styles.indigo}`} />
+                <div className={`${styles.animationTest} ${styles.violet}`} />
+            </div>
         </div>
     );
 };
