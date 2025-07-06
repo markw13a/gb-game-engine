@@ -1,4 +1,11 @@
-const defaultScrollFunction = (timeElapsed: number) => 0.01 * timeElapsed; 
+// Based on two frames/second
+const defaultScrollFunction = (timeElapsed: number) => {
+    const TILE_SIZE = 50;
+    const TILE_PER_SECOND = 2;
+    const TILE_PER_MILISECOND = TILE_PER_SECOND / 1000;
+
+    return (TILE_SIZE / TILE_PER_MILISECOND) * timeElapsed;
+} 
 
 // TODO: Support left/right top/down scroll
 export const scrollToEndHorizontal = (scrollContainer: HTMLDivElement, scrollFunction = defaultScrollFunction): Promise<void> => {

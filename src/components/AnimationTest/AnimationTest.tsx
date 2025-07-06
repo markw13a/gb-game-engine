@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 
 import styles from "./AnimationTest.module.css";
-import { scrollToEndHorizontal } from "../utils/scrollToEnd";
+import { scrollToEndHorizontal } from "../../utils/scrollToEnd";
 
 export const AnimationTest = () => {
     const ref = useRef<HTMLDivElement | null>(null);
