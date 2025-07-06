@@ -4,7 +4,7 @@ import styles from "./Map.module.css";
 import { Tile } from "./Tile";
 
 import map from '../../map/test.json';
-import { useEffect, useRef, useState, type RefObject } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { scrollToEndHorizontal } from '../../utils/scrollToEnd';
 
 // ENABLE TO SEE ALL TILES AT THE SAME TIME
@@ -17,39 +17,47 @@ const MAP_SIDE_LENGTH = Math.sqrt(map.length);
 // const getNextTileLeft = (pos: number) => pos - MAP_SIDE_LENGTH;
 const getNextTileRight = (pos: number) => pos + MAP_SIDE_LENGTH;
 
-// Character moves in straight line back-and-forth
-const useDebugMovement = (scrollContainer: RefObject<HTMLDivElement | null>): { characterPos: number; isMoving: boolean; } => {
-    const [characterPos, setCharacterPos] = useState(7);
-    const [isMoving, setIsMoving] = useState(false);
+const useScroll = ({ onScrollComplete }: { onScrollComplete: () => void }) => {
+    const scrollContainerRef = useRef<HTMLDivElement | null>(null);
+    // TODO: useTransition?
+    const [isScrolling, setIsScrolling] = useState(false);
 
-    useEffect(() => {
-        // TODO: This coords system is pretty bad
-        // We'll need to create some kind of abstraction if we want to work with it for real
-        const walkRight = async () => {
-            if (scrollContainer.current === null) return;
+    const scroll = useCallback(async () => {
+        if (scrollContainerRef.current === null) {
+            return;
+        }
 
-            const nextPos = getNextTileRight(characterPos);
+        setIsScrolling(true);
+        await scrollToEndHorizontal(scrollContainerRef.current, t => t * 0.01);
+        setIsScrolling(false);
+        onScrollComplete();
+    }, [isScrolling, onScrollComplete]);
 
-            if (nextPos === 22) {
-                setCharacterPos(7);
-            } else {
-                setIsMoving(true);
-                await scrollToEndHorizontal(scrollContainer.current);
-                setCharacterPos(nextPos);
-                setIsMoving(false);
-            }
-        } 
-        const id = setInterval(walkRight, 1000);
-
-        return () => clearInterval(id);
-    }, [characterPos, scrollContainer]);
-
-    return { characterPos, isMoving };
+    return {
+        scrollContainerRef,
+        scroll,
+        isScrolling,
+    }
 };
 
 export const Map = () => {
-    const ref = useRef<HTMLDivElement | null>(null);
-    const { characterPos, isMoving } = useDebugMovement(ref);
+    const [characterPos, setCharacterPos] = useState(7);
+    const { scrollContainerRef, scroll, isScrolling } = useScroll({
+        onScrollComplete: () => setCharacterPos((pos) => {
+            const nPos = getNextTileRight(pos);
+
+            if (nPos === 22) {
+                return 7;
+            }
+
+            return nPos;
+        })
+    });
+
+    // HACK: Run again following onScrollComplete updating character positions
+    useEffect(() => {
+        scroll()
+    }, [characterPos])
 
     if (characterPos < 0 || characterPos >= map.length) {
         throw new Error("Character out of bounds");
@@ -79,13 +87,13 @@ export const Map = () => {
     // On balance, you probably get more of a performance boost out of avoiding the state update rerendering the whole map!
     // Could alternatively restructure so that the movement state is contained within only the column? 
     return (
-        <div className={styles.container} data-movement={isMoving} ref={ref}>
+        <div className={styles.container} data-movement={isScrolling} ref={scrollContainerRef}>
             {
                 Array.from({ length: Math.pow(VIEW_AREA_SIDE_LENGTH, 2) }).map((_, i) => (
                     <Tile key={i} mapIndex={mapIndex(i)} />
                 ))
             }
-            { isMoving && (
+            { isScrolling && (
                     <>
                         <Tile key="ani-column-row-1" mapIndex={(characterPos - 1 + (MAP_SIDE_LENGTH * 2))} />
                         <Tile key="ani-column-row-2" mapIndex={characterPos + (MAP_SIDE_LENGTH * 2)} />
