@@ -7,10 +7,10 @@ const defaultScrollFunction = (timeElapsed: number) => {
     return (TILE_SIZE / TILE_PER_MILISECOND) * timeElapsed;
 } 
 
-// TODO: Support left/right top/down scroll
 export const scrollToEndHorizontal = (scrollContainer: HTMLDivElement, scrollFunction = defaultScrollFunction): Promise<void> => {
     let lastFrameTimestamp = Date.now();
-    let currentScrollPos = scrollContainer.scrollLeft;
+    // Makes this less reusable, but we need to reset scroll position to 0 before beginning
+    let currentScrollPos = 0;
 
     return new Promise(resolve => {
         const animate = () => {

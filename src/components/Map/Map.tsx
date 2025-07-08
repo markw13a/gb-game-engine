@@ -42,7 +42,7 @@ const useScroll = ({ onScrollComplete }: { onScrollComplete: () => void }) => {
 
 export const Map = () => {
     const [characterPos, setCharacterPos] = useState(7);
-    const { scrollContainerRef, scroll, isScrolling } = useScroll({
+    const { scrollContainerRef, scroll } = useScroll({
         onScrollComplete: () => setCharacterPos((pos) => {
             const nPos = getNextTileRight(pos);
 
@@ -83,24 +83,16 @@ export const Map = () => {
         return characterPos - MAP_SIDE_LENGTH + coefficient;
     };
 
-    // TODO: The additional tile layer probably doesn't need to be conditionally rendered
-    // On balance, you probably get more of a performance boost out of avoiding the state update rerendering the whole map!
-    // Could alternatively restructure so that the movement state is contained within only the column? 
     return (
-        <div className={styles.container} data-movement={isScrolling} ref={scrollContainerRef}>
+        <div className={styles.container} ref={scrollContainerRef}>
             {
                 Array.from({ length: Math.pow(VIEW_AREA_SIDE_LENGTH, 2) }).map((_, i) => (
                     <Tile key={i} mapIndex={mapIndex(i)} />
                 ))
             }
-            { isScrolling && (
-                    <>
-                        <Tile key="ani-column-row-1" mapIndex={(characterPos - 1 + (MAP_SIDE_LENGTH * 2))} />
-                        <Tile key="ani-column-row-2" mapIndex={characterPos + (MAP_SIDE_LENGTH * 2)} />
-                        <Tile key="ani-column-row-3" mapIndex={characterPos + 1 + (MAP_SIDE_LENGTH * 2)} />
-                    </>
-                )
-            }
+            <Tile key="ani-column-row-1" mapIndex={(characterPos - 1 + (MAP_SIDE_LENGTH * 2))} />
+            <Tile key="ani-column-row-2" mapIndex={characterPos + (MAP_SIDE_LENGTH * 2)} />
+            <Tile key="ani-column-row-3" mapIndex={characterPos + 1 + (MAP_SIDE_LENGTH * 2)} />
         </div>
     );
 };
