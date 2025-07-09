@@ -4,8 +4,8 @@ import styles from "./Map.module.css";
 import { Tile } from "./Tile";
 
 import map from '../../map/test.json';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { scrollToEndHorizontal } from '../../utils/scrollToEnd';
+import { useEffect, useState } from 'react';
+import { useScroll } from '../../hooks/useScroll';
 
 // ENABLE TO SEE ALL TILES AT THE SAME TIME
 const DEBUG_MAP = false;
@@ -16,29 +16,6 @@ const MAP_SIDE_LENGTH = Math.sqrt(map.length);
 
 // const getNextTileLeft = (pos: number) => pos - MAP_SIDE_LENGTH;
 const getNextTileRight = (pos: number) => pos + MAP_SIDE_LENGTH;
-
-const useScroll = ({ onScrollComplete }: { onScrollComplete: () => void }) => {
-    const scrollContainerRef = useRef<HTMLDivElement | null>(null);
-    // TODO: useTransition?
-    const [isScrolling, setIsScrolling] = useState(false);
-
-    const scroll = useCallback(async () => {
-        if (scrollContainerRef.current === null) {
-            return;
-        }
-
-        setIsScrolling(true);
-        await scrollToEndHorizontal(scrollContainerRef.current, t => t * 0.01);
-        setIsScrolling(false);
-        onScrollComplete();
-    }, [isScrolling, onScrollComplete]);
-
-    return {
-        scrollContainerRef,
-        scroll,
-        isScrolling,
-    }
-};
 
 export const Map = () => {
     const [characterPos, setCharacterPos] = useState(7);
@@ -90,9 +67,9 @@ export const Map = () => {
                     <Tile key={i} mapIndex={mapIndex(i)} />
                 ))
             }
-            <Tile key="ani-column-row-1" mapIndex={(characterPos - 1 + (MAP_SIDE_LENGTH * 2))} />
-            <Tile key="ani-column-row-2" mapIndex={characterPos + (MAP_SIDE_LENGTH * 2)} />
-            <Tile key="ani-column-row-3" mapIndex={characterPos + 1 + (MAP_SIDE_LENGTH * 2)} />
+            <Tile key="post-column-row-1" mapIndex={(characterPos - 1 + (MAP_SIDE_LENGTH * 2))} />
+            <Tile key="post-column-row-2" mapIndex={characterPos + (MAP_SIDE_LENGTH * 2)} />
+            <Tile key="post-column-row-3" mapIndex={characterPos + 1 + (MAP_SIDE_LENGTH * 2)} />
         </div>
     );
 };
