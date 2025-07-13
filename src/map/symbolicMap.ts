@@ -1,27 +1,27 @@
 export type MapData = {
-    type: 'boundary' | 'grassland',
+    type: 'boundary' | 'grassland';
+    isPassable: boolean;
     color: string;
 }
 
 const rawMap = 
- `BBBBBB
-  BGGGGB
-  BGGGGB
-  BGGGGB
-  BGGGGB
-  BBBBBB
+ `
+  GGG
+  GGG
+  GGG
 `;
 
 export const map = rawMap.replace(/\s+/g, '');
 
-export const getDataForSymbol = (symbol: string) => {
+// TODO: Delete this!
+window.testMap = map;
+
+export const getDataForSymbol = (symbol: string): MapData => {
     switch (symbol) {
-        case 'B':
-            return { type: 'boundary', color: 'black' }
         case 'G':
-            return { type: 'grassland', color: 'white' }
+            return { type: 'grassland', color: 'white', isPassable: true }
         default: 
-            throw new Error(`Unrecognised symbol: ${symbol}`);
+            return { type: 'boundary', color: 'black', isPassable: false }
     }
 };
 

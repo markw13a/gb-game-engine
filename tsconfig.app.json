@@ -7,6 +7,9 @@
     "module": "ESNext",
     "skipLibCheck": true,
 
+    /* Ensure VSCode recognises test globals */
+    "types": ["vitest/globals", "@testing-library/jest-dom"],
+
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
