@@ -1,4 +1,4 @@
-/* TODO: Depend on SIDE_LENGTH? */
+/* TODO: Woudl be nice if this calculated grids/columns based VIEW_AREA_SIDE_LENGTH */
 .container {
     display: grid;
     grid-template-columns: repeat(4, 50px);
@@ -9,13 +9,4 @@
 
     max-width: 150px;
     overflow: hidden;
-}
-
-/* Move to separate component or jetison this entirely */
-/* See if there's a way to provide a variable rather than doing the grid-template stuff in inline styling */
-.debugContainer {
-    display: grid;
-    grid-auto-flow: column;
-    grid-column-gap: 0px;
-    grid-row-gap: 0px;
 }

@@ -1,32 +1,37 @@
-export type MapData = {
-    type: 'boundary' | 'grassland';
-    isPassable: boolean;
-    color: string;
-}
+import type { Map, MapData, RawMap } from "../types/types";
 
-const rawMap = 
- `
-  GGG
-  GGG
-  GGG
+// TODO: Need to enforce squareness of the map somehow
+const rawMap: RawMap = 
+ `BBBBBBB
+  BBBBBBB
+  BBGGGBB
+  BBGGGBB
+  BBGGGBB
+  BBBBBBB
+  BBBBBBB
 `;
+
+let decodedMap: Map | null = null;
 
 export const map = rawMap.replace(/\s+/g, '');
 
-// TODO: Delete this!
-window.testMap = map;
-
-export const getDataForSymbol = (symbol: string): MapData => {
+export const getDataForSymbol = (symbol: string, mapIndex: number): MapData => {
     switch (symbol) {
         case 'G':
-            return { type: 'grassland', color: 'white', isPassable: true }
+            return { type: 'grassland', color: 'white', mapIndex, isPassable: true }
         default: 
-            return { type: 'boundary', color: 'black', isPassable: false }
+            // Bugs might hide behind this permissive behaviour, consider forcing boundary to be explicitly defined
+            return { type: 'boundary', color: 'black', mapIndex, isPassable: false }
     }
 };
 
-export const getColorForPosition = (i: number) => {
-    const symbol = map[i];
+export const getDataForPosition = (i: number) => getDataForSymbol(map[i], i);
 
-    return getDataForSymbol(symbol)?.color;
-};
+export const getDecodedMap = (): Map => {
+    // Basic caching behaviour in case this turns out to be expensive! 
+    if (decodedMap !== null) {
+        return decodedMap;
+    }
+
+    return map.split('').map((char, mapIndex) => getDataForSymbol(char, mapIndex));
+}
