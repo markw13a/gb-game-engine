@@ -12,7 +12,7 @@ const MAP_SIDE_LENGTH = Math.sqrt(map.length);
 
 // Visible area of map is a square - will render SIDE_LENGTH * SIDE_LENGTH number of "tiles"
 // Must be odd number (so character can be placed in the centre)
-const VIEW_AREA_SIDE_LENGTH = 3;
+const VIEW_AREA_SIDE_LENGTH = 4;
 
 // const getNextTileLeft = (pos: number) => pos - MAP_SIDE_LENGTH;
 const getNextTileRight = (pos: number) => pos + MAP_SIDE_LENGTH;
@@ -37,7 +37,7 @@ const verifyMapIntegrity = () => {
 };
 
 export const Map = () => {
-    const [characterPos, setCharacterPos] = useState(31);
+    const [characterPos, setCharacterPos] = useState(17);
     const { scrollContainerRef, scroll } = useScroll({
         onScrollComplete: () => setCharacterPos((pos) => getNextTileRight(pos))
     });
@@ -46,7 +46,7 @@ export const Map = () => {
 
     // HACK: Run again following onScrollComplete updating character positions
     useEffect(() => {
-        // scroll();
+        scroll();
     }, [characterPos])
 
     if (characterPos < 0 || characterPos >= map.length) {
@@ -54,6 +54,8 @@ export const Map = () => {
     }
 
     const tileData = getVisibleTiles(characterPos);
+
+    console.log(tileData)
 
     return (
         <div className={styles.container} ref={scrollContainerRef}>
