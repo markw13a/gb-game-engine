@@ -12,7 +12,7 @@ export const useScroll = ({ onScrollComplete }: { onScrollComplete: () => void }
         }
 
         setIsScrolling(true);
-        await scrollToEndHorizontal(scrollContainerRef.current, t => t * 0.01);
+        await scrollToEndHorizontal(scrollContainerRef.current, t => t * 0.01, 'right');
         setIsScrolling(false);
         onScrollComplete();
     }, [isScrolling, onScrollComplete]);
