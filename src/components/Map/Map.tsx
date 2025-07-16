@@ -2,7 +2,7 @@ import styles from "./Map.module.css";
 import { Tile } from "./Tile";
 
 import { getDataForPosition, map } from '../../map/symbolicMap';
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { useScroll } from '../../hooks/useScroll';
 import { calculateIndices } from "../../utils/calculateRange";
 
@@ -12,7 +12,10 @@ const MAP_SIDE_LENGTH = Math.sqrt(map.length);
 
 // Visible area of map is a square - will render SIDE_LENGTH * SIDE_LENGTH number of "tiles"
 // Must be odd number (so character can be placed in the centre)
-const VIEW_AREA_SIDE_LENGTH = 4;
+const VIEW_AREA_SIDE_LENGTH = 5;
+
+// TODO: CSS should be tied to this
+const TILE_SIZE_IN_PX = 50;
 
 // const getNextTileLeft = (pos: number) => pos - MAP_SIDE_LENGTH;
 const getNextTileRight = (pos: number) => pos + MAP_SIDE_LENGTH;
@@ -42,7 +45,18 @@ export const Map = () => {
         onScrollComplete: () => setCharacterPos((pos) => getNextTileRight(pos))
     });
 
+    // TODO: Probably doesn't belong in here
     useEffect(verifyMapIntegrity, []);
+
+    // Not entirely happy with the control flow and the useEffect/useLayoutEffect
+    // Our movement animation is based on rendering additional layers of hidden tiles
+    // Around the visible section. When rendering, we need to scroll to the centre of this container
+    useLayoutEffect(() => {
+        if (scrollContainerRef.current === null) return;
+        // Want there to be one unseen tile to the left and right of the visible area
+        scrollContainerRef.current.scrollLeft = TILE_SIZE_IN_PX;
+        scrollContainerRef.current.scrollTop = TILE_SIZE_IN_PX;
+    }, [characterPos])
 
     // HACK: Run again following onScrollComplete updating character positions
     useEffect(() => {
