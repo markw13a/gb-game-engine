@@ -42,7 +42,7 @@ const verifyMapIntegrity = () => {
 export const Map = () => {
     const [characterPos, setCharacterPos] = useState(17);
     const { scrollContainerRef, scroll } = useScroll({
-        onScrollComplete: () => setCharacterPos((pos) => getNextTileRight(pos))
+        onScrollComplete: () => setCharacterPos(getNextTileRight(characterPos))
     });
 
     // TODO: Probably doesn't belong in here

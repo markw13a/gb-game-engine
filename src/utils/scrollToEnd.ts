@@ -10,7 +10,7 @@ const defaultScrollFunction = (timeElapsed: number) => {
 export const scrollToEndHorizontal = (scrollContainer: HTMLDivElement, scrollFunction = defaultScrollFunction): Promise<void> => {
     let lastFrameTimestamp = Date.now();
     // Makes this less reusable, but we need to reset scroll position to 0 before beginning
-    let currentScrollPos = 0;
+    let currentScrollPos = scrollContainer.scrollLeft;
 
     return new Promise(resolve => {
         const animate = () => {
