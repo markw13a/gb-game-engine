@@ -5,6 +5,7 @@ import { getDataForPosition, map } from '../../map/symbolicMap';
 import { useEffect, useLayoutEffect, useState } from 'react';
 import { useScroll } from '../../hooks/useScroll';
 import { calculateIndices } from "../../utils/calculateRange";
+import { useKeyListener } from "../../hooks/useKeyListener";
 
 // TODO: Assert that this is a whole number
 // TODO: Some kind of map checking util run before starting
@@ -17,7 +18,7 @@ const VIEW_AREA_SIDE_LENGTH = 5;
 // TODO: CSS should be tied to this
 const TILE_SIZE_IN_PX = 50;
 
-// const getNextTileLeft = (pos: number) => pos - MAP_SIDE_LENGTH;
+const getNextTileLeft = (pos: number) => pos - MAP_SIDE_LENGTH;
 const getNextTileRight = (pos: number) => pos + MAP_SIDE_LENGTH;
 
 // TODO: Abstract 'visible area' code to its own module?
@@ -41,12 +42,30 @@ const verifyMapIntegrity = () => {
 
 export const Map = () => {
     const [characterPos, setCharacterPos] = useState(17);
-    const { scrollContainerRef, scroll } = useScroll({
-        onScrollComplete: () => setCharacterPos(getNextTileRight(characterPos))
-    });
+    const { scrollContainerRef, scroll, isScrolling } = useScroll();
 
     // TODO: Probably doesn't belong in here
     useEffect(verifyMapIntegrity, []);
+
+    const moveRight = async () => {
+        if (isScrolling) {
+            return;
+        }
+
+        await scroll('right');
+        setCharacterPos(getNextTileRight(characterPos));
+    };
+
+    const moveLeft = async () => {
+        if (isScrolling) {
+            return;
+        }
+
+        await scroll('left');
+        setCharacterPos(getNextTileLeft(characterPos));
+    };
+
+    useKeyListener({ 'a': moveLeft, 'd': moveRight });
 
     // Not entirely happy with the control flow and the useEffect/useLayoutEffect
     // Our movement animation is based on rendering additional layers of hidden tiles
@@ -58,18 +77,11 @@ export const Map = () => {
         scrollContainerRef.current.scrollTop = TILE_SIZE_IN_PX;
     }, [characterPos])
 
-    // HACK: Run again following onScrollComplete updating character positions
-    useEffect(() => {
-        scroll();
-    }, [characterPos])
-
     if (characterPos < 0 || characterPos >= map.length) {
         throw new Error("Character out of bounds");
     }
 
     const tileData = getVisibleTiles(characterPos);
-
-    console.log(tileData)
 
     return (
         <div className={styles.container} ref={scrollContainerRef}>

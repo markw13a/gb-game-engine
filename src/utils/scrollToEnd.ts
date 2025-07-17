@@ -7,7 +7,7 @@ const defaultScrollFunction = (timeElapsed: number) => {
     return (TILE_SIZE / TILE_PER_MILISECOND) * timeElapsed;
 } 
 
-type ScrollDirection = 'left' | 'right';
+export type ScrollDirection = 'left' | 'right';
 
 export const scrollToEndHorizontal = (scrollContainer: HTMLDivElement, scrollFunction = defaultScrollFunction, direction: ScrollDirection): Promise<void> => {
     let lastFrameTimestamp = Date.now();
