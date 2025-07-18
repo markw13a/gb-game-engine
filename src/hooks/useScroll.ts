@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from "react";
-import { scrollToEndHorizontal, type ScrollDirection } from "../utils/scrollToEnd";
+import { scrollToEnd, type ScrollDirection } from "../utils/scrollToEnd";
 
 export const useScroll = () => {
     const scrollContainerRef = useRef<HTMLDivElement | null>(null);
@@ -11,7 +11,7 @@ export const useScroll = () => {
         }
 
         setIsScrolling(true);
-        await scrollToEndHorizontal(scrollContainerRef.current, t => t * 0.01, direction);
+        await scrollToEnd(scrollContainerRef.current, t => t * 0.01, direction);
         setIsScrolling(false);
     }, []);
 

@@ -20,6 +20,8 @@ const TILE_SIZE_IN_PX = 50;
 
 const getNextTileLeft = (pos: number) => pos - MAP_SIDE_LENGTH;
 const getNextTileRight = (pos: number) => pos + MAP_SIDE_LENGTH;
+const getNextTileUp = (pos: number) => pos - 1;
+const getNextTileDown = (pos: number) => pos + 1;
 
 // TODO: Abstract 'visible area' code to its own module?
 // Makes sense, kind of spread out right now
@@ -47,6 +49,7 @@ export const Map = () => {
     // TODO: Probably doesn't belong in here
     useEffect(verifyMapIntegrity, []);
 
+    // TODO: Positive we don't need four separate functions!
     const moveRight = async () => {
         if (isScrolling) {
             return;
@@ -65,7 +68,25 @@ export const Map = () => {
         setCharacterPos(getNextTileLeft(characterPos));
     };
 
-    useKeyListener({ 'a': moveLeft, 'd': moveRight });
+    const moveUp = async () => {
+        if (isScrolling) {
+            return;
+        }
+
+        await scroll('up');
+        setCharacterPos(getNextTileUp(characterPos));
+    };
+
+    const moveDown = async () => {
+        if (isScrolling) {
+            return;
+        }
+
+        await scroll('down');
+        setCharacterPos(getNextTileDown(characterPos));
+    };
+
+    useKeyListener({ 'a': moveLeft, 'd': moveRight, 'w': moveUp, 's': moveDown });
 
     // Not entirely happy with the control flow and the useEffect/useLayoutEffect
     // Our movement animation is based on rendering additional layers of hidden tiles

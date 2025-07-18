@@ -7,13 +7,15 @@ const defaultScrollFunction = (timeElapsed: number) => {
     return (TILE_SIZE / TILE_PER_MILISECOND) * timeElapsed;
 } 
 
-export type ScrollDirection = 'left' | 'right';
+export type ScrollDirection = 'left' | 'right' | 'up' | 'down';
 
-export const scrollToEndHorizontal = (scrollContainer: HTMLDivElement, scrollFunction = defaultScrollFunction, direction: ScrollDirection): Promise<void> => {
+export const scrollToEnd = (scrollContainer: HTMLDivElement, scrollFunction = defaultScrollFunction, direction: ScrollDirection): Promise<void> => {
     let lastFrameTimestamp = Date.now();
     // Makes this less reusable, but we need to reset scroll position to 0 before beginning
-    let currentScrollPos = scrollContainer.scrollLeft;
+    let currentScrollPosHorizontal = scrollContainer.scrollLeft;
+    let currentScrollPosVertical = scrollContainer.scrollTop;
 
+    // TODO: Tidy this up: no need to handle code for all four directions together
     return new Promise(resolve => {
         const animate = () => {
             // Can't rely on offsetWidth because it's rounded to nearest integer -- it's actually not possible to set scrollLeft this high!
@@ -22,26 +24,41 @@ export const scrollToEndHorizontal = (scrollContainer: HTMLDivElement, scrollFun
             const scrollLeftMax = (scrollContainer.scrollWidth - scrollContainer.clientWidth) - 0.33;
             const scrollLeftMin = 0;
 
+            const scrollTopMax = (scrollContainer.scrollHeight - scrollContainer.clientHeight) - 0.33;
+            const scrollTopMin = 0;
+
             const timestamp = Date.now();
             const timeElapsed = timestamp - lastFrameTimestamp;
             const distanceToScroll = scrollFunction(timeElapsed);
     
-            const nextScrollPosRight = currentScrollPos + distanceToScroll;
-            const nextScrollPosLeft = currentScrollPos - distanceToScroll;
+            const nextScrollPosRight = currentScrollPosHorizontal + distanceToScroll;
+            const nextScrollPosLeft = currentScrollPosHorizontal - distanceToScroll;
+
+            const nextScrollPosTop = currentScrollPosVertical - distanceToScroll;
+            const nextScrollPosBottom = currentScrollPosVertical + distanceToScroll;
 
             if (direction === "right") {
                 scrollContainer.scrollLeft = nextScrollPosRight;
-                currentScrollPos = nextScrollPosRight;
-            } else {
+                currentScrollPosHorizontal = nextScrollPosRight;
+            } else if (direction === "left") {
                 scrollContainer.scrollLeft = nextScrollPosLeft;
-                currentScrollPos = nextScrollPosLeft;
+                currentScrollPosHorizontal = nextScrollPosLeft;
+            } else if (direction === "up") {
+                scrollContainer.scrollTop = nextScrollPosTop;
+                currentScrollPosVertical = nextScrollPosTop;
+            } else if (direction === "down") {
+                scrollContainer.scrollTop = nextScrollPosBottom;
+                currentScrollPosVertical = nextScrollPosBottom;
             }
 
             lastFrameTimestamp = timestamp;
     
-            const isAtMaxScroll = currentScrollPos >= scrollLeftMax;
-            const isAtMinScroll = currentScrollPos <= scrollLeftMin;
+            const isAtMaxScroll = currentScrollPosHorizontal >= scrollLeftMax;
+            const isAtMinScroll = currentScrollPosHorizontal <= scrollLeftMin;
         
+            const isAtMaxScrollVertical = currentScrollPosVertical >= scrollTopMax;
+            const isAtMinScrollVertical = currentScrollPosVertical <= scrollTopMin;
+
             // Scroll container could start at 0 or end of container, so need to check direction too
             if (isAtMaxScroll && direction === "right") {
                 resolve();
@@ -49,6 +66,16 @@ export const scrollToEndHorizontal = (scrollContainer: HTMLDivElement, scrollFun
             }
         
             if (isAtMinScroll && direction === "left") {
+                resolve();
+                return;
+            }
+
+            if (isAtMaxScrollVertical && direction === "down") {
+                resolve();
+                return;
+            }
+
+            if (isAtMinScrollVertical && direction === "up") {
                 resolve();
                 return;
             }
