@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from "react";
-import { scrollToEnd } from "../utils/scrollToEnd";
+import { scrollToEnd } from "../map/utils/scrollToEnd/scrollToEnd";
 import type { ScrollDirection } from "../types/types";
 
 export const useScroll = () => {

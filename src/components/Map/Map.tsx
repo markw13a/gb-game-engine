@@ -1,15 +1,24 @@
 import styles from "./Map.module.css";
 import { Tile } from "./Tile";
 
-import { getNextTile, getVisibleTiles, map, TILE_SIZE_IN_PX } from '../../map/symbolicMap';
+import { getMapSideLength, getNextTile, getVisibleTiles } from '../../map/symbolicMap';
 import { useLayoutEffect, useState } from 'react';
 import { useScroll } from '../../hooks/useScroll';
 import { useKeyListener } from "../../hooks/useKeyListener";
-import type { ScrollDirection } from "../../types/types";
+import type { Map as MapType, ScrollDirection } from "../../types/types";
 
-export const Map = () => {
-    const [characterPos, setCharacterPos] = useState(17);
+type MapProps = {
+    initialPosition?: number;
+    map: MapType;
+    tileSize?: number;
+    viewAreaSize?: number;
+};
+
+export const Map = ({ initialPosition = 17, map, tileSize = 50, viewAreaSize = 5 }: MapProps) => {
+    const [characterPos, setCharacterPos] = useState(initialPosition);
     const { scrollContainerRef, scroll, isScrolling } = useScroll();
+
+    const mapSideLength = getMapSideLength(map);
 
     const move = async (dir: ScrollDirection) => {
         if (isScrolling) {
@@ -17,7 +26,7 @@ export const Map = () => {
         }
 
         await scroll(dir);
-        setCharacterPos(getNextTile(characterPos, dir));
+        setCharacterPos(getNextTile(characterPos, mapSideLength, dir));
     };
 
     useKeyListener({ 
@@ -27,26 +36,25 @@ export const Map = () => {
         's': () => move('down') 
     });
 
-    // Not entirely happy with the control flow and the useEffect/useLayoutEffect
     // Our movement animation is based on rendering additional layers of hidden tiles
     // Around the visible section. When rendering, we need to scroll to the centre of this container
     useLayoutEffect(() => {
         if (scrollContainerRef.current === null) return;
         // Want there to be one unseen tile to the left and right of the visible area
-        scrollContainerRef.current.scrollLeft = TILE_SIZE_IN_PX;
-        scrollContainerRef.current.scrollTop = TILE_SIZE_IN_PX;
-    }, [characterPos])
+        scrollContainerRef.current.scrollLeft = tileSize;
+        scrollContainerRef.current.scrollTop = tileSize;
+    }, [characterPos, scrollContainerRef, tileSize])
 
     if (characterPos < 0 || characterPos >= map.length) {
         throw new Error("Character out of bounds");
     }
 
-    const tileData = getVisibleTiles(characterPos);
+    const tileData = getVisibleTiles(characterPos, viewAreaSize, mapSideLength);
 
     return (
         <div className={styles.container} ref={scrollContainerRef}>
             {tileData.map((tile, i) => (
-                <Tile key={i} color={tile.color} label={`${tile.mapIndex}`} size={TILE_SIZE_IN_PX} />
+                <Tile key={i} color={tile.color} label={`${tile.mapIndex}`} size={tileSize} />
             ))}
         </div>
     );

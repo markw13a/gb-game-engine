@@ -27,19 +27,19 @@ export const getDataForSymbol = (symbol: string, mapIndex: number): MapData => {
 export const decodeMap = (map: string): Map => map.split('').map((char, mapIndex) => getDataForSymbol(char, mapIndex));
 
 export const map = decodeMap(rawMap.replace(/\s+/g, ''));
-export const TILE_SIZE_IN_PX = 50;
-export const MAP_SIDE_LENGTH = Math.sqrt(map.length);
 
-// Visible area of map is a square - will render SIDE_LENGTH * SIDE_LENGTH number of "tiles"
-// Must be odd number (so character can be placed in the centre)
-export const VIEW_AREA_SIDE_LENGTH = 5;
+/**
+ * Returns n where map represents an n x n grid
+ * (e.g map.length = 9 -> n = 3)
+ */
+export const getMapSideLength = (map: Map) => Math.sqrt(map.length);
 
-export const getNextTile = (pos: number, dir: ScrollDirection) => {
+export const getNextTile = (pos: number, mapSideLength: number, dir: ScrollDirection) => {
     switch (dir) {
         case "left":
-            return pos - MAP_SIDE_LENGTH;
+            return pos - mapSideLength;
         case "right":
-            return pos + MAP_SIDE_LENGTH;
+            return pos + mapSideLength;
         case "up":
             return pos - 1;
         case "down":
@@ -47,9 +47,9 @@ export const getNextTile = (pos: number, dir: ScrollDirection) => {
     }
 }
 
-export const getVisibleTiles = (pos: number) => calculateIndices(VIEW_AREA_SIDE_LENGTH, MAP_SIDE_LENGTH, pos).map(i => map[i]);
+export const getVisibleTiles = (pos: number, viewAreaSize: number, mapSideLength: number) => calculateIndices(viewAreaSize, mapSideLength, pos).map(i => map[i]);
 
-const verifyMapIntegrity = (map: Map) => {
+export const verifyMapIntegrity = (map: Map) => {
     const sideLength = Math.sqrt(map.length);
     const isMapSquare = Number.isInteger(sideLength);
     
@@ -61,4 +61,5 @@ const verifyMapIntegrity = (map: Map) => {
     }
 };
 
+// TODO: feels off handling this as a side-effect of importing what is becoming a utils file
 verifyMapIntegrity(map);

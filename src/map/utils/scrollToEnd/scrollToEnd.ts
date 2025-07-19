@@ -1,4 +1,4 @@
-import type { ScrollDirection } from "../types/types";
+import type { ScrollDirection } from "../../../types/types";
 
 const SUB_PIXEL_SIZE = 0.33;
 
