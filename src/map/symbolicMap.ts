@@ -1,3 +1,4 @@
+// TODO: Code in this file isn't really testable -- functions depend on in-scope values
 import type { Map, MapData, ScrollDirection } from "../types/types";
 import { calculateIndices } from "./utils/calculateIndices/calculateIndices";
 

@@ -1,5 +1,7 @@
 import type { ScrollDirection } from "../types/types";
 
+const SUB_PIXEL_SIZE = 0.33;
+
 // Based on two frames/second
 const defaultScrollFunction = (timeElapsed: number) => {
     const TILE_SIZE = 50;
@@ -18,13 +20,10 @@ export const scrollToEnd = (scrollContainer: HTMLDivElement, scrollFunction = de
     // TODO: Tidy this up: no need to handle code for all four directions together
     return new Promise(resolve => {
         const animate = () => {
-            // Can't rely on offsetWidth because it's rounded to nearest integer -- it's actually not possible to set scrollLeft this high!
-            // Therefore, need to figure out an alternative method of determining whether the element has finished scrolling
-            // Browser renders 3 sub-pixels -- no visible difference in position beyond offsetWidth - 0.33
-            const scrollLeftMax = (scrollContainer.scrollWidth - scrollContainer.clientWidth) - 0.33;
+            const scrollLeftMax = (scrollContainer.scrollWidth - scrollContainer.clientWidth) - SUB_PIXEL_SIZE;
             const scrollLeftMin = 0;
 
-            const scrollTopMax = (scrollContainer.scrollHeight - scrollContainer.clientHeight) - 0.33;
+            const scrollTopMax = (scrollContainer.scrollHeight - scrollContainer.clientHeight) - SUB_PIXEL_SIZE;
             const scrollTopMin = 0;
 
             const timestamp = Date.now();
