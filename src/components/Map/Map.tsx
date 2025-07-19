@@ -1,5 +1,5 @@
 import styles from "./Map.module.css";
-import { Tile } from "./Tile";
+import { Tile } from "../Tile/Tile";
 
 import { getMapSideLength, getNextTile, getVisibleTiles } from '../../map/symbolicMap';
 import { useLayoutEffect, useState } from 'react';
@@ -25,6 +25,11 @@ export const Map = ({ initialPosition = 17, map, tileSize = 50, viewAreaSize = 5
             return;
         }
 
+        const nextTile = getNextTile(characterPos, mapSideLength, dir);
+        const isPassable = map[nextTile]?.isPassable;
+
+        if (!isPassable) return;
+
         await scroll(dir);
         setCharacterPos(getNextTile(characterPos, mapSideLength, dir));
     };
@@ -45,6 +50,7 @@ export const Map = ({ initialPosition = 17, map, tileSize = 50, viewAreaSize = 5
         scrollContainerRef.current.scrollTop = tileSize;
     }, [characterPos, scrollContainerRef, tileSize])
 
+    // TODO: Unsure if this is still needed
     if (characterPos < 0 || characterPos >= map.length) {
         throw new Error("Character out of bounds");
     }
