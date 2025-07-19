@@ -1,3 +1,5 @@
+import type { ScrollDirection } from "../types/types";
+
 // Based on two frames/second
 const defaultScrollFunction = (timeElapsed: number) => {
     const TILE_SIZE = 50;
@@ -6,8 +8,6 @@ const defaultScrollFunction = (timeElapsed: number) => {
 
     return (TILE_SIZE / TILE_PER_MILISECOND) * timeElapsed;
 } 
-
-export type ScrollDirection = 'left' | 'right' | 'up' | 'down';
 
 export const scrollToEnd = (scrollContainer: HTMLDivElement, scrollFunction = defaultScrollFunction, direction: ScrollDirection): Promise<void> => {
     let lastFrameTimestamp = Date.now();

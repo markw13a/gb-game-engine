@@ -5,6 +5,6 @@ export type MapData = {
     mapIndex: number; // Reference to tile position within rawMap
 }
 
-export type RawMap = string;
-
 export type Map = MapData[];
+
+export type ScrollDirection = 'left' | 'right' | 'up' | 'down';

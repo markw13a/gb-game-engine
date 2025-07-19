@@ -1,5 +1,6 @@
 import { useCallback, useRef, useState } from "react";
-import { scrollToEnd, type ScrollDirection } from "../utils/scrollToEnd";
+import { scrollToEnd } from "../utils/scrollToEnd";
+import type { ScrollDirection } from "../types/types";
 
 export const useScroll = () => {
     const scrollContainerRef = useRef<HTMLDivElement | null>(null);

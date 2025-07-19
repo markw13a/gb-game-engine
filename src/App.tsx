@@ -1,15 +1,13 @@
 import './App.css'
 import { Map } from './components/Map/Map'
-import { MapDebugger } from './components/MapDebugger/MapDebugger'
-
-import { getDecodedMap } from './map/symbolicMap';
+// import { MapDebugger } from './components/MapDebugger/MapDebugger'
+// import { map } from './map/symbolicMap'
 
 function App() {
   return (
     <>
-      {/* <AnimationTest /> */}
       <Map />
-      {/* <MapDebugger map={getDecodedMap()} /> */}
+      {/* <MapDebugger map={map} /> */}
     </>
   )
 }

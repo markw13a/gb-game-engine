@@ -1,4 +1,4 @@
-import { calculateIndices, calculateRange } from "./calculateRange";
+import { calculateIndices, calculateRange } from "./calculateIndices";
 
 describe('calculateRange', () => {
     it('should calculate short range', () => {
