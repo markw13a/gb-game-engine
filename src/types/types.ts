@@ -7,4 +7,4 @@ export type MapData = {
 
 export type Map = MapData[];
 
-export type ScrollDirection = 'left' | 'right' | 'up' | 'down';
+export type Direction = 'left' | 'right' | 'up' | 'down';

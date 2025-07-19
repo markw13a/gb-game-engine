@@ -1,4 +1,4 @@
-import type { ScrollDirection } from "../../../types/types";
+import type { Direction } from "../../../types/types";
 
 const SUB_PIXEL_SIZE = 0.33;
 
@@ -11,7 +11,7 @@ const defaultScrollFunction = (timeElapsed: number) => {
     return (TILE_SIZE / TILE_PER_MILISECOND) * timeElapsed;
 } 
 
-export const scrollToEnd = (scrollContainer: HTMLDivElement, scrollFunction = defaultScrollFunction, direction: ScrollDirection): Promise<void> => {
+export const scrollToEnd = (scrollContainer: HTMLDivElement, scrollFunction = defaultScrollFunction, direction: Direction): Promise<void> => {
     let lastFrameTimestamp = Date.now();
     // Makes this less reusable, but we need to reset scroll position to 0 before beginning
     let currentScrollPosHorizontal = scrollContainer.scrollLeft;

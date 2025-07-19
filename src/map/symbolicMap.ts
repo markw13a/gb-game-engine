@@ -1,5 +1,5 @@
 // TODO: Code in this file isn't really testable -- functions depend on in-scope values
-import type { Map, MapData, ScrollDirection } from "../types/types";
+import type { Map, MapData, Direction } from "../types/types";
 import { calculateIndices } from "./utils/calculateIndices/calculateIndices";
 
 const rawMap = 
@@ -34,7 +34,7 @@ export const map = decodeMap(rawMap.replace(/\s+/g, ''));
  */
 export const getMapSideLength = (map: Map) => Math.sqrt(map.length);
 
-export const getNextTile = (pos: number, mapSideLength: number, dir: ScrollDirection) => {
+export const getNextTile = (pos: number, mapSideLength: number, dir: Direction) => {
     switch (dir) {
         case "left":
             return pos - mapSideLength;
