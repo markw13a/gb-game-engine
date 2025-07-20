@@ -45,7 +45,6 @@ export const BackgroundLayer = ({
         'd': () => move('right'), 
         'w': () => move('up'), 
         's': () => move('down'),
-        'q': () => console.log('PRESSED'),
     });
 
     // Our movement animation is based on rendering additional layers of hidden tiles
@@ -63,8 +62,6 @@ export const BackgroundLayer = ({
     }
 
     const tileData = getVisibleTiles(characterPos, viewAreaSize, mapSideLength);
-
-    console.log({ tileData });
 
     return (
         <div className={styles.container} ref={scrollContainerRef}>

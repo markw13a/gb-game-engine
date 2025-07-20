@@ -5,13 +5,13 @@ const SUB_PIXEL_SIZE = 0.33;
 // Based on two frames/second
 const defaultScrollFunction = (timeElapsed: number) => {
     const TILE_SIZE = 50;
-    const TILE_PER_SECOND = 2;
+    const TILE_PER_SECOND = 1.89;
     const TILE_PER_MILISECOND = TILE_PER_SECOND / 1000;
 
-    return (TILE_SIZE / TILE_PER_MILISECOND) * timeElapsed;
+    return TILE_SIZE * TILE_PER_MILISECOND * timeElapsed;
 } 
 
-export const scrollToEnd = (scrollContainer: HTMLDivElement, scrollFunction = defaultScrollFunction, direction: Direction): Promise<void> => {
+export const scrollToEnd = (scrollContainer: HTMLDivElement, direction: Direction, scrollFunction = defaultScrollFunction): Promise<void> => {
     let lastFrameTimestamp = Date.now();
     // Makes this less reusable, but we need to reset scroll position to 0 before beginning
     let currentScrollPosHorizontal = scrollContainer.scrollLeft;
