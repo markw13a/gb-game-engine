@@ -1,27 +1,32 @@
 import { useEffect, useRef } from "react";
 
+type KeyMap = Record<string, () => void>; 
+
 export const useWhileKeyPressed = (
-    key: string, 
-    callback: () => Promise<void>, 
+    keymap: KeyMap,  
     interval = 100
 ) => {
-    const keyPressedRef = useRef(false);
+    const keysPressedRef = useRef<string[]>([]);
 
     useEffect(() => {
-        const keyPressed = (e: KeyboardEvent) => {
-            if (e.key !== key || e.repeat) {
+        const keyPressed = ({ key, repeat }: KeyboardEvent) => {
+            const isMappedKey = !!keymap[key];
+
+            if (!isMappedKey || repeat) {
                 return;
             }
 
-            keyPressedRef.current = true; 
+            keysPressedRef.current = [...keysPressedRef.current, key];
         };
         
-        const keyReleased = (e: KeyboardEvent) => {
-            if (e.key !== key) {
+        const keyReleased = ({ key }: KeyboardEvent) => {
+            const isMappedKey = !!keymap[key];
+
+            if (!isMappedKey) {
                 return;
             }
 
-            keyPressedRef.current = false;
+            keysPressedRef.current = keysPressedRef.current.filter(k => k !== key);
         }
 
         document.addEventListener('keydown', keyPressed);
@@ -31,18 +36,13 @@ export const useWhileKeyPressed = (
             document.removeEventListener('keydown', keyPressed);
             document.removeEventListener('keyup', keyReleased);
         }
-    }, [key]);
+    }, [keymap]);
 
     useEffect(() => {
         const intervalId = setInterval(() => {
-
-            if (!keyPressedRef.current) {
-                return;
-            }
-
-            callback();
+            keysPressedRef.current.forEach(k => keymap[k]())
         }, interval);
 
         return () => clearInterval(intervalId);
-    }, [callback, interval])
+    }, [keymap, interval])
 };

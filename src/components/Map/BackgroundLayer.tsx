@@ -4,7 +4,7 @@ import { Tile } from "../Tile/Tile";
 import { getMapSideLength, getNextTile, getVisibleTiles } from '../../map/symbolicMap';
 import { useLayoutEffect } from 'react';
 import { useScroll } from '../../hooks/useScroll';
-import { useKeyListener, useWhileKeyPressed } from "../../hooks/useKeyListener";
+import { useWhileKeyPressed } from "../../hooks/useWhileKeyPressed/useWhileKeyPressed";
 import type { Map, Direction } from "../../types/types";
 
 type BackgroundLayerProps = {
@@ -40,11 +40,9 @@ export const BackgroundLayer = ({
         onMoveComplete(dir);
     };
 
-    useWhileKeyPressed('d', () => move('right'));
-
-    useKeyListener({ 
+    useWhileKeyPressed({ 
         'a': () => move('left'), 
-        // 'd': () => move('right'), 
+        'd': () => move('right'), 
         'w': () => move('up'), 
         's': () => move('down'),
     });
