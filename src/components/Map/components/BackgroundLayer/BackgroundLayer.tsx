@@ -1,11 +1,11 @@
 import styles from "./BackgroundLayer.module.css";
-import { Tile } from "../Tile/Tile";
+import { Tile } from "../../../Tile/Tile";
 
-import { getMapSideLength, getNextTile, getVisibleTiles } from '../../map/symbolicMap';
+import { getMapSideLength, getNextTile, getVisibleTiles } from '../../../../map/symbolicMap';
 import { useLayoutEffect } from 'react';
-import { useScroll } from '../../hooks/useScroll';
-import { useWhileKeyPressed } from "../../hooks/useWhileKeyPressed/useWhileKeyPressed";
-import type { Map, Direction } from "../../types/types";
+import { useScroll } from '../../../../hooks/useScroll';
+import { useWhileKeyPressed } from "../../../../hooks/useWhileKeyPressed/useWhileKeyPressed";
+import type { Map, Direction } from "../../../../types/types";
 
 type BackgroundLayerProps = {
     characterPos: number;
@@ -25,6 +25,7 @@ export const BackgroundLayer = ({
     onMoveStart,
     onMoveComplete
 }: BackgroundLayerProps) => {
+    // TODO: Most of this should probably be moved up to Map
     const { scrollContainerRef, scroll, isScrolling } = useScroll();
 
     const mapSideLength = getMapSideLength(map);
@@ -55,7 +56,7 @@ export const BackgroundLayer = ({
         // Want there to be one unseen tile to the left and right of the visible area
         scrollContainerRef.current.scrollLeft = tileSize;
         scrollContainerRef.current.scrollTop = tileSize;
-    }, [characterPos, scrollContainerRef, tileSize])
+    })
 
     // TODO: Unsure if this is still needed
     if (characterPos < 0 || characterPos >= map.length) {

@@ -1,0 +1,5 @@
+.character {
+    /* TODO: tile size variable */
+    width: 50px;
+    height: 50px;
+}

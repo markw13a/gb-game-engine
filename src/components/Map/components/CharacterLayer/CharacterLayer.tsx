@@ -1,4 +1,6 @@
-import type { Direction } from "../../types/types";
+import type { Direction } from "../../../../types/types";
+
+import styles from "./CharacterLayer.module.css";
 
 type CharacterLayerProps = {
     direction: Direction;
@@ -13,5 +15,12 @@ export const CharacterLayer = ({ direction, moving }: CharacterLayerProps) => {
     // Communicate via events?
     // Would need to make state available further up tree otherwise
     
-    return null;
+    return (
+        <div 
+            className={styles.character} 
+            data-direction={direction} 
+            data-moving={moving} 
+            data-testid="character" 
+        />
+    );
 };

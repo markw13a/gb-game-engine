@@ -1,15 +1,15 @@
 import { useState } from "react";
-import { CharacterLayer } from "./CharacterLayer";
+import { CharacterLayer } from "./components/CharacterLayer/CharacterLayer";
 import type { Direction, Map as MapType } from "../../types/types";
 import { getMapSideLength, getNextTile } from "../../map/symbolicMap";
-import { BackgroundLayer } from "./BackgroundLayer";
+import { BackgroundLayer } from "./components/BackgroundLayer/BackgroundLayer";
 
 type MapProps = {
     map: MapType;
 }
 
 export const Map = ({ map }: MapProps) => {
-    const [characterPos, setCharacterPos] = useState(17);
+    const [characterPos, setCharacterPos] = useState(57);
     const [isMoving, setIsMoving] = useState(false);
     const [characterDirection, setCharacterDirection] = useState<Direction>('down');
 
