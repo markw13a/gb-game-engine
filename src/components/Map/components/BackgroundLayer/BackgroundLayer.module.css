@@ -1,13 +1,13 @@
 /* TODO: Woudl be nice if this calculated grids/columns based VIEW_AREA_SIDE_LENGTH */
 .container {
     display: grid;
-    grid-template-columns: repeat(5, 50px);
-    grid-template-rows: repeat(5, 50px);
+    grid-template-columns: repeat(5, var(--tile-size));
+    grid-template-rows: repeat(5, var(--tile-size));
     grid-auto-flow: column;
     grid-column-gap: 0px;
     grid-row-gap: 0px;
 
-    max-height: 150px;
-    max-width: 150px;
+    max-height: calc(var(--tile-size) * 3);
+    max-width: calc(var(--tile-size) * 3);
     overflow: hidden;
 }

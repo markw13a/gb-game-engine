@@ -13,7 +13,7 @@ export const MapDebugger = ({ map }: MapDebuggerProps) => {
         <div className={styles.debugContainer} style={{ gridTemplateColumns: `repeat(${sideLength}, 1fr)`, gridTemplateRows: `repeat(${sideLength}, 1fr)` }}>
             {
                 Array.from(map).map((tile, i) => (
-                    <div key={i} style={{ backgroundColor: tile.color, height: '50px', width: '50px' }}>{i}</div>
+                    <div key={i} style={{ backgroundColor: tile.color, height: 'var(--tile-size)', width: 'var(--tile-size)' }}>{i}</div>
                 ))
             }
         </div>
