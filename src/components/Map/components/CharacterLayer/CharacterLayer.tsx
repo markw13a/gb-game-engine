@@ -14,13 +14,15 @@ export const CharacterLayer = ({ direction, moving }: CharacterLayerProps) => {
 
     // Communicate via events?
     // Would need to make state available further up tree otherwise
-    
+
     return (
-        <div 
-            className={styles.character} 
-            data-direction={direction} 
-            data-moving={moving} 
-            data-testid="character" 
-        />
+        <div className={styles.container}>
+            <div 
+                className={styles.character} 
+                data-sprite={direction} 
+                data-moving={moving} 
+                data-testid="character" 
+            />
+        </div>
     );
 };

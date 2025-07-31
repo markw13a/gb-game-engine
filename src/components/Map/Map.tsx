@@ -4,6 +4,8 @@ import type { Direction, Map as MapType } from "../../types/types";
 import { getMapSideLength, getNextTile } from "../../map/symbolicMap";
 import { BackgroundLayer } from "./components/BackgroundLayer/BackgroundLayer";
 
+import styles from './Map.module.css';
+
 type MapProps = {
     map: MapType;
 }
@@ -26,7 +28,7 @@ export const Map = ({ map }: MapProps) => {
     };
 
     return (
-        <div>
+        <div className={styles.container}>
             <BackgroundLayer
                 characterPos={characterPos}
                 map={map} 

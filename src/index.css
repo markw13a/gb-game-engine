@@ -1,3 +1,5 @@
 :root {
   --tile-size: 50px;
+  --background-layer-z-index: 1;
+  --character-layer-z-index: 10;
 }

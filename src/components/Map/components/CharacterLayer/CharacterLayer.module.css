@@ -1,4 +1,35 @@
+.container {
+    width: 100%;
+    height: 100%;
+
+    position: absolute;
+    top: var(--tile-size);
+    left: var(--tile-size);
+
+    z-index: var(--character-layer-z-index);
+}
+
 .character {
     width: var(--tile-size);
     height: var(--tile-size);
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    &[data-sprite="left"] {
+        background-image: url("/clefairy/static/left.png");
+    }
+
+    &[data-sprite="right"] {
+        background-image: url("/clefairy/static/right.png");
+    }
+
+    &[data-sprite="down"] {
+        background-image: url("/clefairy/static/down.png");
+    }
+
+    &[data-sprite="up"] {
+        background-image: url("/clefairy/static/up.png");
+    }
 }
