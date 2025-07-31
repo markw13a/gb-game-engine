@@ -32,4 +32,8 @@
     &[data-sprite="up"] {
         background-image: url("/clefairy/static/up.png");
     }
+
+    &[data-sprite="down"][data-moving="true"] {
+        background-image: url("/clefairy/moving/down.gif");
+    }
 }
