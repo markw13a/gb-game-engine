@@ -20,20 +20,26 @@
     &[data-sprite="left"] {
         background-image: url("/clefairy/static/left.png");
     }
-
     &[data-sprite="right"] {
         background-image: url("/clefairy/static/right.png");
     }
-
     &[data-sprite="down"] {
         background-image: url("/clefairy/static/down.png");
     }
-
     &[data-sprite="up"] {
         background-image: url("/clefairy/static/up.png");
     }
 
+    &[data-sprite="left"][data-moving="true"] {
+        background-image: url("/clefairy/moving/left.gif");
+    }
+    &[data-sprite="right"][data-moving="true"] {
+        background-image: url("/clefairy/moving/right.gif");
+    }
     &[data-sprite="down"][data-moving="true"] {
         background-image: url("/clefairy/moving/down.gif");
+    }
+    &[data-sprite="up"][data-moving="true"] {
+        background-image: url("/clefairy/moving/up.gif");
     }
 }
