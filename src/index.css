@@ -1,5 +1,12 @@
+@font-face {
+  font-family: "Pixelated";
+  src: url("/fonts/pixelated.ttf");
+}
+
 :root {
   --tile-size: 50px;
   --background-layer-z-index: 1;
   --character-layer-z-index: 10;
+
+  font-family: 'Pixelated';
 }
