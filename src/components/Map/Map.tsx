@@ -2,7 +2,7 @@ import { useState } from "react";
 import { CharacterLayer } from "./components/CharacterLayer/CharacterLayer";
 import type { Direction, Map as MapType, SpriteMap } from "../../types/types";
 import { getMapSideLength, getNextTile } from "../../map/symbolicMap";
-import { BackgroundLayer } from "./components/BackgroundLayer/BackgroundLayer";
+import { VirtualisedTileRenderer } from "./components/VirtualisedTileRenderer/VirtualisedTileRenderer";
 
 import styles from './Map.module.css';
 
@@ -44,7 +44,7 @@ export const Map = ({ map }: MapProps) => {
 
     return (
         <div className={styles.container}>
-            <BackgroundLayer
+            <VirtualisedTileRenderer
                 characterPos={characterPos}
                 map={map} 
                 onMoveStart={onMoveStart} 

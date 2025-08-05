@@ -1,4 +1,4 @@
-import styles from "./BackgroundLayer.module.css";
+import styles from "./VirtualisedTileRenderer.module.css";
 import { Tile } from "../../../Tile/Tile";
 
 import { getMapSideLength, getNextTile, getVisibleTiles } from '../../../../map/symbolicMap';
@@ -7,7 +7,7 @@ import { useScroll } from '../../../../hooks/useScroll';
 import { useWhileKeyPressed } from "../../../../hooks/useWhileKeyPressed/useWhileKeyPressed";
 import type { Map, Direction } from "../../../../types/types";
 
-type BackgroundLayerProps = {
+type VirtualisedTileRendererProps = {
     characterPos: number;
     map: Map;
     tileSize?: number;
@@ -17,14 +17,14 @@ type BackgroundLayerProps = {
 };
 
 // Responsible for rendering grid, animating background scroll, rendering items + NPCs
-export const BackgroundLayer = ({ 
+export const VirtualisedTileRenderer = ({ 
     characterPos, 
     map, 
     tileSize = 50, 
     viewAreaSize = 5,
     onMoveStart,
     onMoveComplete
-}: BackgroundLayerProps) => {
+}: VirtualisedTileRendererProps) => {
     // TODO: Most of this should probably be moved up to Map
     const { scrollContainerRef, scroll, isScrolling } = useScroll();
 
