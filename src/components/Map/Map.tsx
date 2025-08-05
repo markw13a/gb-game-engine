@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { CharacterLayer } from "./components/CharacterLayer/CharacterLayer";
-import type { Direction, Map as MapType } from "../../types/types";
+import type { Direction, Map as MapType, SpriteMap } from "../../types/types";
 import { getMapSideLength, getNextTile } from "../../map/symbolicMap";
 import { BackgroundLayer } from "./components/BackgroundLayer/BackgroundLayer";
 
@@ -9,6 +9,21 @@ import styles from './Map.module.css';
 type MapProps = {
     map: MapType;
 }
+
+const characterSprites: SpriteMap = {
+    moving: {
+        left: '/clefairy/moving/left.gif',
+        right: '/clefairy/moving/right.gif',
+        up: '/clefairy/moving/up.gif',
+        down: '/clefairy/moving/down.gif'
+    },
+    idle: {
+        left: '/clefairy/static/left.png',
+        right: '/clefairy/static/right.png',
+        up: '/clefairy/static/up.png',
+        down: '/clefairy/static/down.png'
+    }
+};
 
 export const Map = ({ map }: MapProps) => {
     const [characterPos, setCharacterPos] = useState(57);
@@ -38,6 +53,7 @@ export const Map = ({ map }: MapProps) => {
             <CharacterLayer 
                 direction={characterDirection} 
                 moving={isMoving} 
+                sprites={characterSprites}
             />
         </div>
     )
