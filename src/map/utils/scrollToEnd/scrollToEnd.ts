@@ -2,13 +2,14 @@ import type { Direction } from "../../../types/types";
 
 const SUB_PIXEL_SIZE = 0.33;
 
-// Based on two frames/second
 const defaultScrollFunction = (timeElapsed: number) => {
     const TILE_SIZE = 50;
     const TILE_PER_SECOND = 1.89;
     const TILE_PER_MILISECOND = TILE_PER_SECOND / 1000;
 
-    return TILE_SIZE * TILE_PER_MILISECOND * timeElapsed;
+    const MATCH_WITH_GB_CONSTANT = 2.6;
+
+    return TILE_SIZE * TILE_PER_MILISECOND * timeElapsed * MATCH_WITH_GB_CONSTANT;
 } 
 
 export const scrollToEnd = (scrollContainer: HTMLDivElement, direction: Direction, scrollFunction = defaultScrollFunction): Promise<void> => {

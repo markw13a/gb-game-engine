@@ -58,11 +58,6 @@ export const BackgroundLayer = ({
         scrollContainerRef.current.scrollTop = tileSize;
     })
 
-    // TODO: Unsure if this is still needed
-    if (characterPos < 0 || characterPos >= map.length) {
-        throw new Error("Character out of bounds");
-    }
-
     const tileData = getVisibleTiles(characterPos, viewAreaSize, mapSideLength);
 
     return (
