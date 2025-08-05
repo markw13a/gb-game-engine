@@ -26,21 +26,25 @@ export const VirtualisedTileRenderer = ({
     onMoveComplete
 }: VirtualisedTileRendererProps) => {
     // TODO: Most of this should probably be moved up to Map
-    const { scrollContainerRef, scroll, isScrolling } = useScroll();
+    const { scrollContainerRef, scroll, isScrollingRef } = useScroll();
 
     const mapSideLength = getMapSideLength(map);
 
+    // TODO: Component probably should not be responsible for this
     const move = async (dir: Direction) => {
         const nextTile = getNextTile(characterPos, mapSideLength, dir);
         const isPassable = map[nextTile]?.isPassable;
-
-        if (!isPassable || isScrolling) return;
+        
+        if (!isPassable || isScrollingRef.current) {
+            return;
+        }
 
         onMoveStart(dir);
         await scroll(dir);
         onMoveComplete(dir);
     };
 
+    // TODO: Would like to move this out of this component
     useWhileKeyPressed({ 
         'a': () => move('left'), 
         'd': () => move('right'), 
