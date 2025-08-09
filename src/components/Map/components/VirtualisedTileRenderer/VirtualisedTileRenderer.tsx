@@ -12,7 +12,6 @@ type VirtualisedTileRendererProps = {
     map: Map;
     tileSize?: number;
     viewAreaSize?: number;
-    onMoveStart: (dir: Direction) => void;
     onMoveComplete: (dir: Direction) => void;
 };
 
@@ -22,7 +21,6 @@ export const VirtualisedTileRenderer = ({
     map, 
     tileSize = 50, 
     viewAreaSize = 5,
-    onMoveStart,
     onMoveComplete
 }: VirtualisedTileRendererProps) => {
     // TODO: Most of this should probably be moved up to Map
@@ -31,15 +29,15 @@ export const VirtualisedTileRenderer = ({
     const mapSideLength = getMapSideLength(map);
 
     // TODO: Component probably should not be responsible for this
+    // TODO: Fix bug when calling at frequency higher than 250ms
     const move = async (dir: Direction) => {
         const nextTile = getNextTile(characterPos, mapSideLength, dir);
         const isPassable = map[nextTile]?.isPassable;
-        
+
         if (!isPassable || isScrollingRef.current) {
             return;
         }
 
-        onMoveStart(dir);
         await scroll(dir);
         onMoveComplete(dir);
     };

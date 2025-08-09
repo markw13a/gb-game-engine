@@ -12,7 +12,7 @@ const defaultScrollFunction = (timeElapsed: number) => {
     return TILE_SIZE * TILE_PER_MILISECOND * timeElapsed * MATCH_WITH_GB_CONSTANT;
 }
 
-export const getIsAtMaxScroll = (scrollContainer: HTMLDivElement) => {
+const getIsAtMaxScroll = (scrollContainer: HTMLDivElement) => {
     const scrollLeftMax = (scrollContainer.scrollWidth - scrollContainer.clientWidth) - SUB_PIXEL_SIZE;
     const scrollTopMax = (scrollContainer.scrollHeight - scrollContainer.clientHeight) - SUB_PIXEL_SIZE;
 

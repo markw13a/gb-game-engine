@@ -5,6 +5,7 @@ import { getMapSideLength, getNextTile } from "../../map/symbolicMap";
 import { VirtualisedTileRenderer } from "./components/VirtualisedTileRenderer/VirtualisedTileRenderer";
 
 import styles from './Map.module.css';
+import { useKeyListener } from "../../hooks/useKeyListener/useKeyListener";
 
 type MapProps = {
     map: MapType;
@@ -32,28 +33,38 @@ export const Map = ({ map }: MapProps) => {
 
     const mapSideLength = getMapSideLength(map);
 
-    const onMoveStart = async (dir: Direction) => {
+    const onKeyPressed = (dir: Direction) => {
         setCharacterDirection(dir);
         setIsMoving(true);
     };
 
+    const getKeyConfig = (dir: Direction) => ({
+        onKeyPressed: () => onKeyPressed(dir),
+        onKeyReleased: () => setIsMoving(false)
+    })
+
     const onMoveComplete = (dir: Direction) => {
         setCharacterPos(getNextTile(characterPos, mapSideLength, dir));
-        setIsMoving(false);
     };
+
+    useKeyListener({
+        'w': getKeyConfig('up'),
+        'a': getKeyConfig('left'),
+        's': getKeyConfig('down'),
+        'd': getKeyConfig('right')
+    }, { ignoreRepeat: true })
 
     return (
         <div className={styles.container}>
             <VirtualisedTileRenderer
-                characterPos={characterPos}
                 map={map} 
-                onMoveStart={onMoveStart} 
+                characterPos={characterPos}
                 onMoveComplete={onMoveComplete} 
             />
             <CharacterLayer 
-                direction={characterDirection} 
                 moving={isMoving} 
                 sprites={characterSprites}
+                direction={characterDirection} 
             />
         </div>
     )

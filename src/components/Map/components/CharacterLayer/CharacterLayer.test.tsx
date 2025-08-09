@@ -3,8 +3,18 @@ import { CharacterLayer } from "./CharacterLayer";
 import type { Direction } from "../../../../types/types";
 
 const sprites = {
-    idle: { right: '/right.png', left: '/left.png', up: '/up.png', down: '/down.png' },
-    moving: { right: '', left: '', up: '', down: '' }
+    idle: { 
+        right: '/idle/right.png', 
+        left: '/idle/left.png', 
+        up: '/idle/up.png', 
+        down: '/idle/down.png' 
+    },
+    moving: { 
+        right: '/moving/right.png', 
+        left: '/moving/left.png', 
+        up: '/moving/up.png', 
+        down: '/moving/down.png' 
+    }
 }
 
 describe("<CharacterLayer />", () => {

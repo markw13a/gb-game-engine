@@ -1,19 +1,41 @@
 import { useEffect } from "react";
 
-type KeyMaps = Record<string, () => void>; 
+type KeyMap = {
+    onKeyPressed?: () => void;
+    onKeyReleased?: () => void;
+}
+type KeyMaps = Record<string, KeyMap>; 
 
-export const useKeyListener = (keyMaps: KeyMaps) => {
+type KeyListenerOptions = {
+    ignoreRepeat?: boolean
+}
+
+export const useKeyListener = (keyMaps: KeyMaps, { ignoreRepeat = false }: KeyListenerOptions = {}) => {
     useEffect(() => {
-        const listener = ({ key }: KeyboardEvent) => {
-            const onKeyPress = keyMaps[key];
+        const keydown = ({ key, repeat }: KeyboardEvent) => {
+            const onKeyPress = keyMaps[key]?.onKeyPressed;
 
-            if (onKeyPress) {
+            const ignoreEvent = ignoreRepeat && repeat;
+
+            if (onKeyPress && !ignoreEvent) {
                 onKeyPress();
             }
         };
 
-        document.addEventListener('keydown', listener);
+        const keyup = ({ key }: KeyboardEvent) => {
+            const onKeyReleased = keyMaps[key]?.onKeyReleased;
 
-        return () => document.removeEventListener('keydown', listener);
-    }, [keyMaps]);
+            if (onKeyReleased) {
+                onKeyReleased();
+            }
+        };
+
+        document.addEventListener('keydown', keydown);
+        document.addEventListener('keyup', keyup);
+
+        return () => {
+            document.removeEventListener('keydown', keydown);
+            document.removeEventListener('keyup', keyup);
+        }
+    }, [keyMaps, ignoreRepeat]);
 };

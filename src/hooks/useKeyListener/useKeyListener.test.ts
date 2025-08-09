@@ -5,14 +5,27 @@ import { userEvent } from '@testing-library/user-event';
 
 describe("useKeyListener", () => {
     it('should call callbacks', async () => {
-        const moveLeftMock = vi.fn();
-        const moveRightMock = vi.fn();
-        const moveUpMock = vi.fn();
-    
+        const keyDownLeftMock = vi.fn();
+        const keyDownRightMock = vi.fn();
+        const keyDownUpMock = vi.fn();
+
+        const keyUpLeftMock = vi.fn();
+        const keyUpRightMock = vi.fn();
+        const keyUpUpMock = vi.fn();
+
         const keyMap = { 
-            "a": moveLeftMock, 
-            "d": moveRightMock, 
-            "w": moveUpMock 
+            "a": {
+                onKeyPressed: keyDownLeftMock,
+                onKeyReleased: keyUpLeftMock
+            }, 
+            "d": {
+                onKeyPressed: keyDownRightMock,
+                onKeyReleased: keyUpRightMock
+            }, 
+            "w": {
+                onKeyPressed: keyDownUpMock,
+                onKeyReleased: keyUpUpMock
+            } 
         };
 
         renderHook(() => useKeyListener(keyMap));
@@ -20,8 +33,12 @@ describe("useKeyListener", () => {
         await userEvent.keyboard('a');
         await userEvent.keyboard('d');
 
-        expect(moveLeftMock).toHaveBeenCalled();
-        expect(moveRightMock).toHaveBeenCalled();
-        expect(moveUpMock).not.toHaveBeenCalled();
+        expect(keyDownLeftMock).toHaveBeenCalled();
+        expect(keyDownRightMock).toHaveBeenCalled();
+        expect(keyUpLeftMock).toHaveBeenCalled();
+        expect(keyUpRightMock).toHaveBeenCalled();
+
+        expect(keyDownUpMock).not.toHaveBeenCalled();
+        expect(keyUpUpMock).not.toHaveBeenCalled();
     });
 });

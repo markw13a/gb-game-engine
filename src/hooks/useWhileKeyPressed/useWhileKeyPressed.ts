@@ -2,9 +2,13 @@ import { useEffect, useRef } from "react";
 
 type KeyMap = Record<string, () => void>; 
 
+/**
+ * Continously calls provided function while the provided key is pressed 
+ * @param interval How often callback function is called - recommend not to go below 250ms as this leads to buggy behaviour
+ */
 export const useWhileKeyPressed = (
     keymap: KeyMap,  
-    interval = 100
+    interval = 250
 ) => {
     const keysPressedRef = useRef<string[]>([]);
 
