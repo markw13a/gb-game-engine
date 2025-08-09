@@ -10,6 +10,8 @@ export const useWhileKeyPressed = (
     keymap: KeyMap,  
     interval = 250
 ) => {
+    // TODO: Move away from using object to avoid consuming component having to memoise this?
+    // Behaviour is buggy if keymap not memoised, and there's nothing I can do to prevent it from in here
     const keysPressedRef = useRef<string[]>([]);
 
     useEffect(() => {
