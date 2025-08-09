@@ -4,11 +4,10 @@ type KeyMap = Record<string, () => void>;
 
 /**
  * Continously calls provided function while the provided key is pressed 
- * @param interval How often callback function is called - recommend not to go below 250ms as this leads to buggy behaviour
  */
 export const useWhileKeyPressed = (
     keymap: KeyMap,  
-    interval = 250
+    interval = 100
 ) => {
     // TODO: Move away from using object to avoid consuming component having to memoise this?
     // Behaviour is buggy if keymap not memoised, and there's nothing I can do to prevent it from in here
