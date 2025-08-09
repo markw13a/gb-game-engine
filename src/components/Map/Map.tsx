@@ -34,6 +34,11 @@ export const Map = ({ map }: MapProps) => {
     const mapSideLength = getMapSideLength(map);
 
     const onKeyPressed = (dir: Direction) => {
+        // User must release key before changing move direction!
+        if (isMoving) {
+            return;
+        } 
+
         setCharacterDirection(dir);
         setIsMoving(true);
     };
