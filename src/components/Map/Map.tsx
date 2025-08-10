@@ -27,40 +27,28 @@ const characterSprites: SpriteMap = {
 };
 
 export const Map = ({ map }: MapProps) => {
-    const [characterPos, setCharacterPos] = useState(57);
+    const [characterPos, setCharacterPos] = useState(60);
     const [isMoving, setIsMoving] = useState(false);
     const [characterDirection, setCharacterDirection] = useState<Direction>('down');
 
     const mapSideLength = getMapSideLength(map);
 
-    const onKeyPressed = (dir: Direction) => {
-        // User must release key before changing move direction!
-        if (isMoving) {
-            return;
-        } 
+    const onMoveComplete = (dir: Direction) => setCharacterPos(getNextTile(characterPos, mapSideLength, dir));
 
-        setCharacterDirection(dir);
-        setIsMoving(true);
+    const keyConfig = {
+        onKeyPressed: () => setIsMoving(true),
+        onKeyReleased: () => setIsMoving(false)
     };
 
-    const getKeyConfig = (dir: Direction) => ({
-        onKeyPressed: () => onKeyPressed(dir),
-        onKeyReleased: () => setIsMoving(false)
-    })
-
-    useKeyListener({
-        'w': getKeyConfig('up'),
-        'a': getKeyConfig('left'),
-        's': getKeyConfig('down'),
-        'd': getKeyConfig('right')
-    }, { ignoreRepeat: true })
+    useKeyListener({ 'w': keyConfig, 'a': keyConfig, 's': keyConfig, 'd': keyConfig }, { ignoreRepeat: true })
 
     return (
         <div className={styles.container}>
             <VirtualisedTileRenderer
                 map={map} 
                 characterPos={characterPos}
-                onMoveComplete={(dir) => setCharacterPos(getNextTile(characterPos, mapSideLength, dir))} 
+                onMoveStart={setCharacterDirection}
+                onMoveComplete={onMoveComplete} 
             />
             <CharacterLayer 
                 moving={isMoving} 

@@ -12,6 +12,7 @@ type VirtualisedTileRendererProps = {
     map: Map;
     tileSize?: number;
     viewAreaSize?: number;
+    onMoveStart: (dir: Direction) => void;
     onMoveComplete: (dir: Direction) => void;
 };
 
@@ -21,6 +22,7 @@ export const VirtualisedTileRenderer = ({
     map, 
     tileSize = 50, 
     viewAreaSize = 5,
+    onMoveStart,
     onMoveComplete
 }: VirtualisedTileRendererProps) => {
     // TODO: Most of this should probably be moved up to Map
@@ -38,6 +40,7 @@ export const VirtualisedTileRenderer = ({
             return;
         }
 
+        onMoveStart(dir);
         await scroll(dir);
         onMoveComplete(dir);
     }, [onMoveComplete, characterPos]);
