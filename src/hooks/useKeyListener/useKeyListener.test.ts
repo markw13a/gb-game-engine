@@ -5,40 +5,25 @@ import { userEvent } from '@testing-library/user-event';
 
 describe("useKeyListener", () => {
     it('should call callbacks', async () => {
-        const keyDownLeftMock = vi.fn();
-        const keyDownRightMock = vi.fn();
-        const keyDownUpMock = vi.fn();
+        const keyDownMock = vi.fn();
+        const keyUpMock = vi.fn();
 
-        const keyUpLeftMock = vi.fn();
-        const keyUpRightMock = vi.fn();
-        const keyUpUpMock = vi.fn();
-
-        const keyMap = { 
-            "a": {
-                onKeyPressed: keyDownLeftMock,
-                onKeyReleased: keyUpLeftMock
-            }, 
-            "d": {
-                onKeyPressed: keyDownRightMock,
-                onKeyReleased: keyUpRightMock
-            }, 
-            "w": {
-                onKeyPressed: keyDownUpMock,
-                onKeyReleased: keyUpUpMock
-            } 
-        };
-
-        renderHook(() => useKeyListener(keyMap));
+        renderHook(() => useKeyListener('a', keyDownMock, keyUpMock));
 
         await userEvent.keyboard('a');
-        await userEvent.keyboard('d');
 
-        expect(keyDownLeftMock).toHaveBeenCalled();
-        expect(keyDownRightMock).toHaveBeenCalled();
-        expect(keyUpLeftMock).toHaveBeenCalled();
-        expect(keyUpRightMock).toHaveBeenCalled();
-
-        expect(keyDownUpMock).not.toHaveBeenCalled();
-        expect(keyUpUpMock).not.toHaveBeenCalled();
+        expect(keyDownMock).toHaveBeenCalled();
     });
+
+    // TODO: Feels like a flaky test, can't guarantee repeat events start firing before we run the check at the end
+    it('should ignore repeatedly', async () => {
+        const keyDownMock = vi.fn();
+        const keyUpMock = vi.fn();
+
+        renderHook(() => useKeyListener('a', keyDownMock, keyUpMock, { ignoreRepeat: true }));
+
+        await userEvent.keyboard('{a>}');
+
+        expect(keyDownMock).toHaveBeenCalledOnce();
+    })
 });

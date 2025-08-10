@@ -1,33 +1,30 @@
 import { useEffect } from "react";
 
-type KeyMap = {
-    onKeyPressed?: () => void;
-    onKeyReleased?: () => void;
-}
-type KeyMaps = Record<string, KeyMap>; 
-
 type KeyListenerOptions = {
     ignoreRepeat?: boolean
 }
 
-export const useKeyListener = (keyMaps: KeyMaps, { ignoreRepeat = false }: KeyListenerOptions = {}) => {
+export const useKeyListener = (
+    key: string, 
+    onKeyPress: () => void, 
+    onKeyReleased: () => void, 
+    options: KeyListenerOptions = {}
+) => {
     useEffect(() => {
-        const keydown = ({ key, repeat }: KeyboardEvent) => {
-            const onKeyPress = keyMaps[key]?.onKeyPressed;
+        const keydown = (e: KeyboardEvent) => {
+            const ignoreEvent = (options.ignoreRepeat && e.repeat) || (e.key !== key);
 
-            const ignoreEvent = ignoreRepeat && repeat;
-
-            if (onKeyPress && !ignoreEvent) {
+            if (!ignoreEvent) {
                 onKeyPress();
             }
         };
 
-        const keyup = ({ key }: KeyboardEvent) => {
-            const onKeyReleased = keyMaps[key]?.onKeyReleased;
-
-            if (onKeyReleased) {
-                onKeyReleased();
+        const keyup = (e: KeyboardEvent) => {
+            if (e.key !== key) {
+                return;
             }
+
+            onKeyReleased();
         };
 
         document.addEventListener('keydown', keydown);
@@ -37,5 +34,5 @@ export const useKeyListener = (keyMaps: KeyMaps, { ignoreRepeat = false }: KeyLi
             document.removeEventListener('keydown', keydown);
             document.removeEventListener('keyup', keyup);
         }
-    }, [keyMaps, ignoreRepeat]);
+    }, [key, onKeyPress, onKeyReleased, options]);
 };

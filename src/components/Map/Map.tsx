@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { CharacterLayer } from "./components/CharacterLayer/CharacterLayer";
 import type { Direction, Map as MapType, SpriteMap } from "../../types/types";
 import { getMapSideLength, getNextTile } from "../../map/symbolicMap";
@@ -35,12 +35,14 @@ export const Map = ({ map }: MapProps) => {
 
     const onMoveComplete = (dir: Direction) => setCharacterPos(getNextTile(characterPos, mapSideLength, dir));
 
-    const keyConfig = {
-        onKeyPressed: () => setIsMoving(true),
-        onKeyReleased: () => setIsMoving(false)
-    };
-
-    useKeyListener({ 'w': keyConfig, 'a': keyConfig, 's': keyConfig, 'd': keyConfig }, { ignoreRepeat: true })
+    const onKeyPressed = () => setIsMoving(true);
+    const onKeyReleased = () => setIsMoving(false);
+    const options = useMemo(() => ({ ignoreRepeat: true }), [])
+    
+    useKeyListener('w', onKeyPressed, onKeyReleased, options);
+    useKeyListener('a', onKeyPressed, onKeyReleased, options);
+    useKeyListener('s', onKeyPressed, onKeyReleased, options);
+    useKeyListener('d', onKeyPressed, onKeyReleased, options);
 
     return (
         <div className={styles.container}>
