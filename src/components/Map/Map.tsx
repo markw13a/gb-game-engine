@@ -48,10 +48,6 @@ export const Map = ({ map }: MapProps) => {
         onKeyReleased: () => setIsMoving(false)
     })
 
-    const onMoveComplete = (dir: Direction) => {
-        setCharacterPos(getNextTile(characterPos, mapSideLength, dir));
-    };
-
     useKeyListener({
         'w': getKeyConfig('up'),
         'a': getKeyConfig('left'),
@@ -64,7 +60,7 @@ export const Map = ({ map }: MapProps) => {
             <VirtualisedTileRenderer
                 map={map} 
                 characterPos={characterPos}
-                onMoveComplete={onMoveComplete} 
+                onMoveComplete={(dir) => setCharacterPos(getNextTile(characterPos, mapSideLength, dir))} 
             />
             <CharacterLayer 
                 moving={isMoving} 

@@ -4,10 +4,12 @@ const SUB_PIXEL_SIZE = 0.33;
 
 const defaultScrollFunction = (timeElapsed: number) => {
     const TILE_SIZE = 50;
-    const TILE_PER_SECOND = 1.89;
+    const TILE_PER_SECOND = 4;
     const TILE_PER_MILISECOND = TILE_PER_SECOND / 1000;
 
-    const MATCH_WITH_GB_CONSTANT = 2.6;
+    // Fudge factor to match desired tiles/second with observed scroll behaviour
+    // TODO: Figure out why this is needed!
+    const MATCH_WITH_GB_CONSTANT = 2;
 
     return TILE_SIZE * TILE_PER_MILISECOND * timeElapsed * MATCH_WITH_GB_CONSTANT;
 }
