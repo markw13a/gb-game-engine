@@ -8,8 +8,8 @@ const defaultScrollFunction = (timeElapsed: number) => {
     const TILE_PER_MILISECOND = TILE_PER_SECOND / 1000;
 
     // Fudge factor to match desired tiles/second with observed scroll behaviour
-    // TODO: Figure out why this is needed!
-    const MATCH_WITH_GB_CONSTANT = 2;
+    // Related to interval that scroll function is called with (via useWhileKeyPressed)
+    const MATCH_WITH_GB_CONSTANT = 10;
 
     return TILE_SIZE * TILE_PER_MILISECOND * timeElapsed * MATCH_WITH_GB_CONSTANT;
 }

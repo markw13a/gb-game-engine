@@ -1,12 +1,12 @@
 .container {
     display: grid;
-    grid-template-columns: repeat(5, var(--tile-size));
-    grid-template-rows: repeat(5, var(--tile-size));
+    grid-template-columns: repeat(11, var(--tile-size));
+    grid-template-rows: repeat(11, var(--tile-size));
     grid-auto-flow: column;
     grid-column-gap: 0px;
     grid-row-gap: 0px;
 
-    max-height: calc(var(--tile-size) * 3);
-    max-width: calc(var(--tile-size) * 3);
+    max-height: calc(var(--tile-size) * 9);
+    max-width: calc(var(--tile-size) * 9);
     overflow: hidden;
 }

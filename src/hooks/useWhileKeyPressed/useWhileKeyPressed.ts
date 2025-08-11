@@ -7,7 +7,7 @@ type KeyMap = Record<string, () => void>;
  */
 export const useWhileKeyPressed = (
     keymap: KeyMap,  
-    interval = 100
+    interval = 200
 ) => {
     // TODO: Move away from using object to avoid consuming component having to memoise this?
     // Behaviour is buggy if keymap not memoised, and there's nothing I can do to prevent it from in here
