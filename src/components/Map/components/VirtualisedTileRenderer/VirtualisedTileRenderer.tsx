@@ -2,7 +2,7 @@ import styles from "./VirtualisedTileRenderer.module.css";
 import { Tile } from "../../../Tile/Tile";
 
 import { getMapSideLength, getNextTile, getVisibleTiles } from '../../../../map/symbolicMap';
-import { useCallback, useLayoutEffect, useMemo } from 'react';
+import { useCallback, useLayoutEffect } from 'react';
 import { useScroll } from '../../../../hooks/useScroll';
 import { useWhileKeyPressed } from "../../../../hooks/useWhileKeyPressed/useWhileKeyPressed";
 import type { Map, Direction } from "../../../../types/types";
@@ -45,17 +45,11 @@ export const VirtualisedTileRenderer = ({
         onMoveComplete(dir);
     }, [onMoveComplete, characterPos]);
 
-    // Must be memoise to avoid key listeners being recreated every render
-    // Leads to interesting bug where keyup events is sometimes not detected
-    const keyMap = useMemo(() => ({ 
-        'a': () => move('left'), 
-        'd': () => move('right'), 
-        'w': () => move('up'), 
-        's': () => move('down'),
-     }), [move])
-
     // TODO: Would like to move this out of this component
-    useWhileKeyPressed(keyMap);
+    useWhileKeyPressed('a', () => move('left'), 100);
+    useWhileKeyPressed('d', () => move('right'), 100);
+    useWhileKeyPressed('w', () => move('up'), 100);
+    useWhileKeyPressed('s', () => move('down'), 100);
 
     // Our movement animation is based on rendering additional layers of hidden tiles
     // Around the visible section. When rendering, we need to scroll to the centre of this container

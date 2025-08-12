@@ -1,37 +1,35 @@
 import { useEffect, useRef } from "react";
 
-type KeyMap = Record<string, () => void>; 
-
 /**
  * Continously calls provided function while the provided key is pressed 
  */
 export const useWhileKeyPressed = (
-    keymap: KeyMap,  
+    key: string,
+    callback: () => Promise<void>,
     interval = 200
 ) => {
-    // TODO: Move away from using object to avoid consuming component having to memoise this?
-    // Behaviour is buggy if keymap not memoised, and there's nothing I can do to prevent it from in here
-    const keysPressedRef = useRef<string[]>([]);
+    const isKeyPressed = useRef(false);
+    const callbackRef = useRef(callback);
 
     useEffect(() => {
-        const keyPressed = ({ key, repeat }: KeyboardEvent) => {
-            const isMappedKey = !!keymap[key];
+        callbackRef.current = callback;
+    }, [callback])
 
-            if (!isMappedKey || repeat) {
+    useEffect(() => {
+        const keyPressed = (e: KeyboardEvent) => {
+            if (e.key !== key || e.repeat) {
                 return;
             }
 
-            keysPressedRef.current = [...keysPressedRef.current, key];
+            isKeyPressed.current = true;
         };
         
-        const keyReleased = ({ key }: KeyboardEvent) => {
-            const isMappedKey = !!keymap[key];
-
-            if (!isMappedKey) {
+        const keyReleased = (e: KeyboardEvent) => {
+            if (e.key !== key) {
                 return;
             }
 
-            keysPressedRef.current = keysPressedRef.current.filter(k => k !== key);
+            isKeyPressed.current = false;
         }
 
         document.addEventListener('keydown', keyPressed);
@@ -41,13 +39,27 @@ export const useWhileKeyPressed = (
             document.removeEventListener('keydown', keyPressed);
             document.removeEventListener('keyup', keyReleased);
         }
-    }, [keymap]);
+    }, [key]);
 
     useEffect(() => {
-        const intervalId = setInterval(() => {
-            keysPressedRef.current.forEach(k => keymap[k]())
-        }, interval);
+        let timerId: (null | number) = null;
 
-        return () => clearInterval(intervalId);
-    }, [keymap, interval])
+        const cb = () => {
+            timerId = setTimeout(async () => {
+                if (isKeyPressed.current) {
+                    await callbackRef.current();
+                }
+                
+                cb();
+            }, interval)
+        }
+
+        cb();
+
+        return () => {
+            if (timerId) {
+                clearTimeout(timerId);
+            }
+        }
+    }, [key, interval])
 };

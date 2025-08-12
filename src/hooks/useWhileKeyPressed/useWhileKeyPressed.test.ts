@@ -33,7 +33,7 @@ describe("useWhileKeyPressed", () => {
         const interval = 10;
         const key = 'a';
 
-        renderHook(() => useWhileKeyPressed({ [key]: cb }, interval));
+        renderHook(() => useWhileKeyPressed(key, cb, interval));
 
         // Press and hold
         await user.keyboard(`{${key}>}`);
@@ -47,31 +47,5 @@ describe("useWhileKeyPressed", () => {
         vi.advanceTimersByTime(interval * 2);
 
         expect(cb).toHaveBeenCalledTimes(5);
-    })
-
-    it('should call the correct callback', async () => {
-        const keyA = 'a';
-        const keyB = 'b';
-        
-        const cbA = vi.fn();
-        const cbB = vi.fn();
-
-        const interval = 10;
-
-        renderHook(() => useWhileKeyPressed({ [keyA]: cbA, [keyB]: cbB }, interval));
-
-        await user.keyboard(`{${keyA}>}`);
-        vi.advanceTimersByTime(interval);
-        await user.keyboard(`{/${keyA}}`);
-    
-        expect(cbA).toHaveBeenCalledOnce();
-        expect(cbB).not.toHaveBeenCalled();
-
-        await user.keyboard(`{${keyB}>}`);
-        vi.advanceTimersByTime(interval);
-        await user.keyboard(`{/${keyB}}`);
-
-        expect(cbA).toHaveBeenCalledOnce();
-        expect(cbB).toHaveBeenCalledOnce();
     })
 });
