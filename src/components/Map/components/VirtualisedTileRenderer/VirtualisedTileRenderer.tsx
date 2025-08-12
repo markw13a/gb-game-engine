@@ -53,19 +53,27 @@ export const VirtualisedTileRenderer = ({
 
     // Our movement animation is based on rendering additional layers of hidden tiles
     // Around the visible section. When rendering, we need to scroll to the centre of this container
-    // TODO: Can this be moved to within useScroll or another component? Doesn't feel like this component should be responsible for setting this up
     useLayoutEffect(() => {
         if (scrollContainerRef.current === null) return;
         // Want there to be one unseen tile to the left and right of the visible area
         scrollContainerRef.current.scrollLeft = tileSize;
         scrollContainerRef.current.scrollTop = tileSize;
-    })
+    }, [characterPos])
 
     const tileData = getVisibleTiles(characterPos, viewAreaSize, mapSideLength);
 
     return (
         <div className={styles.container} ref={scrollContainerRef}>
-            {tileData.map((tile, i) => <Tile key={i} color={tile.color} label={`${tile.mapIndex}`} size={tileSize} />)}
+            {
+                tileData.map((tile, i) => 
+                    <Tile 
+                        key={i} 
+                        color={tile.color} 
+                        label={`${tile.mapIndex}`} 
+                        size={tileSize} 
+                    />
+                )
+            }
         </div>
     );
 };
