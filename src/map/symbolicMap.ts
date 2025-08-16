@@ -1,5 +1,6 @@
 // TODO: Code in this file isn't really testable -- functions depend on in-scope values
-import type { Map, MapData, Direction } from "../types/types";
+import type { Map, MapData } from "../types/map";
+import type { Direction } from "../types/sprite";
 import { calculateIndices } from "./utils/calculateIndices/calculateIndices";
 
 const rawMap = 

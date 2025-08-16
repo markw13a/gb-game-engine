@@ -1,4 +1,4 @@
-import type { Map } from "../../types/types";
+import type { Map } from "../../types/map";
 import styles from "./mapDebugger.module.css";
 
 type MapDebuggerProps = {

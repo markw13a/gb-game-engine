@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { CharacterLayer } from "./CharacterLayer";
-import type { Direction } from "../../../../types/types";
+import type { Direction } from "../../../../types/sprite";
 
 const sprites = {
     idle: { 

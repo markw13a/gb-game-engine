@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import type { Direction, SpriteMap } from "../../../../types/types";
 
 import styles from "./CharacterLayer.module.css";
 import { preload } from "react-dom";
+import type { Direction, SpriteMap } from "../../../../types/sprite";
 
 type CharacterLayerProps = {
     direction: Direction;

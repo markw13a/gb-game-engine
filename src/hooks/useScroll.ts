@@ -1,6 +1,6 @@
 import { useCallback, useRef, useState } from "react";
 import { scrollToEnd } from "../map/utils/scrollToEnd/scrollToEnd";
-import type { Direction } from "../types/types";
+import type { Direction } from "../types/sprite";
 
 export const useScroll = () => {
     const [isScrolling, setIsScrolling] = useState(false);

@@ -1,0 +1,25 @@
+.container {
+    & .map {
+        display: grid;
+        grid-auto-flow: column;
+        grid-column-gap: 0px;
+        grid-row-gap: 0px;
+    }
+
+    & .tileSelector {
+
+    }
+}
+
+.footer {
+
+}
+
+.tile {
+    display: flex;
+}
+
+.emptyTile {
+    border: 1px red dashed;
+    border-radius: 2px;
+}

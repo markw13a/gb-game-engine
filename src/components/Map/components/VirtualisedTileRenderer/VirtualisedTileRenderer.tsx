@@ -5,7 +5,8 @@ import { getMapSideLength, getNextTile, getVisibleTiles } from '../../../../map/
 import { useCallback, useLayoutEffect } from 'react';
 import { useScroll } from '../../../../hooks/useScroll';
 import { useWhileKeyPressed } from "../../../../hooks/useWhileKeyPressed/useWhileKeyPressed";
-import type { Map, Direction } from "../../../../types/types";
+import type { Map } from "../../../../types/map";
+import type { Direction } from "../../../../types/sprite";
 
 type VirtualisedTileRendererProps = {
     characterPos: number;

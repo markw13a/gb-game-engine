@@ -1,3 +1,6 @@
+// TODO: Update these functions to allow for even-sized grids
+// Simply treat character position as being 1 tile left of centre
+
 /**
  * Returns an array of numbers from -max to max
  * Example output:

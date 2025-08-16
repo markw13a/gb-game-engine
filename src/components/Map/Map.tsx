@@ -1,11 +1,12 @@
 import { useMemo, useState } from "react";
 import { CharacterLayer } from "./components/CharacterLayer/CharacterLayer";
-import type { Direction, Map as MapType, SpriteMap } from "../../types/types";
+import type { Map as MapType } from "../../types/map";
 import { getMapSideLength, getNextTile } from "../../map/symbolicMap";
 import { VirtualisedTileRenderer } from "./components/VirtualisedTileRenderer/VirtualisedTileRenderer";
 
 import styles from './Map.module.css';
 import { useKeyListener } from "../../hooks/useKeyListener/useKeyListener";
+import type { Direction, SpriteMap } from "../../types/sprite";
 
 type MapProps = {
     map: MapType;
