@@ -8,5 +8,20 @@
   --background-layer-z-index: 1;
   --character-layer-z-index: 10;
 
+  --spacing-1: 2px;
+  --spacing-2: 4px;
+  --spacing-3: 8px;
+  --spacing-4: 16px;
+
+  --font-size-small: 10px;
+  --font-size-medium: 14px;
+  --font-size-large: 18px;
+
+  --radius: 4px;
+
   font-family: 'Pixelated';
+}
+
+* {
+  box-sizing: border-box;
 }

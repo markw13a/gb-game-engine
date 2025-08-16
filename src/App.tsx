@@ -26,7 +26,7 @@ function App() {
       {/* <Map map={map} /> */}
       {/* <MapDebugger map={map} /> */}
       <MapEditor 
-        availableTiles={availableTiles}
+        tileOptions={availableTiles}
         tileSize='32px'
         getTileSymbol={(tile) => tile.type === 'grass' ? 'g' : 'G' }
         getTileLabel={(tile) => tile.label}

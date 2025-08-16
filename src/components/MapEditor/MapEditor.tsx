@@ -1,29 +1,30 @@
 import { useEffect, useState } from "react";
 import styles from './MapEditor.module.css';
+import { Menu } from "./components/Menu/Menu";
 
 type MapEditorProps<T> = {
     tileSize: string;
-    availableTiles: T[];
+    tileOptions: T[];
     getTileSymbol: (tile: T) => string;
     getTileLabel: (tile: T) => string;
     getTileImgSrc: (tile: T) => string;
 }
 
-export const MapEditor = <T,>({ tileSize, availableTiles, getTileSymbol, getTileLabel, getTileImgSrc }: MapEditorProps<T>) => {
+export const MapEditor = <T,>({ tileSize, tileOptions, getTileSymbol, getTileLabel, getTileImgSrc }: MapEditorProps<T>) => {
     const [width, setWidth] = useState(0);
     const [height, setHeight] = useState(0);
     const [output, setOutput] = useState<T[]>([]);
 
-    const [selectedTileBrush, setSelectedTileBrush] = useState<T>();
+    const [brush, setBrush] = useState<T>();
 
     const onTileClick = (index: number) => {
-        if (!selectedTileBrush) {
+        if (!brush) {
             return;
         }
 
         // TODO: Could perform very poorly for a large array
         const nextOutput = [...output];
-        nextOutput[index] = selectedTileBrush;
+        nextOutput[index] = brush;
 
         setOutput(nextOutput);
     }
@@ -46,8 +47,8 @@ export const MapEditor = <T,>({ tileSize, availableTiles, getTileSymbol, getTile
     // If no img or whatever available for the select tile, display an empty tile placeholder
     // Click on the tile updates it to match whatever the selected 'brush' is
     return (
-        <div>
-            <div className={styles.container}>
+        <div className={styles.container}>
+            <div>
                 <div 
                     className={styles.map} 
                     style={{ 
@@ -63,30 +64,19 @@ export const MapEditor = <T,>({ tileSize, availableTiles, getTileSymbol, getTile
                         </div>
                     ))}
                 </div>
-                <div className={styles.tileSelector}>
-                    <div>
-                        Selected: {selectedTileBrush ? getTileLabel(selectedTileBrush) : 'None'} 
-                    </div>
-                    {availableTiles.map(tile => (
-                        <button aria-label={`Select ${getTileLabel(tile)} brush`} onClick={() => setSelectedTileBrush(tile)}>
-                            <img alt={getTileLabel(tile)} src={getTileImgSrc(tile)} />
-                        </button>
-                    ))}
-                </div>
             </div>
-            <div className={styles.footer}>
-                <div className={styles.footerControls}>
-                    <label>
-                        Width <input type="number" onChange={e => setWidth(parseInt(e.target.value))} value={width} />
-                    </label>
-                    <label>
-                        Height <input type="number" onChange={e => setHeight(parseInt(e.target.value))} value={height} />
-                    </label>
-                </div>
-                {/* <div>
-                    <textarea readOnly value={output.reduce((out, tile) => out + getTileSymbol(tile), '')} />
-                </div> */}
-            </div>
+            <Menu 
+                width={width}
+                height={height}
+                onWidthChange={setWidth}
+                onHeightChange={setHeight}
+                tileOptions={tileOptions}
+                brush={brush}
+                onBrushChange={setBrush}
+                getTileLabel={getTileLabel}
+                getTileImgSrc={getTileImgSrc}
+                getTileSymbol={getTileSymbol}
+            />
         </div>
     );
 }
