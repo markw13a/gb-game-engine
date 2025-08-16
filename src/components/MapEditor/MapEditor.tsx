@@ -48,7 +48,7 @@ export const MapEditor = <T,>({ tileSize, tileOptions, getTileSymbol, getTileLab
     // Click on the tile updates it to match whatever the selected 'brush' is
     return (
         <div className={styles.container}>
-            <div>
+            <div className={styles.mapContainer}>
                 <div 
                     className={styles.map} 
                     style={{ 
