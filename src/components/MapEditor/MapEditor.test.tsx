@@ -5,10 +5,10 @@ import type { Tile } from "../../types/tiles";
 
 const defaultProps = {
     tileSize: '16px',
-    getTileSymbol: (tile: Tile) => '',
+    getTileSymbol: (tile: Tile | undefined) => tile ? 'G' : '',
     getTileLabel: (tile: Tile) => tile.type,
     getTileImgSrc: (tile: Tile) => tile.sprite,
-    availableTiles: [
+    tileOptions: [
         { 
             type: 'grass', 
             sprite: '/sprites/grass', 
@@ -26,8 +26,8 @@ describe('<MapEditor />', () => {
     it('should set width and height', async () => {
         render(<MapEditor {...defaultProps} />);
 
-        const widthElement = screen.getByLabelText('Width');
-        const heightElement = screen.getByLabelText('Height');
+        const widthElement = screen.getByLabelText('Width (tiles)');
+        const heightElement = screen.getByLabelText('Height (tiles)');
 
         expect(widthElement).toHaveValue(0);
         expect(heightElement).toHaveValue(0);
@@ -53,8 +53,8 @@ describe('<MapEditor />', () => {
     it('should paint a tile', async () => {
         render(<MapEditor {...defaultProps} />);
 
-        await userEvent.type(screen.getByLabelText('Width'), '1');
-        await userEvent.type(screen.getByLabelText('Height'), '1');
+        await userEvent.type(screen.getByLabelText('Width (tiles)'), '1');
+        await userEvent.type(screen.getByLabelText('Height (tiles)'), '1');
 
         expect(screen.getByLabelText('Empty tile')).toBeInTheDocument();
 
@@ -62,7 +62,6 @@ describe('<MapEditor />', () => {
         await userEvent.click(screen.getAllByLabelText('Empty tile')[0]);
 
         expect(screen.getByLabelText('grass tile')).toBeInTheDocument();
+        expect(screen.getByLabelText('Output')).toHaveValue('G');
     })
-
-    it('should display map string', async () => {})
 })

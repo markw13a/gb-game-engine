@@ -28,7 +28,11 @@ function App() {
       <MapEditor 
         tileOptions={availableTiles}
         tileSize='32px'
-        getTileSymbol={(tile) => tile.type === 'grass' ? 'g' : 'G' }
+        getTileSymbol={(tile) => {
+          if (!tile) return '-';
+
+          return tile.type === 'grass' ? 'g' : 'G'
+         }}
         getTileLabel={(tile) => tile.label}
         getTileImgSrc={(tile) => tile.sprite}
       />

@@ -5,7 +5,7 @@ import { Menu } from "./components/Menu/Menu";
 type MapEditorProps<T> = {
     tileSize: string;
     tileOptions: T[];
-    getTileSymbol: (tile: T) => string;
+    getTileSymbol: (tile: T | undefined) => string;
     getTileLabel: (tile: T) => string;
     getTileImgSrc: (tile: T) => string;
 }
@@ -42,6 +42,8 @@ export const MapEditor = <T,>({ tileSize, tileOptions, getTileSymbol, getTileLab
         setOutput(blankMap);
     }, [width, height])
 
+    const result = output.reduce((str, tile) => str + getTileSymbol(tile), '');
+
     // TODO: Can/should we repurpose map for rendering tiles here? Not sure, think this is potentially very simple
     // Render width x height number of tiles, set grid properties accordingly
     // If no img or whatever available for the select tile, display an empty tile placeholder
@@ -72,10 +74,10 @@ export const MapEditor = <T,>({ tileSize, tileOptions, getTileSymbol, getTileLab
                 onHeightChange={setHeight}
                 tileOptions={tileOptions}
                 brush={brush}
+                output={result}
                 onBrushChange={setBrush}
-                getTileLabel={getTileLabel}
-                getTileImgSrc={getTileImgSrc}
-                getTileSymbol={getTileSymbol}
+                getTileLabel={(t) => t ? getTileLabel(t) : ''}
+                getTileImgSrc={(t) => t ? getTileImgSrc(t) : ''}
             />
         </div>
     );

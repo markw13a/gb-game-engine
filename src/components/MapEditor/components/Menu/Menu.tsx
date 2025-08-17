@@ -7,10 +7,11 @@ type MenuProps<T> = {
     onHeightChange: (height: number) => void;
     tileOptions: T[];
     brush: T;
+    output: string;
     onBrushChange: (brush: T) => void;
     getTileLabel: (tile: T) => string;
     getTileImgSrc: (tile: T) => string;
-    getTileSymbol: (tile: T) => string;
+    // getTileSymbol: (tile: T) => string;
 }
 
 export const Menu = <T, >({
@@ -20,10 +21,10 @@ export const Menu = <T, >({
     onHeightChange,
     tileOptions,
     brush,
+    output,
     onBrushChange,
     getTileLabel,
     getTileImgSrc,
-    getTileSymbol
 }: MenuProps<T>) => {
     return (
         <div className={styles.container}>
@@ -46,6 +47,12 @@ export const Menu = <T, >({
                 </label>
                 <label className={styles.control}>
                     Height (tiles) <input type="number" onChange={e => onHeightChange(parseInt(e.target.value))} value={height} />
+                </label>
+            </div>
+            <div className={styles.outputContainer}>
+                <label className={styles.control}>
+                    Output
+                    <textarea readOnly value={output} />
                 </label>
             </div>
         </div>
