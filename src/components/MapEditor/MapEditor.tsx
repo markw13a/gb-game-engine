@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import styles from './MapEditor.module.css';
 import { Menu } from "./components/Menu/Menu";
+import { Map } from "./components/Map/Map";
 
 type MapEditorProps<T> = {
     tileSize: string;
@@ -50,23 +51,15 @@ export const MapEditor = <T,>({ tileSize, tileOptions, getTileSymbol, getTileLab
     // Click on the tile updates it to match whatever the selected 'brush' is
     return (
         <div className={styles.container}>
-            <div className={styles.mapContainer}>
-                <div 
-                    className={styles.map} 
-                    style={{ 
-                        gridTemplateColumns: `repeat(${width}, ${tileSize})`, 
-                        gridTemplateRows: `repeat(${height}, ${tileSize})`
-                    }}
-                >
-                    {output.map((tile, index) => tile === null ? (
-                        <div aria-label="Empty tile" className={styles.emptyTile} style={{ width: tileSize, height: tileSize }} onClick={() => onTileClick(index)} key={index} /> 
-                    ) : (
-                        <div aria-label={`${getTileLabel(tile)} tile`} className={styles.tile} style={{ width: tileSize, height: tileSize }} onClick={() => onTileClick(index)} key={index}>
-                            <img src={getTileImgSrc(tile)} style={{ width: '100%', height: '100%' }} />
-                        </div>
-                    ))}
-                </div>
-            </div>
+            <Map
+                width={width}
+                height={height}
+                tileSize={tileSize}
+                tiles={output}
+                getTileLabel={getTileLabel}
+                getTileImgSrc={getTileImgSrc}
+                onClickTile={(i) => onTileClick(i)}
+            />
             <Menu 
                 width={width}
                 height={height}

@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { CharacterLayer } from "./components/CharacterLayer/CharacterLayer";
 import type { Map as MapType } from "../../types/map";
-import { getMapSideLength, getNextTile } from "../../map/symbolicMap";
+import { getMapSideLength, getNextTile } from "../../utils/symbolicMap/symbolicMap";
 import { VirtualisedTileRenderer } from "./components/VirtualisedTileRenderer/VirtualisedTileRenderer";
 
 import styles from './Map.module.css';
@@ -28,7 +28,7 @@ const characterSprites: SpriteMap = {
 };
 
 export const Map = ({ map }: MapProps) => {
-    const [characterPos, setCharacterPos] = useState(741);
+    const [characterPos, setCharacterPos] = useState(16);
     const [isMoving, setIsMoving] = useState(false);
     const [characterDirection, setCharacterDirection] = useState<Direction>('down');
 
@@ -54,7 +54,7 @@ export const Map = ({ map }: MapProps) => {
                 characterPos={characterPos}
                 onMoveStart={setCharacterDirection}
                 onMoveComplete={onMoveComplete} 
-                viewAreaSize={11}
+                viewAreaSize={5}
             />
             <CharacterLayer 
                 moving={isMoving} 

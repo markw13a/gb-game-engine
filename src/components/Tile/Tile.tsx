@@ -1,13 +1,14 @@
+import styles from './Tile.module.css';
+
 type TileProps = {
-    color: string;
-    label: string;
+    sprite: string;
     size: number;
 };
 
-export const Tile = ({ color, label, size }: TileProps) => {
+export const Tile = ({ sprite, size }: TileProps) => {
     return (
-        <div style={{ backgroundColor: color, width: size, height: size }}>
-            {label}
+        <div className={styles.container} style={{ width: size, height: size }}>
+            <img className={styles.img} src={sprite} />
         </div>
     );
 };

@@ -1,7 +1,7 @@
 import styles from "./VirtualisedTileRenderer.module.css";
 import { Tile } from "../../../Tile/Tile";
 
-import { getMapSideLength, getNextTile, getVisibleTiles } from '../../../../map/symbolicMap';
+import { getMapSideLength, getNextTile, getVisibleTiles } from '../../../../utils/symbolicMap/symbolicMap';
 import { useCallback, useLayoutEffect } from 'react';
 import { useScroll } from '../../../../hooks/useScroll';
 import { useWhileKeyPressed } from "../../../../hooks/useWhileKeyPressed/useWhileKeyPressed";
@@ -64,15 +64,19 @@ export const VirtualisedTileRenderer = ({
     const tileData = getVisibleTiles(characterPos, viewAreaSize, mapSideLength);
 
     return (
-        <div className={styles.container} ref={scrollContainerRef}>
+        <div 
+            className={styles.container} 
+            style={{ 
+                gridTemplateColumns: `repeat(${viewAreaSize}, ${tileSize}px)`, 
+                gridTemplateRows: `repeat(${viewAreaSize}, ${tileSize}px)`, 
+                maxHeight: `${tileSize * (viewAreaSize - 2)}px`,
+                maxWidth: `${tileSize * (viewAreaSize - 2)}px`
+            }} 
+            ref={scrollContainerRef}
+        >
             {
                 tileData.map((tile, i) => 
-                    <Tile 
-                        key={i} 
-                        color={tile.color} 
-                        label={`${tile.mapIndex}`} 
-                        size={tileSize} 
-                    />
+                    <Tile key={i} sprite={tile.sprite} size={tileSize} />
                 )
             }
         </div>

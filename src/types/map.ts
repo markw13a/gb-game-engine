@@ -1,8 +1,11 @@
-export type MapData = {
-    type: 'boundary' | 'grassland';
+export type Tile = {
+    type: Symbol;
+    label: string;
+    sprite: string;
     isPassable: boolean;
-    color: string;
-    mapIndex: number; // Reference to tile position within rawMap
+    // mapIndex: number; // Reference to tile position within rawMap
 }
 
-export type Map = MapData[];
+export type Map = Tile[];
+
+export type Symbol = 'G' | 'g' | 'p' | 'B' | 'b' | 'N' | 'n' | 'd' | 'R' | 'r';
