@@ -1,12 +1,15 @@
 .container {
     display: flex;
     width: 100%;
-    height: 100%;
+    height: 100vh;
 }
 
 .mapContainer {
     flex-grow: 1;
-    overflow: scroll;
+    padding: var(--spacing-4);
+    background-color: #d2d2d2;
+
+    overflow: hidden;
 }
 
 .map {
@@ -15,8 +18,13 @@
     grid-column-gap: 0px;
     grid-row-gap: 0px;
 
+    overflow: scroll;
+
+    background-color: #fff;
+
     width: 100%;
     height: 100%;
+    border-radius: var(--radius);
 }
 
 .tile {

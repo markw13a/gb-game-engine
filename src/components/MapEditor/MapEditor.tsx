@@ -57,9 +57,9 @@ export const MapEditor = <T,>({ tileSize, tileOptions, getTileSymbol, getTileLab
                     }}
                 >
                     {output.map((tile, index) => tile === null ? (
-                        <div aria-label="Empty tile" className={styles.emptyTile} style={{ width: tileSize, height: tileSize }} onClick={() => onTileClick(index)} /> 
+                        <div aria-label="Empty tile" className={styles.emptyTile} style={{ width: tileSize, height: tileSize }} onClick={() => onTileClick(index)} key={index} /> 
                     ) : (
-                        <div aria-label={`${getTileLabel(tile)} tile`} className={styles.tile} style={{ width: tileSize, height: tileSize }} onClick={() => onTileClick(index)}>
+                        <div aria-label={`${getTileLabel(tile)} tile`} className={styles.tile} style={{ width: tileSize, height: tileSize }} onClick={() => onTileClick(index)} key={index}>
                             <img src={getTileImgSrc(tile)} style={{ width: '100%', height: '100%' }} />
                         </div>
                     ))}

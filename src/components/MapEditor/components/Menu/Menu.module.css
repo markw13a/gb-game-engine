@@ -10,7 +10,6 @@
 
     padding: var(--spacing-3);
     background-color: #eee;
-    border-radius: var(--radius);
 }
 
 .header {
