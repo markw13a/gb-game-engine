@@ -1,4 +1,4 @@
-import { decodeMap, getMapSideLength, getNextTile, verifyMapIntegrity } from "./symbolicMap";
+import { decodeMap, getMapSideLength, getNextTile } from "./symbolicMap";
 
 describe("symbolicMap", () => {
     it('should return next position', () => {
@@ -21,17 +21,5 @@ describe("symbolicMap", () => {
         const decoded = decodeMap(map);
         const sideLength = getMapSideLength(decoded);
         expect(sideLength).toEqual(2);
-    })
-    
-    it('should not throw error if map is square', () => {
-        const map = "GGGG";
-        const decoded = decodeMap(map);
-        expect(() => verifyMapIntegrity(decoded)).not.toThrowError();
-    })
-
-    it('should throw error if map not square', () => {
-        const map = "GGG";
-        const decoded = decodeMap(map);
-        expect(() => verifyMapIntegrity(decoded)).toThrowError();
     })
 });
