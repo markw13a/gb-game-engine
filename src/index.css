@@ -7,6 +7,7 @@
   --tile-size: 50px;
   --background-layer-z-index: 1;
   --character-layer-z-index: 10;
+  --modal-z-index: 10000;
 
   --spacing-1: 2px;
   --spacing-2: 4px;
