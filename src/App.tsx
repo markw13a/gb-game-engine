@@ -1,6 +1,6 @@
 import './App.css'
-import { Map } from './components/Map/Map'
-import { MapEditor } from './components/MapEditor/MapEditor'
+// import { Map } from './components/Map/Map'
+import { MapEditor } from './pages/MapEditor/MapEditor'
 import { TILE_DATA } from './constants/symbols';
 import { map } from './utils/symbolicMap/symbolicMap'
 // import { MapDebugger } from './components/MapDebugger/MapDebugger'
@@ -11,9 +11,9 @@ import { map } from './utils/symbolicMap/symbolicMap'
 function App() {
   return (
     <>
-      <Map map={map} />
+      {/* <Map map={map} /> */}
       {/* <MapDebugger map={map} /> */}
-      {/* <MapEditor 
+      <MapEditor 
         tileOptions={TILE_DATA}
         tileSize='32px'
         getTileSymbol={(tile) => {
@@ -23,7 +23,7 @@ function App() {
          }}
         getTileLabel={(tile) => tile.label}
         getTileImgSrc={(tile) => tile.sprite}
-      /> */}
+      />
     </>
   )
 }

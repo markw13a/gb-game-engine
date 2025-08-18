@@ -29,6 +29,10 @@
     /* Needed for typing imported JSON file - may remove later */
     "resolveJsonModule": true,
     "esModuleInterop": true,
+
+    "paths": {
+      "@/*":["./src/*"],
+    }
   },
   "include": ["src"]
 }
