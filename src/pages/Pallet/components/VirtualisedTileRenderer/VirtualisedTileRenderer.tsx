@@ -1,5 +1,5 @@
 import styles from "./VirtualisedTileRenderer.module.css";
-import { Tile } from "../../../Tile/Tile";
+import { Tile } from "../Tile/Tile";
 
 import {
 	getMapSideLength,

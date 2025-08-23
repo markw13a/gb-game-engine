@@ -1,8 +1,0 @@
-/* Move to separate component or jetison this entirely */
-/* See if there's a way to provide a variable rather than doing the grid-template stuff in inline styling */
-.debugContainer {
-	display: grid;
-	grid-auto-flow: column;
-	grid-column-gap: 0px;
-	grid-row-gap: 0px;
-}
