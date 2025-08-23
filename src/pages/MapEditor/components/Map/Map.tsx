@@ -4,7 +4,7 @@ type MapProps<T> = {
 	width: number;
 	height: number;
 	tileSize: string;
-	tiles: T[];
+	tiles: (T | null)[];
 	getTileLabel: (tile: T) => string;
 	getTileImgSrc: (tile: T) => string;
 	onClickTile: (i: number) => void;

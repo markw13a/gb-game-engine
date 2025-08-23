@@ -3,6 +3,7 @@ import styles from "./Menu.module.css";
 import { Button } from "@/components/Button/Button";
 import { ImportMapModal } from "../ImportMapModal/ImportMapModal";
 import { Input } from "@/components/Input/Input";
+import { EMPTY_TILE_SYMBOL } from "../../constants/constants";
 
 type MenuProps<T> = {
 	width: number;
@@ -36,12 +37,13 @@ export const Menu = <T,>({
 	const [isImportModalOpen, setIsImportModalOpen] = useState(false);
 
 	const onImport = (width: number, height: number, mapString: string) => {
-		const nextOutput = mapString.split("").map(getTileFromSymbol);
+		const nextOutput = mapString.split("").map((symbol) => {
+			if (symbol === EMPTY_TILE_SYMBOL) {
+				return null;
+			}
 
-		// TODO: Appropriate errors in the modal...
-		if (nextOutput.includes(undefined)) {
-			return;
-		}
+			return getTileFromSymbol(symbol);
+		});
 
 		onWidthChange(width);
 		onHeightChange(height);

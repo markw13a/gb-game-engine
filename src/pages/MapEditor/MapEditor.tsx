@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import styles from "./MapEditor.module.css";
 import { Menu } from "./components/Menu/Menu";
 import { Map } from "./components/Map/Map";
+import { EMPTY_TILE_SYMBOL } from "./constants/constants";
 
 type MapEditorProps<T> = {
 	tileSize: string;
 	tileOptions: T[];
-	getTileSymbol: (tile: T | undefined) => string;
+	getTileSymbol: (tile: T) => string;
 	getTileFromSymbol: (symbol: string) => T | undefined;
 	getTileLabel: (tile: T) => string;
 	getTileImgSrc: (tile: T) => string;
@@ -22,7 +23,7 @@ export const MapEditor = <T,>({
 }: MapEditorProps<T>) => {
 	const [width, setWidth] = useState(0);
 	const [height, setHeight] = useState(0);
-	const [output, setOutput] = useState<T[]>([]);
+	const [output, setOutput] = useState<(T | null)[]>([]);
 
 	const [brush, setBrush] = useState<T>();
 
@@ -51,6 +52,14 @@ export const MapEditor = <T,>({
 		setOutput(blankMap);
 	}, [width, height]);
 
+	const mapString = output.reduce((str, tile) => {
+		if (tile === null) {
+			return EMPTY_TILE_SYMBOL;
+		}
+
+		return str + getTileSymbol(tile);
+	}, "");
+
 	// TODO: Can/should we repurpose map for rendering tiles here? Not sure, think this is potentially very simple
 	// Render width x height number of tiles, set grid properties accordingly
 	// If no img or whatever available for the select tile, display an empty tile placeholder
@@ -74,7 +83,7 @@ export const MapEditor = <T,>({
 				onOutputChange={setOutput}
 				tileOptions={tileOptions}
 				brush={brush}
-				mapString={output.reduce((str, tile) => str + getTileSymbol(tile), "")}
+				mapString={mapString}
 				onBrushChange={setBrush}
 				getBrushLabel={(t) => (t ? getTileLabel(t) : "")}
 				getBrushImgSrc={(t) => (t ? getTileImgSrc(t) : "")}
