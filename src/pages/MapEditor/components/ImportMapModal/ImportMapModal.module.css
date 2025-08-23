@@ -1,0 +1,24 @@
+.container {
+    display: flex;
+    gap: var(--spacing-4);
+    flex-direction: column;
+    justify-content: space-between;
+
+    padding: var(--spacing-4);
+}
+
+.contents {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+}
+
+.controlLabel {
+    font-size: var(--font-size-small);
+}
+
+.footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-2);
+}

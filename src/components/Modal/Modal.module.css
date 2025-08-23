@@ -18,18 +18,15 @@
     gap: var(--spacing-2);
 
     background-color: #fff;
-    border: var(--radius);
+    border-radius: var(--radius);
 
     padding: var(--spacing-3);
+
+    position: absolute;
+    top: 10%;
 }
 
 .body {
     display: flex;
     flex: 1;
-}
-
-.footer {
-    display: flex;
-    justify-content: flex-end;
-    width: 100%;
 }

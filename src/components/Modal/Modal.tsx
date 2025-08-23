@@ -4,10 +4,10 @@ import styles from './Modal.module.css';
 
 type ModalProps = {
     isOpen: boolean;
-    onClose: () => void;
 }
 
-export const Modal = ({ isOpen, onClose, children }: PropsWithChildren<ModalProps>) => {
+// TODO: Keyboard controls
+export const Modal = ({ isOpen, children }: PropsWithChildren<ModalProps>) => {
     if (!isOpen) {
         return null;
     }
@@ -17,11 +17,6 @@ export const Modal = ({ isOpen, onClose, children }: PropsWithChildren<ModalProp
             <div className={styles.modal}>
                 <div className={styles.body}>
                     {children}
-                </div>
-                <div className={styles.footer}>
-                    <button type="button" onClick={onClose}>
-                        Close
-                    </button>
                 </div>
             </div>
         </dialog>

@@ -1,10 +1,12 @@
 import type { PropsWithChildren, InputHTMLAttributes } from "react";
 
+import styles from './Input.module.css';
+
 export const Input = ({ children, onChange, value }: PropsWithChildren<InputHTMLAttributes<HTMLInputElement>>) => {
     return (
-        <label>
+        <label className={styles.container}>
             {children}
-            <input onChange={onChange} value={value} />
+            <input className={styles.input} onChange={onChange} value={value} />
         </label>
     );
 }
