@@ -60,11 +60,6 @@
     gap: var(--spacing-1);
 
     font-size: var(--font-size-small);
-    
-    & input {
-        border: none;
-        border-radius: var(--radius);
-    }
 }
 
 .outputContainer {

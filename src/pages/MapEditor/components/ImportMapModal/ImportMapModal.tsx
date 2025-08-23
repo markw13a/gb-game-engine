@@ -26,13 +26,13 @@ export const ImportMapModal = ({ onImport, onClose, ...props }: ImportMapModalPr
             <div className={styles.container}>
                 <div className={styles.contents}>
                     <Input onChange={(e) => setWidth(parseInt(e.target.value))} type="number" value={width}>
-                        <span className={styles.controlLabel}>Width (tiles)</span>
+                        Width (tiles)
                     </Input>
                     <Input onChange={(e) => setHeight(parseInt(e.target.value))} type="number" value={height}>
-                        <span className={styles.controlLabel}>Height (tiles)</span>
+                        Height (tiles)
                     </Input>
                     <Input onChange={(e) => setInput(e.target.value)} value={input}>
-                        <span className={styles.controlLabel}>Map string</span>
+                        Map string
                     </Input>
                 </div>
                 <div className={styles.footer}>

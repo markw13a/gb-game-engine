@@ -2,6 +2,7 @@ import { useState } from 'react';
 import styles from './Menu.module.css';
 import { Button } from '@/components/Button/Button';
 import { ImportMapModal } from '../ImportMapModal/ImportMapModal';
+import { Input } from '@/components/Input/Input';
 
 type MenuProps<T> = {
     width: number;
@@ -11,7 +12,7 @@ type MenuProps<T> = {
     onOutputChange: (tiles: T[]) => void;
     tileOptions: T[];
     brush: T | undefined;
-    output: string;
+    mapString: string;
     onBrushChange: (brush: T) => void;
     getBrushLabel: (tile: T) => string;
     getBrushImgSrc: (tile: T) => string;
@@ -26,7 +27,7 @@ export const Menu = <T, >({
     onOutputChange,
     tileOptions,
     brush,
-    output,
+    mapString,
     onBrushChange,
     getBrushLabel,
     getBrushImgSrc,
@@ -48,6 +49,11 @@ export const Menu = <T, >({
         onOutputChange(nextOutput);
     };
 
+    const output = JSON.stringify({
+        dimensions: { width, height },
+        map: mapString
+    });
+
     return (
         <>
             <div className={styles.container}>
@@ -65,12 +71,12 @@ export const Menu = <T, >({
                     </div>
                 </div>
                 <div className={styles.controls}>
-                    <label className={styles.control}>
-                        Width (tiles) <input type="number" onChange={e => onWidthChange(parseInt(e.target.value))} value={width} />
-                    </label>
-                    <label className={styles.control}>
-                        Height (tiles) <input type="number" onChange={e => onHeightChange(parseInt(e.target.value))} value={height} />
-                    </label>
+                    <Input type="number" onChange={e => onWidthChange(parseInt(e.target.value))} value={width}>                        
+                        Width (tiles)
+                    </Input>
+                    <Input type="number" onChange={e => onHeightChange(parseInt(e.target.value))} value={height}>
+                        Height (tiles)
+                    </Input>
                 </div>
                 <div className={styles.outputContainer}>
                     <label className={styles.control}>

@@ -67,7 +67,7 @@ export const MapEditor = <T,>({ tileSize, tileOptions, getTileSymbol, getTileLab
                 onOutputChange={setOutput}
                 tileOptions={tileOptions}
                 brush={brush}
-                output={output.reduce((str, tile) => str + getTileSymbol(tile), '')}
+                mapString={output.reduce((str, tile) => str + getTileSymbol(tile), '')}
                 onBrushChange={setBrush}
                 getBrushLabel={(t) => t ? getTileLabel(t) : ''}
                 getBrushImgSrc={(t) => t ? getTileImgSrc(t) : ''}
