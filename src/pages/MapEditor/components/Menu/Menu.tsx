@@ -52,7 +52,7 @@ export const Menu = <T, >({
     const output = JSON.stringify({
         dimensions: { width, height },
         map: mapString
-    });
+    }, null, 2);
 
     return (
         <>
