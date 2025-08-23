@@ -26,11 +26,13 @@ describe("<Menu />", () => {
                 output={"GGG"}
                 tileOptions={brushOptions}
                 brush={brushOptions[0]}
-                getTileLabel={(tile) => tile.name}
-                getTileImgSrc={(tile) => tile.sprite}
-                onWidthChange={widthChangeMock}  
-                onHeightChange={heightChangeMock}
+                getBrushLabel={(tile) => tile.name}
+                getBrushImgSrc={(tile) => tile.sprite}
+                getTileFromSymbol={vi.fn()}
                 onBrushChange={brushChangeMock}
+                onHeightChange={heightChangeMock}
+                onOutputChange={vi.fn()}
+                onWidthChange={widthChangeMock}  
             />
         )
 

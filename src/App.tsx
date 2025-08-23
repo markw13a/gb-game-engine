@@ -1,7 +1,7 @@
 import './App.css'
 // import { Map } from './components/Map/Map'
 import { MapEditor } from './pages/MapEditor/MapEditor'
-import { TILE_DATA } from './constants/symbols';
+import { TILE_DATA, TILES } from './constants/symbols';
 import { map } from './utils/symbolicMap/symbolicMap'
 // import { MapDebugger } from './components/MapDebugger/MapDebugger'
 // import { map } from './map/symbolicMap'
@@ -21,6 +21,7 @@ function App() {
 
           return tile.type;
          }}
+        getTileFromSymbol={(symbol) => TILES[symbol]}
         getTileLabel={(tile) => tile.label}
         getTileImgSrc={(tile) => tile.sprite}
       />

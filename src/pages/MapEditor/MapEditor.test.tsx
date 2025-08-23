@@ -5,6 +5,7 @@ import type { Tile } from "../../types/tiles";
 
 const defaultProps = {
     tileSize: '16px',
+    getTileFromSymbol: vi.fn(),
     getTileSymbol: (tile: Tile | undefined) => tile ? 'G' : '',
     getTileLabel: (tile: Tile) => tile.type,
     getTileImgSrc: (tile: Tile) => tile.sprite,

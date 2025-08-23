@@ -13,7 +13,7 @@ export const Modal = ({ isOpen, onClose, children }: PropsWithChildren<ModalProp
     }
 
     return (
-        <div className={styles.container} role="dialog">
+        <dialog className={styles.container}>
             <div className={styles.modal}>
                 <div className={styles.body}>
                     {children}
@@ -24,6 +24,6 @@ export const Modal = ({ isOpen, onClose, children }: PropsWithChildren<ModalProp
                     </button>
                 </div>
             </div>
-        </div>
+        </dialog>
     )
 };

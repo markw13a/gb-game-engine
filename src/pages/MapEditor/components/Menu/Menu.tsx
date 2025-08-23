@@ -1,20 +1,21 @@
 import { useState } from 'react';
 import styles from './Menu.module.css';
-import { Modal } from '@/components/Modal/Modal';
 import { Button } from '@/components/Button/Button';
+import { ImportMapModal } from '../ImportMapModal/ImportMapModal';
 
 type MenuProps<T> = {
     width: number;
     height: number;
     onWidthChange: (width: number) => void;
     onHeightChange: (height: number) => void;
+    onOutputChange: (tiles: T[]) => void;
     tileOptions: T[];
-    brush: T;
+    brush: T | undefined;
     output: string;
     onBrushChange: (brush: T) => void;
-    getTileLabel: (tile: T) => string;
-    getTileImgSrc: (tile: T) => string;
-    // getTileSymbol: (tile: T) => string;
+    getBrushLabel: (tile: T) => string;
+    getBrushImgSrc: (tile: T) => string;
+    getTileFromSymbol: (symbol: string) => T | undefined;
 }
 
 export const Menu = <T, >({
@@ -22,30 +23,43 @@ export const Menu = <T, >({
     height,
     onWidthChange,
     onHeightChange,
+    onOutputChange,
     tileOptions,
     brush,
     output,
     onBrushChange,
-    getTileLabel,
-    getTileImgSrc,
+    getBrushLabel,
+    getBrushImgSrc,
+    getTileFromSymbol
 }: MenuProps<T>) => {
     const [isImportModalOpen, setIsImportModalOpen] = useState(false);
     
+    const onImport = (width: number, height: number, mapString: string) => {
+        const nextOutput = mapString.split('').map(getTileFromSymbol);
+        
+        // TODO: Appropriate errors in the modal...
+        if (nextOutput.includes(undefined)) {
+            return;
+        }
+
+        onWidthChange(width);
+        onHeightChange(height);
+        // @ts-ignore TS assumes nextOutput can contain undefined, but we've guarded against this
+        onOutputChange(nextOutput);
+    };
+
     return (
         <>
-            <Modal isOpen={isImportModalOpen} onClose={() => setIsImportModalOpen(false)}>
-                {/* TODO implement import map flow */}
-            </Modal>
             <div className={styles.container}>
                 <div className={styles.tilesContainer}>
                     <div className={styles.header}>
                         Selected: {"\n"}
-                        {brush ? getTileLabel(brush) : 'None'} 
+                        {brush ? getBrushLabel(brush) : 'None'} 
                     </div>
                     <div className={styles.tiles}>
                         {tileOptions.map(tile => (
-                            <button className={styles.tile} aria-label={`Select ${getTileLabel(tile)} brush`} onClick={() => onBrushChange(tile)}>
-                                <img alt={getTileLabel(tile)} src={getTileImgSrc(tile)} />
+                            <button className={styles.tile} aria-label={`Select ${getBrushLabel(tile)} brush`} onClick={() => onBrushChange(tile)}>
+                                <img alt={getBrushLabel(tile)} src={getBrushImgSrc(tile)} />
                             </button>
                         ))}
                     </div>
@@ -70,6 +84,11 @@ export const Menu = <T, >({
                     </Button>
                 </div>
             </div>
+            <ImportMapModal 
+                isOpen={isImportModalOpen} 
+                onClose={() => setIsImportModalOpen(false)} 
+                onImport={onImport} 
+            />
         </>
     );
 };

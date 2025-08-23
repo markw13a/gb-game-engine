@@ -20,7 +20,7 @@ describe("<Modal />", () => {
 
         render(<Modal isOpen onClose={onCloseMock}>Test</Modal>);
 
-        await userEvent.click(screen.getByRole('button', { name: 'Close' }));
+        await userEvent.click(screen.getByText('Close'));
 
         expect(onCloseMock).toHaveBeenCalled();
     })
