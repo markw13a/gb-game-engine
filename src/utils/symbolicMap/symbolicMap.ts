@@ -4,21 +4,22 @@ import type { Map, Tile } from "../../types/map";
 import type { Direction } from "../../types/sprite";
 import { calculateIndices } from "../calculateIndices/calculateIndices";
 
-const rawMap = 'pppppppppppppppppppppppppppppppppppp';
+const rawMap = "pppppppppppppppppppppppppppppppppppp";
 
 export const getDataForSymbol = (symbol: string): Tile => {
-    const data = TILES[symbol];
+	const data = TILES[symbol];
 
-    if (!data) {
-        throw new Error(`Unrecognised symbol: ${symbol}`);
-    }
+	if (!data) {
+		throw new Error(`Unrecognised symbol: ${symbol}`);
+	}
 
-    return data;
+	return data;
 };
 
-export const decodeMap = (map: string): Map => map.split('').map((char) => getDataForSymbol(char));
+export const decodeMap = (map: string): Map =>
+	map.split("").map((char) => getDataForSymbol(char));
 
-export const map = decodeMap(rawMap.replace(/\s+/g, ''));
+export const map = decodeMap(rawMap.replace(/\s+/g, ""));
 
 /**
  * Returns n where map represents an n x n grid
@@ -26,22 +27,30 @@ export const map = decodeMap(rawMap.replace(/\s+/g, ''));
  */
 export const getMapSideLength = (map: Map) => Math.sqrt(map.length);
 
-export const getNextTile = (pos: number, mapSideLength: number, dir: Direction) => {
-    switch (dir) {
-        case "left":
-            return pos - mapSideLength;
-        case "right":
-            return pos + mapSideLength;
-        case "up":
-            return pos - 1;
-        case "down":
-            return pos + 1;
-    }
-}
+export const getNextTile = (
+	pos: number,
+	mapSideLength: number,
+	dir: Direction,
+) => {
+	switch (dir) {
+		case "left":
+			return pos - mapSideLength;
+		case "right":
+			return pos + mapSideLength;
+		case "up":
+			return pos - 1;
+		case "down":
+			return pos + 1;
+	}
+};
 
-export const getVisibleTiles = (pos: number, viewAreaSize: number, mapSideLength: number) => {
-    const empty = calculateIndices(viewAreaSize, mapSideLength, pos);
-    const visibleTiles = empty.map(i => map[i]);
+export const getVisibleTiles = (
+	pos: number,
+	viewAreaSize: number,
+	mapSideLength: number,
+) => {
+	const empty = calculateIndices(viewAreaSize, mapSideLength, pos);
+	const visibleTiles = empty.map((i) => map[i]);
 
-    return visibleTiles;
-}
+	return visibleTiles;
+};

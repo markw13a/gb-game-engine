@@ -1,35 +1,37 @@
-import { render, screen } from "@testing-library/react"
-import { ImportMapModal } from "./ImportMapModal"
+import { render, screen } from "@testing-library/react";
+import { ImportMapModal } from "./ImportMapModal";
 import userEvent from "@testing-library/user-event";
 
-describe('<ImportMapModal />', () => {
-    it('should not render', () => {
-        render(<ImportMapModal isOpen={false} onClose={vi.fn()} onImport={vi.fn()} />);
+describe("<ImportMapModal />", () => {
+	it("should not render", () => {
+		render(
+			<ImportMapModal isOpen={false} onClose={vi.fn()} onImport={vi.fn()} />,
+		);
 
-        expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
-    })
-    
-    it('should call onImport', async () => {
-        const onImportMock = vi.fn();
+		expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+	});
 
-        render(<ImportMapModal onImport={onImportMock} onClose={vi.fn()} isOpen />);
+	it("should call onImport", async () => {
+		const onImportMock = vi.fn();
 
-        await userEvent.type(screen.getByLabelText('Width (tiles)'), '2')
-        await userEvent.type(screen.getByLabelText('Height (tiles)'), '1')
-        await userEvent.type(screen.getByLabelText('Map string'), 'Gg')
+		render(<ImportMapModal onImport={onImportMock} onClose={vi.fn()} isOpen />);
 
-        await userEvent.click(screen.getByText('Import'));
+		await userEvent.type(screen.getByLabelText("Width (tiles)"), "2");
+		await userEvent.type(screen.getByLabelText("Height (tiles)"), "1");
+		await userEvent.type(screen.getByLabelText("Map string"), "Gg");
 
-        expect(onImportMock).toHaveBeenCalledWith(2, 1, 'Gg');
-    })
+		await userEvent.click(screen.getByText("Import"));
 
-    it('should call onClose', async () => {
-        const onCloseMock = vi.fn();
-        
-        render(<ImportMapModal onImport={vi.fn()} onClose={onCloseMock} isOpen />);
+		expect(onImportMock).toHaveBeenCalledWith(2, 1, "Gg");
+	});
 
-        await userEvent.click(screen.getByText('Close'));
+	it("should call onClose", async () => {
+		const onCloseMock = vi.fn();
 
-        expect(onCloseMock).toHaveBeenCalled();
-    })
-})
+		render(<ImportMapModal onImport={vi.fn()} onClose={onCloseMock} isOpen />);
+
+		await userEvent.click(screen.getByText("Close"));
+
+		expect(onCloseMock).toHaveBeenCalled();
+	});
+});

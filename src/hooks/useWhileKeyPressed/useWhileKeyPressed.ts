@@ -1,65 +1,65 @@
 import { useEffect, useRef } from "react";
 
 /**
- * Continously calls provided function while the provided key is pressed 
+ * Continously calls provided function while the provided key is pressed
  */
 export const useWhileKeyPressed = (
-    key: string,
-    callback: () => Promise<void>,
-    interval = 200
+	key: string,
+	callback: () => Promise<void>,
+	interval = 200,
 ) => {
-    const isKeyPressed = useRef(false);
-    const callbackRef = useRef(callback);
+	const isKeyPressed = useRef(false);
+	const callbackRef = useRef(callback);
 
-    useEffect(() => {
-        callbackRef.current = callback;
-    }, [callback])
+	useEffect(() => {
+		callbackRef.current = callback;
+	}, [callback]);
 
-    useEffect(() => {
-        const keyPressed = (e: KeyboardEvent) => {
-            if (e.key !== key || e.repeat) {
-                return;
-            }
+	useEffect(() => {
+		const keyPressed = (e: KeyboardEvent) => {
+			if (e.key !== key || e.repeat) {
+				return;
+			}
 
-            isKeyPressed.current = true;
-        };
-        
-        const keyReleased = (e: KeyboardEvent) => {
-            if (e.key !== key) {
-                return;
-            }
+			isKeyPressed.current = true;
+		};
 
-            isKeyPressed.current = false;
-        }
+		const keyReleased = (e: KeyboardEvent) => {
+			if (e.key !== key) {
+				return;
+			}
 
-        document.addEventListener('keydown', keyPressed);
-        document.addEventListener('keyup', keyReleased);
+			isKeyPressed.current = false;
+		};
 
-        return () => {
-            document.removeEventListener('keydown', keyPressed);
-            document.removeEventListener('keyup', keyReleased);
-        }
-    }, [key]);
+		document.addEventListener("keydown", keyPressed);
+		document.addEventListener("keyup", keyReleased);
 
-    useEffect(() => {
-        let timerId: (null | number) = null;
+		return () => {
+			document.removeEventListener("keydown", keyPressed);
+			document.removeEventListener("keyup", keyReleased);
+		};
+	}, [key]);
 
-        const cb = () => {
-            timerId = setTimeout(async () => {
-                if (isKeyPressed.current) {
-                    await callbackRef.current();
-                }
-                
-                cb();
-            }, interval)
-        }
+	useEffect(() => {
+		let timerId: null | number = null;
 
-        cb();
+		const cb = () => {
+			timerId = setTimeout(async () => {
+				if (isKeyPressed.current) {
+					await callbackRef.current();
+				}
 
-        return () => {
-            if (timerId) {
-                clearTimeout(timerId);
-            }
-        }
-    }, [key, interval])
+				cb();
+			}, interval);
+		};
+
+		cb();
+
+		return () => {
+			if (timerId) {
+				clearTimeout(timerId);
+			}
+		};
+	}, [key, interval]);
 };

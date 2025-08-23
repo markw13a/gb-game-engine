@@ -1,32 +1,32 @@
 .mapContainer {
-    flex-grow: 1;
-    padding: var(--spacing-4);
-    background-color: #d2d2d2;
+	flex-grow: 1;
+	padding: var(--spacing-4);
+	background-color: #d2d2d2;
 
-    overflow: hidden;
+	overflow: hidden;
 }
 
 .map {
-    display: grid;
-    grid-auto-flow: column;
-    grid-column-gap: 0px;
-    grid-row-gap: 0px;
+	display: grid;
+	grid-auto-flow: column;
+	grid-column-gap: 0px;
+	grid-row-gap: 0px;
 
-    overflow: scroll;
+	overflow: scroll;
 
-    background-color: #fff;
+	background-color: #fff;
 
-    width: 100%;
-    height: 100%;
-    padding: var(--spacing-3);
-    border-radius: var(--radius);
+	width: 100%;
+	height: 100%;
+	padding: var(--spacing-3);
+	border-radius: var(--radius);
 }
 
 .tile {
-    display: flex;
+	display: flex;
 }
 
 .emptyTile {
-    border: 1px red dashed;
-    border-radius: 2px;
+	border: 1px red dashed;
+	border-radius: 2px;
 }

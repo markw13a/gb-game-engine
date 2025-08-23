@@ -1,38 +1,38 @@
 import { useEffect } from "react";
 
 type KeyListenerOptions = {
-    ignoreRepeat?: boolean
-}
+	ignoreRepeat?: boolean;
+};
 
 export const useKeyListener = (
-    key: string, 
-    onKeyPress: () => void, 
-    onKeyReleased: () => void, 
-    options: KeyListenerOptions = {}
+	key: string,
+	onKeyPress: () => void,
+	onKeyReleased: () => void,
+	options: KeyListenerOptions = {},
 ) => {
-    useEffect(() => {
-        const keydown = (e: KeyboardEvent) => {
-            const ignoreEvent = (options.ignoreRepeat && e.repeat) || (e.key !== key);
+	useEffect(() => {
+		const keydown = (e: KeyboardEvent) => {
+			const ignoreEvent = (options.ignoreRepeat && e.repeat) || e.key !== key;
 
-            if (!ignoreEvent) {
-                onKeyPress();
-            }
-        };
+			if (!ignoreEvent) {
+				onKeyPress();
+			}
+		};
 
-        const keyup = (e: KeyboardEvent) => {
-            if (e.key !== key) {
-                return;
-            }
+		const keyup = (e: KeyboardEvent) => {
+			if (e.key !== key) {
+				return;
+			}
 
-            onKeyReleased();
-        };
+			onKeyReleased();
+		};
 
-        document.addEventListener('keydown', keydown);
-        document.addEventListener('keyup', keyup);
+		document.addEventListener("keydown", keydown);
+		document.addEventListener("keyup", keyup);
 
-        return () => {
-            document.removeEventListener('keydown', keydown);
-            document.removeEventListener('keyup', keyup);
-        }
-    }, [key, onKeyPress, onKeyReleased, options]);
+		return () => {
+			document.removeEventListener("keydown", keydown);
+			document.removeEventListener("keyup", keyup);
+		};
+	}, [key, onKeyPress, onKeyReleased, options]);
 };
