@@ -31,7 +31,7 @@ const characterSprites: SpriteMap = {
 };
 
 export const Map = ({ map }: MapProps) => {
-	const [characterPos, setCharacterPos] = useState(16);
+	const [characterPos, setCharacterPos] = useState(292);
 	const [isMoving, setIsMoving] = useState(false);
 	const [characterDirection, setCharacterDirection] =
 		useState<Direction>("down");
@@ -59,7 +59,7 @@ export const Map = ({ map }: MapProps) => {
 				characterPos={characterPos}
 				onMoveStart={setCharacterDirection}
 				onMoveComplete={onMoveComplete}
-				viewAreaSize={5}
+				viewAreaSize={11}
 			/>
 			<CharacterLayer
 				moving={isMoving}
