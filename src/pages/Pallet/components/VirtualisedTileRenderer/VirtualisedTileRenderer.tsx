@@ -30,17 +30,24 @@ export const VirtualisedTileRenderer = ({
 	onMoveStart,
 	onMoveComplete,
 }: VirtualisedTileRendererProps) => {
-	// TODO: Most of this should probably be moved up to Map
 	const { scrollContainerRef, scroll, isScrollingRef } = useScroll();
 
 	const mapSideLength = getMapSideLength(map);
 
-	// TODO: Component probably should not be responsible for this
-	// TODO: Fix bug when calling at frequency higher than 250ms
 	const move = useCallback(
 		async (dir: Direction) => {
-			const nextTile = getNextTile(characterPos, mapSideLength, dir);
-			const isPassable = map[nextTile]?.isPassable;
+			const nextCharacterPos = getNextTile(characterPos, mapSideLength, dir, 2);
+			// If character pos is the top-right tile which the character occupies, we need to check that all four tiles the character will occupy don't contain any impassable tiles
+			const nextCharacterPosLeft = getNextTile(nextCharacterPos, mapSideLength, 'left');
+			const nextCharacterPosBottomRight = getNextTile(nextCharacterPos, mapSideLength, 'down');
+			const nextCharacterPosBottomLeft = getNextTile(nextCharacterPosBottomRight, mapSideLength, 'left')
+			
+			const nextCharacterSquare = [
+				nextCharacterPosLeft, nextCharacterPos,
+				nextCharacterPosBottomLeft, nextCharacterPosBottomRight
+			];
+
+			const isPassable = nextCharacterSquare.every(square => map[square]?.isPassable); 
 
 			if (!isPassable || isScrollingRef.current) {
 				return;
@@ -54,18 +61,18 @@ export const VirtualisedTileRenderer = ({
 	);
 
 	// TODO: Would like to move this out of this component
-	useWhileKeyPressed("a", () => move("left"), 100);
-	useWhileKeyPressed("d", () => move("right"), 100);
-	useWhileKeyPressed("w", () => move("up"), 100);
-	useWhileKeyPressed("s", () => move("down"), 100);
+	useWhileKeyPressed("a", () => move("left"), 10);
+	useWhileKeyPressed("d", () => move("right"), 10);
+	useWhileKeyPressed("w", () => move("up"), 10);
+	useWhileKeyPressed("s", () => move("down"), 10);
 
 	// Our movement animation is based on rendering additional layers of hidden tiles
 	// Around the visible section. When rendering, we need to scroll to the centre of this container
 	useLayoutEffect(() => {
 		if (scrollContainerRef.current === null) return;
 		// Want there to be one unseen tile to the left and right of the visible area
-		scrollContainerRef.current.scrollLeft = tileSize;
-		scrollContainerRef.current.scrollTop = tileSize;
+		scrollContainerRef.current.scrollLeft = tileSize * 2;
+		scrollContainerRef.current.scrollTop = tileSize * 2;
 	}, [characterPos]);
 
 	const tileData = getVisibleTiles(characterPos, viewAreaSize, mapSideLength);
@@ -76,8 +83,8 @@ export const VirtualisedTileRenderer = ({
 			style={{
 				gridTemplateColumns: `repeat(${viewAreaSize}, ${tileSize}px)`,
 				gridTemplateRows: `repeat(${viewAreaSize}, ${tileSize}px)`,
-				maxHeight: `${tileSize * (viewAreaSize - 2)}px`,
-				maxWidth: `${tileSize * (viewAreaSize - 2)}px`,
+				maxHeight: `${tileSize * (viewAreaSize - 4)}px`,
+				maxWidth: `${tileSize * (viewAreaSize - 4)}px`,
 			}}
 			ref={scrollContainerRef}
 		>

@@ -31,16 +31,17 @@ export const getNextTile = (
 	pos: number,
 	mapSideLength: number,
 	dir: Direction,
+	tilesToMove = 1
 ) => {
 	switch (dir) {
 		case "left":
-			return pos - mapSideLength;
+			return pos - (mapSideLength * tilesToMove);
 		case "right":
-			return pos + mapSideLength;
+			return pos + (mapSideLength * tilesToMove);
 		case "up":
-			return pos - 1;
+			return pos - tilesToMove;
 		case "down":
-			return pos + 1;
+			return pos + tilesToMove;
 	}
 };
 

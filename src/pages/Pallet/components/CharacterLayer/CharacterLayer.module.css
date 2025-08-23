@@ -1,14 +1,14 @@
 .container {
 	position: absolute;
-	top: calc(var(--tile-size) * 1);
-	left: calc(var(--tile-size) * 1);
+	top: calc(var(--tile-size) * 4);
+	left: calc(var(--tile-size) * 3);
 
 	z-index: var(--character-layer-z-index);
 }
 
 .character {
-	width: var(--tile-size);
-	height: var(--tile-size);
+	width: calc(var(--tile-size) * 2);
+	height: calc(var(--tile-size) * 2);
 
 	background-size: cover;
 	background-position: center;

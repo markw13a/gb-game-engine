@@ -31,6 +31,7 @@ const characterSprites: SpriteMap = {
 };
 
 export const Map = ({ map }: MapProps) => {
+	// Represents "top-right" tile which character sits on
 	const [characterPos, setCharacterPos] = useState(292);
 	const [isMoving, setIsMoving] = useState(false);
 	const [characterDirection, setCharacterDirection] =
@@ -39,7 +40,7 @@ export const Map = ({ map }: MapProps) => {
 	const mapSideLength = getMapSideLength(map);
 
 	const onMoveComplete = (dir: Direction) =>
-		setCharacterPos(getNextTile(characterPos, mapSideLength, dir));
+		setCharacterPos(getNextTile(characterPos, mapSideLength, dir, 2));
 
 	const onKeyPressed = () => setIsMoving(true);
 	// TODO: Need to check that key released matches the direction! Creates bug where gif stops looping even though we're still moving
@@ -59,7 +60,7 @@ export const Map = ({ map }: MapProps) => {
 				characterPos={characterPos}
 				onMoveStart={setCharacterDirection}
 				onMoveComplete={onMoveComplete}
-				viewAreaSize={11}
+				viewAreaSize={13}
 			/>
 			<CharacterLayer
 				moving={isMoving}
