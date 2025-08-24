@@ -1,15 +1,18 @@
 import { useMemo, useState } from "react";
 import { CharacterLayer } from "./components/CharacterLayer/CharacterLayer";
 import type { Map as MapType } from "../../types/map";
-import {
-	getMapSideLength,
-	getNextTile,
-} from "../../utils/symbolicMap/symbolicMap";
+import { getMapSideLength } from "../../utils/symbolicMap/symbolicMap";
 import { VirtualisedTileRenderer } from "./components/VirtualisedTileRenderer/VirtualisedTileRenderer";
 
 import styles from "./Map.module.css";
 import { useKeyListener } from "../../hooks/useKeyListener/useKeyListener";
 import type { Direction, SpriteMap } from "../../types/sprite";
+import { getNextTile } from "@/lib/utils/tile";
+import {
+	dispatchObjectInteractionEvent,
+	getObjectAtTile,
+} from "@/lib/utils/object";
+import { objects } from "./constants/objects";
 
 type MapProps = {
 	map: MapType;
@@ -48,15 +51,30 @@ export const Map = ({ map }: MapProps) => {
 	const onKeyReleased = () => setIsMoving(false);
 	const options = useMemo(() => ({ ignoreRepeat: true }), []);
 
+	const onInteractionKeyPressed = () => {
+		const targetTile = getNextTile(
+			characterPos,
+			mapSideLength,
+			characterDirection,
+		);
+		const targetObject = getObjectAtTile(targetTile, objects);
+
+		if (targetObject) {
+			dispatchObjectInteractionEvent(targetObject);
+		}
+	};
+
 	useKeyListener("w", onKeyPressed, onKeyReleased, options);
 	useKeyListener("a", onKeyPressed, onKeyReleased, options);
 	useKeyListener("s", onKeyPressed, onKeyReleased, options);
 	useKeyListener("d", onKeyPressed, onKeyReleased, options);
+	useKeyListener("e", onInteractionKeyPressed, () => {}, options);
 
 	return (
 		<div className={styles.container}>
 			<VirtualisedTileRenderer
 				map={map}
+				objects={objects}
 				characterPos={characterPos}
 				onMoveStart={setCharacterDirection}
 				onMoveComplete={onMoveComplete}

@@ -1,5 +1,6 @@
 // TODO: Update these functions to allow for even-sized grids
 // Simply treat character position as being 1 tile left of centre
+// Problem may be that they require a centre at all - should consider marking the top-right as the "start point" for calculations
 
 /**
  * Returns an array of numbers from -max to max
@@ -48,8 +49,6 @@ export const calculateIndices = (
 		);
 	}
 
-	// TODO: Check if position is possible within originalArraySideLength sized grid
-
 	const max = (subSectionSideLength - 1) / 2;
 	const range = calculateRange(max);
 
@@ -75,3 +74,21 @@ export const calculateIndices = (
 
 	return indices;
 };
+
+/**
+ * TODO: These are essentialy exactly the same as the functions above, but they take the top-right corner of a grid as being the starting point
+ * Existing functions are more convenient for calculating visible area around the character (used in map generation)
+ * Would be great to have a single method of calculating these grids, but I honestly don't want to touch updating map rendering just yet
+ */
+export const calculateRow = (
+	width: number,
+	mapSideLength: number,
+	position: number,
+) => {};
+
+export const calculateTiles = (
+	width: number,
+	height: number,
+	mapSideLength: number,
+	position: number,
+) => {};

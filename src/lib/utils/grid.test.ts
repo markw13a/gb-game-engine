@@ -1,4 +1,9 @@
-import { calculateIndices, calculateRange } from "./calculateIndices";
+import {
+	calculateIndices,
+	calculateRow,
+	calculateTiles,
+	calculateRange,
+} from "./grid";
 
 describe("calculateRange", () => {
 	it("should calculate short range", () => {
@@ -29,5 +34,21 @@ describe("calculateIndices", () => {
 
 	it("should throw error if subsection larger than original grid", () => {
 		expect(() => calculateIndices(5, 3, 12)).toThrowError();
+	});
+});
+
+describe("calculateObjectRow", () => {
+	it("should calculate row indices", () => {
+		const indices = calculateRow(3, 5, 12);
+
+		expect(indices).toEqual([2, 7, 12]);
+	});
+});
+
+describe("calculateObjectTiles", () => {
+	it("should calculate tiles occupied by object", () => {
+		const indices = calculateTiles(3, 2, 5, 12);
+
+		expect(indices).toEqual([2, 3, 4, 7, 8, 9, 12, 13, 14]);
 	});
 });

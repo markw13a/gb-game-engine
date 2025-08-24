@@ -1,20 +1,20 @@
 import styles from "./VirtualisedTileRenderer.module.css";
 import { Tile } from "../Tile/Tile";
 
-import {
-	getMapSideLength,
-	getNextTile,
-	getVisibleTiles,
-} from "../../../../utils/symbolicMap/symbolicMap";
-import { useCallback, useLayoutEffect } from "react";
-import { useScroll } from "../../../../hooks/useScroll";
+import { getMapSideLength } from "../../../../utils/symbolicMap/symbolicMap";
+import { useCallback, useEffect, useLayoutEffect, useRef } from "react";
+import { useScroll } from "../../../../lib/hooks/useScroll";
 import { useWhileKeyPressed } from "../../../../hooks/useWhileKeyPressed/useWhileKeyPressed";
 import type { Map } from "../../../../types/map";
 import type { Direction } from "../../../../types/sprite";
+import { getNextTile, getTilesAroundPos } from "@/lib/utils/tile";
+import { getObjectAtTile } from "@/lib/utils/object";
+import type { GameObject } from "@/lib/types/object";
 
-type VirtualisedTileRendererProps = {
+type VirtualisedTileRendererProps<T> = {
 	characterPos: number;
 	map: Map;
+	objects: T[];
 	tileSize?: number;
 	viewAreaSize?: number;
 	onMoveStart: (dir: Direction) => void;
@@ -22,32 +22,54 @@ type VirtualisedTileRendererProps = {
 };
 
 // Responsible for rendering grid, animating background scroll, rendering items + NPCs
-export const VirtualisedTileRenderer = ({
+export const VirtualisedTileRenderer = <T extends GameObject = GameObject>({
 	characterPos,
 	map,
+	objects,
 	tileSize = 50,
 	viewAreaSize = 5,
 	onMoveStart,
 	onMoveComplete,
-}: VirtualisedTileRendererProps) => {
+}: VirtualisedTileRendererProps<T>) => {
 	const { scrollContainerRef, scroll, isScrollingRef } = useScroll();
+	const callbackRef = useRef(onMoveComplete);
 
 	const mapSideLength = getMapSideLength(map);
+
+	useEffect(() => {
+		callbackRef.current = onMoveComplete;
+	}, [onMoveComplete]);
 
 	const move = useCallback(
 		async (dir: Direction) => {
 			const nextCharacterPos = getNextTile(characterPos, mapSideLength, dir, 2);
 			// If character pos is the top-right tile which the character occupies, we need to check that all four tiles the character will occupy don't contain any impassable tiles
-			const nextCharacterPosLeft = getNextTile(nextCharacterPos, mapSideLength, 'left');
-			const nextCharacterPosBottomRight = getNextTile(nextCharacterPos, mapSideLength, 'down');
-			const nextCharacterPosBottomLeft = getNextTile(nextCharacterPosBottomRight, mapSideLength, 'left')
-			
+			const nextCharacterPosLeft = getNextTile(
+				nextCharacterPos,
+				mapSideLength,
+				"left",
+			);
+			const nextCharacterPosBottomRight = getNextTile(
+				nextCharacterPos,
+				mapSideLength,
+				"down",
+			);
+			const nextCharacterPosBottomLeft = getNextTile(
+				nextCharacterPosBottomRight,
+				mapSideLength,
+				"left",
+			);
+
 			const nextCharacterSquare = [
-				nextCharacterPosLeft, nextCharacterPos,
-				nextCharacterPosBottomLeft, nextCharacterPosBottomRight
+				nextCharacterPosLeft,
+				nextCharacterPos,
+				nextCharacterPosBottomLeft,
+				nextCharacterPosBottomRight,
 			];
 
-			const isPassable = nextCharacterSquare.every(square => map[square]?.isPassable); 
+			const isPassable = nextCharacterSquare.every(
+				(tile) => map[tile]?.isPassable && !getObjectAtTile(tile, objects),
+			);
 
 			if (!isPassable || isScrollingRef.current) {
 				return;
@@ -55,7 +77,7 @@ export const VirtualisedTileRenderer = ({
 
 			onMoveStart(dir);
 			await scroll(dir);
-			onMoveComplete(dir);
+			callbackRef.current(dir);
 		},
 		[onMoveComplete, characterPos],
 	);
@@ -75,7 +97,12 @@ export const VirtualisedTileRenderer = ({
 		scrollContainerRef.current.scrollTop = tileSize * 2;
 	}, [characterPos]);
 
-	const tileData = getVisibleTiles(characterPos, viewAreaSize, mapSideLength);
+	const tileData = getTilesAroundPos(
+		characterPos,
+		viewAreaSize,
+		mapSideLength,
+		map,
+	);
 
 	return (
 		<div
