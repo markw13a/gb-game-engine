@@ -1,34 +1,30 @@
-// TODO: Update these functions to allow for even-sized grids
-// Simply treat character position as being 1 tile left of centre
-// Problem may be that they require a centre at all - should consider marking the top-right as the "start point" for calculations
+/**
+ * @param position leftmost tile in row
+ */
+export const calculateRow = (
+	columns: number,
+	mapSideLength: number,
+	position: number,
+) => new Array(columns).fill(null).map((_, i) => position + mapSideLength * i);
 
 /**
- * Returns an array of numbers from -max to max
- * Example output:
- * max = 5; out = [-2, -1, 0, 1, 2]
- * Useful in calculating indices for adjacent rows/columns in a max x max size grid
- * @param max Upper and lower bound of range
+ * @param position top tile in row 
  */
-export const calculateRange = (max: number) => {
-	const lowerBound = -max;
-	const range: number[] = [];
+export const calculateColumn = (rows: number, position: number) =>
+	new Array(rows).fill(null).map((_, i) => position + i);
 
-	if (max <= 0) {
-		throw new Error(`calculateRange: unsupported value (${max})`);
-	}
-
-	for (let i = 0; i < max; i++) {
-		range.push(lowerBound + i);
-	}
-
-	range.push(0);
-
-	for (let i = 0; i < max; i++) {
-		range.push(i + 1);
-	}
-
-	return range;
-};
+/**
+ * @param position top-left tile in grid
+*/	
+export const calculateTiles = (
+	rows: number,
+	columns: number,
+	mapSideLength: number,
+	position: number,
+) =>
+	calculateRow(columns, mapSideLength, position)
+		.map((index) => calculateColumn(rows, index))
+		.flat();
 
 /**
  * Used to generate subsection of an n x n array
@@ -50,45 +46,8 @@ export const calculateIndices = (
 	}
 
 	const max = (subSectionSideLength - 1) / 2;
-	const range = calculateRange(max);
+	const leftCentre = position - (originalArraySideLength * max);
+	const leftTop = leftCentre - max;
 
-	// What you get if you trace a straight line through the row containing position
-	// For position equal '4', indices for the following elements will be returned
-	// * * *
-	// I I I
-	// * * *
-	const columnIndices = range.map(
-		(i) => position + i * originalArraySideLength,
-	);
-
-	// Have array of indices that represent the middle row of each column
-	// Iterate over to produce indices for the whole column
-	const initialValue: number[] = [];
-	const indices = columnIndices.reduce((out, columnIndex) => {
-		// e.g range [-1, 0, 1] columnIndex 7 -> [6, 7, 8]
-		const column = range.map((i) => i + columnIndex);
-		// Combine to a single column-wise array
-		// e.g [6, 7, 8, 11, 12, 13, 16, 17, 18]
-		return [...out, ...column];
-	}, initialValue);
-
-	return indices;
+	return calculateTiles(subSectionSideLength, subSectionSideLength, originalArraySideLength, leftTop);
 };
-
-/**
- * TODO: These are essentialy exactly the same as the functions above, but they take the top-right corner of a grid as being the starting point
- * Existing functions are more convenient for calculating visible area around the character (used in map generation)
- * Would be great to have a single method of calculating these grids, but I honestly don't want to touch updating map rendering just yet
- */
-export const calculateRow = (
-	width: number,
-	mapSideLength: number,
-	position: number,
-) => {};
-
-export const calculateTiles = (
-	width: number,
-	height: number,
-	mapSideLength: number,
-	position: number,
-) => {};

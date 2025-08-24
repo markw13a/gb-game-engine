@@ -5,7 +5,7 @@ export type GameObjectEvent = string;
 export type GameObject = {
 	width: number;
 	height: number;
-	position: number; // Tile occupied by object, will be top-right tile if object spans multiple tiles
+	position: number; // Tile occupied by object, will be top-left tile if object spans multiple tiles
 	occupiedTiles: number[]; // All tiles occupied by the object
 	sprite: string;
 	event: GameObjectEvent; // Name of event dispatched if object interacted with
