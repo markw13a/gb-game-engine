@@ -10,6 +10,7 @@ import type { Direction } from "../../../../types/sprite";
 import { getNextTile, getTilesAroundPos } from "@/lib/utils/tile";
 import { getObjectAtTile } from "@/lib/utils/object";
 import type { GameObject } from "@/lib/types/object";
+import { calculateTiles } from "@/lib/utils/grid";
 
 type VirtualisedTileRendererProps<T> = {
 	characterPos: number;
@@ -43,31 +44,14 @@ export const VirtualisedTileRenderer = <T extends GameObject = GameObject>({
 	const move = useCallback(
 		async (dir: Direction) => {
 			const nextCharacterPos = getNextTile(characterPos, mapSideLength, dir, 2);
-			// If character pos is the top-right tile which the character occupies, we need to check that all four tiles the character will occupy don't contain any impassable tiles
-			const nextCharacterPosLeft = getNextTile(
+			const nextCharacterPosOccupiedTiles = calculateTiles(
+				2,
+				2,
+				mapSideLength,
 				nextCharacterPos,
-				mapSideLength,
-				"left",
-			);
-			const nextCharacterPosBottomRight = getNextTile(
-				nextCharacterPos,
-				mapSideLength,
-				"down",
-			);
-			const nextCharacterPosBottomLeft = getNextTile(
-				nextCharacterPosBottomRight,
-				mapSideLength,
-				"left",
 			);
 
-			const nextCharacterSquare = [
-				nextCharacterPosLeft,
-				nextCharacterPos,
-				nextCharacterPosBottomLeft,
-				nextCharacterPosBottomRight,
-			];
-
-			const isPassable = nextCharacterSquare.every(
+			const isPassable = nextCharacterPosOccupiedTiles.every(
 				(tile) => map[tile]?.isPassable && !getObjectAtTile(tile, objects),
 			);
 

@@ -1,8 +1,4 @@
-import {
-	calculateIndices,
-	calculateRow,
-	calculateTiles,
-} from "./grid";
+import { calculateIndices, calculateRow, calculateTiles } from "./grid";
 
 describe("calculateIndices", () => {
 	it("should calculate sub-section indices", () => {

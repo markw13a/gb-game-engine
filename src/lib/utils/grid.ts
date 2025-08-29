@@ -8,14 +8,14 @@ export const calculateRow = (
 ) => new Array(columns).fill(null).map((_, i) => position + mapSideLength * i);
 
 /**
- * @param position top tile in row 
+ * @param position top tile in row
  */
 export const calculateColumn = (rows: number, position: number) =>
 	new Array(rows).fill(null).map((_, i) => position + i);
 
 /**
  * @param position top-left tile in grid
-*/	
+ */
 export const calculateTiles = (
 	rows: number,
 	columns: number,
@@ -46,8 +46,13 @@ export const calculateIndices = (
 	}
 
 	const max = (subSectionSideLength - 1) / 2;
-	const leftCentre = position - (originalArraySideLength * max);
+	const leftCentre = position - originalArraySideLength * max;
 	const leftTop = leftCentre - max;
 
-	return calculateTiles(subSectionSideLength, subSectionSideLength, originalArraySideLength, leftTop);
+	return calculateTiles(
+		subSectionSideLength,
+		subSectionSideLength,
+		originalArraySideLength,
+		leftTop,
+	);
 };

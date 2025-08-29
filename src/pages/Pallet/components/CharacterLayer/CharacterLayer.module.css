@@ -1,7 +1,7 @@
 .container {
 	position: absolute;
 	top: calc(var(--tile-size) * 4);
-	left: calc(var(--tile-size) * 3);
+	left: calc(var(--tile-size) * 4);
 
 	z-index: var(--character-layer-z-index);
 }
