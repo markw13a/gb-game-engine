@@ -1,18 +1,19 @@
 import { useMemo, useState } from "react";
 import { CharacterLayer } from "./components/CharacterLayer/CharacterLayer";
 import type { Map as MapType } from "../../types/map";
-import { getMapSideLength } from "../../utils/symbolicMap/symbolicMap";
 import { VirtualisedTileRenderer } from "./components/VirtualisedTileRenderer/VirtualisedTileRenderer";
 
 import styles from "./Map.module.css";
 import { useKeyListener } from "../../hooks/useKeyListener/useKeyListener";
 import type { Direction, SpriteMap } from "../../types/sprite";
-import { getNextTile } from "@/lib/utils/tile";
+
 import {
 	dispatchObjectInteractionEvent,
-	getObjectAtTile,
+	getObjectWithinTiles,
 } from "@/lib/utils/object";
 import { objects } from "./constants/objects";
+import { TILE_SIZE } from "./constants/tile";
+import { getNextTile, getSideLength } from "@/lib/utils/grid";
 
 type MapProps = {
 	map: MapType;
@@ -40,7 +41,7 @@ export const Map = ({ map }: MapProps) => {
 	const [characterDirection, setCharacterDirection] =
 		useState<Direction>("down");
 
-	const mapSideLength = getMapSideLength(map);
+	const mapSideLength = getSideLength(map);
 
 	const onMoveComplete = (dir: Direction) =>
 		setCharacterPos(getNextTile(characterPos, mapSideLength, dir, 2));
@@ -57,7 +58,10 @@ export const Map = ({ map }: MapProps) => {
 			mapSideLength,
 			characterDirection,
 		);
-		const targetObject = getObjectAtTile(targetTile, objects);
+		const targetObject = getObjectWithinTiles(targetTile, objects);
+
+		console.log({ objects })
+		console.log({ targetTile, targetObject, characterPos })
 
 		if (targetObject) {
 			dispatchObjectInteractionEvent(targetObject);
@@ -78,6 +82,7 @@ export const Map = ({ map }: MapProps) => {
 				characterPos={characterPos}
 				onMoveStart={setCharacterDirection}
 				onMoveComplete={onMoveComplete}
+				tileSize={TILE_SIZE}
 				viewAreaSize={13}
 			/>
 			<CharacterLayer

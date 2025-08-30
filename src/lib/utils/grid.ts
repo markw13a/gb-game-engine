@@ -1,3 +1,5 @@
+import type { Direction } from "../types/direction";
+
 /**
  * @param position leftmost tile in row
  */
@@ -55,4 +57,40 @@ export const calculateIndices = (
 		originalArraySideLength,
 		leftTop,
 	);
+};
+
+/**
+ * Returns n where map represents an n x n grid
+ * (e.g map.length = 9 -> n = 3)
+*/
+export const getSideLength = (grid: Array<unknown>) => {
+	if (!grid || !grid.length) {
+		throw new Error('Provided grid empty!')
+	}
+
+	const sideLength = Math.sqrt(grid.length);
+
+	if (!Number.isInteger(sideLength)) {
+		throw new Error(`Provided grid does not form a square. length: ${grid.length} side length: ${sideLength}`)
+	}
+	
+	return sideLength;
+}
+
+export const getNextTile = (
+	pos: number,
+	mapSideLength: number,
+	dir: Direction,
+	tilesToMove = 1,
+) => {
+	switch (dir) {
+		case "left":
+			return pos - mapSideLength * tilesToMove;
+		case "right":
+			return pos + mapSideLength * tilesToMove;
+		case "up":
+			return pos - tilesToMove;
+		case "down":
+			return pos + tilesToMove;
+	}
 };

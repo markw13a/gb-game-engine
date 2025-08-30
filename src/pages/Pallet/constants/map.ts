@@ -1,0 +1,23 @@
+import { TILES } from "./symbols";
+import type { Map, Tile } from "@/types/map";
+
+// TODO: Not convinced stringified map is worth the overhead: consider using JSON throughout
+// Originally was making these maps by hand, string representation was much easier for that purpose
+// No need now that we have the MapEditor
+const rawMap =
+    "BNBNBNBNBNBNBNBNBNBNBNBNBNBNBNBNBNBNBNBNbnbnbnbnbnbnbnbnbnbnbnbnbnbnbnbnbnbnbnbnBNBNBNBNBNBNBNBNBNBNBNBNBNBNBNBNBNBNBNBNbnbnbnbnbnbnbnbnbnbnbnbnbnbnbnbnbnbnbnbnBNBNddddddddddddddddddddddddddddddddBNBNbnbnddddddddddddddddddddddddddddddddbnbnBNBNpGppGGGGpGppppGppGppGppGppddddddBNBNbnbnppppGGGGppppppppppppppppppddddddbnbnBNBNpppGGGGGpppGpppGpppGpppppGddddddBNBNbnbnppppGGGGppppppppppppppppppddddddbnbnBNBNpGggggggpGppGGRrddddpppGppddddddBNBNbnbnppggggggppppGGRrddddppppppddddddbnbnBNBNppggggggpppGGGRrddddpppppGddddddBNBNbnbnppggggggpGppGGRrddddppppppddddddbnbnBNBNpGggggggppppGGRrddddpppGppddddddBNBNbnbnppggggggpppGGGRrddddpppppGddddddbnbnBNBNppggggggppppGGRrddddppppppddddddBNBNbnbnppppGppppGppppppppGpppppppGGGGGGbnbnBNBNpGppppppppppGppppppppppGppGGGGGGBNBNbnbnppppppppppppppppppppppppppGGGGGGbnbnBNBNpppGpppGppGppppGppppGpppppGGGGGGBNBNbnbnpppppppppppppppgggggggGGRrddddGGbnbnBNBNpGppGGGGpppppppgggggggGGRrddddGGBNBNbnbnppppGGGGpppppGpgggggggGGRrddddGGbnbnBNBNpppGGGGGpppppppgggggggGGRrddddGGBNBNbnbnppppGGGGpppppppgggggggGGRrddddGGbnbnBNBNpGggggggpppGpppgggggggGGRrddddGGBNBNbnbnppggggggpppppppgggggggGGRrddddGGbnbnBNBNppggggggpppppppgggggggGGRrddddGGBNBNbnbnppggggggpppppGpgggggggGGRrddddGGbnbnBNBNpGggggggpppppppgggggggGGGGGGGGGGBNBNbnbnppggggggpppppppgggggggGGGGGGGGGGbnbnBNBNppggggggpppGppppppppppGGGGGGGGGGBNBNbnbnpGppGpppppppppppppppppGGGGGGGGGGbnbnBNBNddddddddddddddddddddddddddddddddBNBNbnbnddddddddddddddddddddddddddddddddbnbnBNBNBNBNBNBNBNBNBNBNBNBNBNBNBNBNBNBNBNBNbnbnbnbnbnbnbnbnbnbnbnbnbnbnbnbnbnbnbnbnBNBNBNBNBNBNBNBNBNBNBNBNBNBNBNBNBNBNBNBNbnbnbnbnbnbnbnbnbnbnbnbnbnbnbnbnbnbnbnbn";
+
+export const getDataForSymbol = (symbol: string): Tile => {
+    const data = TILES[symbol];
+
+    if (!data) {
+        throw new Error(`Unrecognised symbol: ${symbol}`);
+    }
+
+    return data;
+};
+
+export const decodeMap = (map: string): Map =>
+    map.split("").map((char) => getDataForSymbol(char));
+
+export const map = decodeMap(rawMap.replace(/\s+/g, ""));

@@ -1,7 +1,7 @@
 import "./App.css";
 import { MapEditor } from "./pages/MapEditor/MapEditor";
-import { TILE_DATA, TILES } from "./constants/symbols";
-import { map } from "./utils/symbolicMap/symbolicMap";
+import { map } from "./pages/Pallet/constants/map";
+import { TILE_DATA, TILES } from "./pages/Pallet/constants/symbols";
 import { Map } from "./pages/Pallet/Map";
 
 function App() {

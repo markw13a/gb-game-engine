@@ -1,9 +1,27 @@
 .container {
+	position: relative;
+	overflow: hidden;
+
+	width: calc(var(--tile-size) * 9);
+	height: calc(var(--tile-size) * 9);
+}
+
+.tilesContainer {
 	display: grid;
 
 	grid-auto-flow: column;
 	grid-column-gap: 0px;
 	grid-row-gap: 0px;
+}
 
-	overflow: hidden;
+.objectsContainer {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 10;
+
+	display: grid;
+	grid-auto-flow: column;
+	grid-column-gap: 0px;
+	grid-row-gap: 0px;
 }
