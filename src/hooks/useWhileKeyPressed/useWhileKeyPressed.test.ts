@@ -1,4 +1,4 @@
-import { renderHook } from "@testing-library/react";
+import { act, renderHook } from "@testing-library/react";
 import { useWhileKeyPressed } from "./useWhileKeyPressed";
 import userEvent from "@testing-library/user-event";
 
@@ -28,8 +28,7 @@ describe("useWhileKeyPressed", () => {
 		vi.unstubAllGlobals();
 	});
 
-	// TODO: Fix
-	it.skip("should call callback while key pressed", async () => {
+	it("should call callback while key pressed", async () => {
 		const cb = vi.fn();
 		const interval = 10;
 		const key = "a";
@@ -39,14 +38,15 @@ describe("useWhileKeyPressed", () => {
 		// Press and hold
 		await user.keyboard(`{${key}>}`);
 
-		vi.advanceTimersByTime(interval * 5);
+		await act(() => vi.advanceTimersByTime(interval));
+		await act(() => vi.advanceTimersByTime(interval));
 
 		// Release key
 		await user.keyboard(`{/${key}}`);
 
 		// Test callback not called after key released
-		vi.advanceTimersByTime(interval * 2);
+		await act(() => vi.advanceTimersByTime(interval))
 
-		expect(cb).toHaveBeenCalledTimes(5);
+		expect(cb).toHaveBeenCalledTimes(2);
 	});
 });
