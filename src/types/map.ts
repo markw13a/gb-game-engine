@@ -1,3 +1,4 @@
+// TODO: Either delete this file or move it to /Pallet
 export type Tile = {
 	type: Symbol;
 	label: string;

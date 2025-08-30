@@ -1,0 +1,1 @@
+Generic components and utils which can be used for a separate game project should live here

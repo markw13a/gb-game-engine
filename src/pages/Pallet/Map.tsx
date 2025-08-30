@@ -1,15 +1,19 @@
 import { useMemo, useState } from "react";
 import { CharacterLayer } from "./components/CharacterLayer/CharacterLayer";
 import type { Map as MapType } from "../../types/map";
-import {
-	getMapSideLength,
-	getNextTile,
-} from "../../utils/symbolicMap/symbolicMap";
 import { VirtualisedTileRenderer } from "./components/VirtualisedTileRenderer/VirtualisedTileRenderer";
 
 import styles from "./Map.module.css";
 import { useKeyListener } from "../../hooks/useKeyListener/useKeyListener";
 import type { Direction, SpriteMap } from "../../types/sprite";
+
+import {
+	dispatchObjectInteractionEvent,
+	getObjectWithinTiles,
+} from "@/lib/utils/object";
+import { objects } from "./constants/objects";
+import { TILE_SIZE } from "./constants/tile";
+import { getNextTile, getSideLength } from "@/lib/utils/grid";
 
 type MapProps = {
 	map: MapType;
@@ -37,7 +41,7 @@ export const Map = ({ map }: MapProps) => {
 	const [characterDirection, setCharacterDirection] =
 		useState<Direction>("down");
 
-	const mapSideLength = getMapSideLength(map);
+	const mapSideLength = getSideLength(map);
 
 	const onMoveComplete = (dir: Direction) =>
 		setCharacterPos(getNextTile(characterPos, mapSideLength, dir, 2));
@@ -48,18 +52,35 @@ export const Map = ({ map }: MapProps) => {
 	const onKeyReleased = () => setIsMoving(false);
 	const options = useMemo(() => ({ ignoreRepeat: true }), []);
 
+	const onInteractionKeyPressed = () => {
+		const targetTile = getNextTile(
+			characterPos,
+			mapSideLength,
+			characterDirection,
+			characterDirection === "up" ? 1 : 2,
+		);
+		const targetObject = getObjectWithinTiles(targetTile, objects);
+
+		if (targetObject) {
+			dispatchObjectInteractionEvent(targetObject);
+		}
+	};
+
 	useKeyListener("w", onKeyPressed, onKeyReleased, options);
 	useKeyListener("a", onKeyPressed, onKeyReleased, options);
 	useKeyListener("s", onKeyPressed, onKeyReleased, options);
 	useKeyListener("d", onKeyPressed, onKeyReleased, options);
+	useKeyListener("e", onInteractionKeyPressed, () => {}, options);
 
 	return (
 		<div className={styles.container}>
 			<VirtualisedTileRenderer
 				map={map}
+				objects={objects}
 				characterPos={characterPos}
 				onMoveStart={setCharacterDirection}
 				onMoveComplete={onMoveComplete}
+				tileSize={TILE_SIZE}
 				viewAreaSize={13}
 			/>
 			<CharacterLayer

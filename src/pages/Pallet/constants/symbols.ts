@@ -1,4 +1,4 @@
-import type { Tile } from "../types/map";
+import type { Tile } from "../../../types/map";
 
 export const TILES: Record<string, Tile> = {
 	G: {

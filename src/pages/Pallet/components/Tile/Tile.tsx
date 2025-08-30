@@ -1,14 +1,16 @@
 import styles from "./Tile.module.css";
 
 type TileProps = {
-	sprite: string;
-	size: number;
+	sprite: string | null;
+	width?: number;
+	height?: number;
 };
 
-export const Tile = ({ sprite, size }: TileProps) => {
-	return (
-		<div className={styles.container} style={{ width: size, height: size }}>
-			<img className={styles.img} src={sprite} />
-		</div>
-	);
-};
+export const Tile = ({ sprite, height = 1, width = 1 }: TileProps) => (
+	<div
+		className={styles.container}
+		style={{ gridColumn: `span ${width}`, gridRow: `span ${height}` }}
+	>
+		{sprite && <img className={styles.img} src={sprite} />}
+	</div>
+);
