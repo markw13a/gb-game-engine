@@ -1,4 +1,10 @@
-import { calculateIndices, calculateRow, calculateTiles, getNextTile, getSideLength } from "./grid";
+import {
+	calculateIndices,
+	calculateRow,
+	calculateTiles,
+	getNextTile,
+	getSideLength,
+} from "./grid";
 
 describe("calculateIndices", () => {
 	it("should calculate sub-section indices", () => {
@@ -31,13 +37,13 @@ describe("getSideLength", () => {
 		const sideLength = getSideLength(grid);
 
 		expect(sideLength).toEqual(2);
-	})
-	
-	it('should throw error if grid is not square', () => {
+	});
+
+	it("should throw error if grid is not square", () => {
 		const grid = [1, 2, 3, 4, 5];
 		expect(() => getSideLength(grid)).toThrowError();
-	})
-})
+	});
+});
 
 describe("getNextTile", () => {
 	it("should return next position", () => {
@@ -55,7 +61,7 @@ describe("getNextTile", () => {
 		expect(downPos).toEqual(5);
 	});
 
-	it('should return position two tiles away', () => {
+	it("should return position two tiles away", () => {
 		const mapSideLength = 3;
 
 		const leftPos = getNextTile(7, mapSideLength, "left", 2);

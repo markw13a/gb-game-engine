@@ -7,7 +7,10 @@ type TileProps = {
 };
 
 export const Tile = ({ sprite, height = 1, width = 1 }: TileProps) => (
-	<div className={styles.container} style={{ gridColumn: `span ${width}`, gridRow: `span ${height}` }}>
+	<div
+		className={styles.container}
+		style={{ gridColumn: `span ${width}`, gridRow: `span ${height}` }}
+	>
 		{sprite && <img className={styles.img} src={sprite} />}
 	</div>
 );

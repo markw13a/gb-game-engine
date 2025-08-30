@@ -62,20 +62,22 @@ export const calculateIndices = (
 /**
  * Returns n where map represents an n x n grid
  * (e.g map.length = 9 -> n = 3)
-*/
+ */
 export const getSideLength = (grid: Array<unknown>) => {
 	if (!grid || !grid.length) {
-		throw new Error('Provided grid empty!')
+		throw new Error("Provided grid empty!");
 	}
 
 	const sideLength = Math.sqrt(grid.length);
 
 	if (!Number.isInteger(sideLength)) {
-		throw new Error(`Provided grid does not form a square. length: ${grid.length} side length: ${sideLength}`)
+		throw new Error(
+			`Provided grid does not form a square. length: ${grid.length} side length: ${sideLength}`,
+		);
 	}
-	
+
 	return sideLength;
-}
+};
 
 export const getNextTile = (
 	pos: number,

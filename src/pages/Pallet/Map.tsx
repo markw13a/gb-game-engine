@@ -57,11 +57,9 @@ export const Map = ({ map }: MapProps) => {
 			characterPos,
 			mapSideLength,
 			characterDirection,
+			characterDirection === "up" ? 1 : 2,
 		);
 		const targetObject = getObjectWithinTiles(targetTile, objects);
-
-		console.log({ objects })
-		console.log({ targetTile, targetObject, characterPos })
 
 		if (targetObject) {
 			dispatchObjectInteractionEvent(targetObject);

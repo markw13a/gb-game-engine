@@ -8,7 +8,13 @@ import type { Map } from "../../../../types/map";
 import type { Direction } from "../../../../types/sprite";
 import { getObjectWithinTiles, getObjectAtTile } from "@/lib/utils/object";
 import type { GameObject } from "@/lib/types/object";
-import { calculateIndices, calculateTiles, getNextTile, getSideLength } from "@/lib/utils/grid";
+import {
+	calculateIndices,
+	calculateTiles,
+	getNextTile,
+	getSideLength,
+} from "@/lib/utils/grid";
+import { ObjectTile } from "../Tile/ObjectTile";
 
 type VirtualisedTileRendererProps<T> = {
 	characterPos: number;
@@ -78,7 +84,11 @@ export const VirtualisedTileRenderer = <T extends GameObject = GameObject>({
 		scrollContainerRef.current.scrollTop = tileSize * 2;
 	}, [characterPos]);
 
-	const tileIndices = calculateIndices(viewAreaSize, mapSideLength, characterPos);
+	const tileIndices = calculateIndices(
+		viewAreaSize,
+		mapSideLength,
+		characterPos,
+	);
 	const tilesData = tileIndices.map((i) => map[i]);
 	const objectsData = tileIndices.map((tile) => getObjectAtTile(tile, objects));
 
@@ -90,18 +100,22 @@ export const VirtualisedTileRenderer = <T extends GameObject = GameObject>({
 		maxWidth: `${tileSize * (viewAreaSize - 4)}px`,
 	};
 
-
 	return (
 		<div className={styles.container} ref={scrollContainerRef}>
 			<div className={styles.tilesContainer} style={tilesContainerStyles}>
 				{tilesData.map((tile, i) => (
-					<Tile key={i} sprite={tile.sprite} />
+					<Tile key={`tile-${i}`} sprite={tile.sprite} />
 				))}
 			</div>
 			<div className={styles.objectsContainer} style={tilesContainerStyles}>
 				{objectsData.map((obj, i) => (
-					// Can't we just use grid features? No need for this nonsense with making tiles bigger
-					<Tile key={i} sprite={obj?.sprite ?? null} width={obj?.width} height={obj?.height} />
+					<ObjectTile
+						tileSize={tileSize}
+						sprite={obj?.sprite}
+						width={obj?.width}
+						height={obj?.height}
+						key={`object-${i}`}
+					/>
 				))}
 			</div>
 		</div>

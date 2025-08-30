@@ -7,7 +7,7 @@ type Tile = {
 	label: string;
 	sprite: string;
 	isPassable: boolean;
-}
+};
 
 const defaultProps = {
 	tileSize: "16px",
@@ -38,14 +38,14 @@ describe("<MapEditor />", () => {
 		const widthElement = screen.getByLabelText("Width (tiles)");
 		const heightElement = screen.getByLabelText("Height (tiles)");
 
-		expect(widthElement).toHaveValue('0');
-		expect(heightElement).toHaveValue('0');
+		expect(widthElement).toHaveValue("0");
+		expect(heightElement).toHaveValue("0");
 
 		await userEvent.type(widthElement, "10");
 		await userEvent.type(heightElement, "12");
 
-		expect(widthElement).toHaveValue('10');
-		expect(heightElement).toHaveValue('12');
+		expect(widthElement).toHaveValue("10");
+		expect(heightElement).toHaveValue("12");
 		expect(screen.getAllByLabelText("Empty tile")).toHaveLength(120);
 	});
 
@@ -71,6 +71,12 @@ describe("<MapEditor />", () => {
 		await userEvent.click(screen.getAllByLabelText("Empty tile")[0]);
 
 		expect(screen.getByLabelText("grass tile")).toBeInTheDocument();
-		expect(screen.getByLabelText("Output")).toHaveValue(JSON.stringify({ "dimensions": { "width": 1, "height": 1 }, "map": "G" }, null, 2));
+		expect(screen.getByLabelText("Output")).toHaveValue(
+			JSON.stringify(
+				{ dimensions: { width: 1, height: 1 }, map: "G" },
+				null,
+				2,
+			),
+		);
 	});
 });

@@ -36,9 +36,15 @@ describe("<Menu />", () => {
 			/>,
 		);
 
-		expect(screen.getByLabelText("Width (tiles)")).toHaveValue('12');
-		expect(screen.getByLabelText("Height (tiles)")).toHaveValue('13');
-		expect(screen.getByLabelText("Output")).toHaveValue(JSON.stringify({ "dimensions": { "width": 12, "height": 13 }, "map": "GGG" }, null, 2));
+		expect(screen.getByLabelText("Width (tiles)")).toHaveValue("12");
+		expect(screen.getByLabelText("Height (tiles)")).toHaveValue("13");
+		expect(screen.getByLabelText("Output")).toHaveValue(
+			JSON.stringify(
+				{ dimensions: { width: 12, height: 13 }, map: "GGG" },
+				null,
+				2,
+			),
+		);
 		expect(screen.getByText("Selected: Grass")).toBeInTheDocument();
 
 		await userEvent.type(screen.getByLabelText("Width (tiles)"), "15");
