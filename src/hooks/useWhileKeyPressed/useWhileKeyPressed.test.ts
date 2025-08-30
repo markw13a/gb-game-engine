@@ -45,7 +45,7 @@ describe("useWhileKeyPressed", () => {
 		await user.keyboard(`{/${key}}`);
 
 		// Test callback not called after key released
-		await act(() => vi.advanceTimersByTime(interval))
+		await act(() => vi.advanceTimersByTime(interval));
 
 		expect(cb).toHaveBeenCalledTimes(2);
 	});
