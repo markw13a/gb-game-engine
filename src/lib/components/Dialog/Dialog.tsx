@@ -62,12 +62,6 @@ export const Dialog = ({
 		return () => document.removeEventListener("keydown", listener);
 	}, [activeTextIndex, textChunks, interactionKey]);
 
-	// Show first chunk
-	// Interaction key pressed
-	// Show next chunk
-	// If final chunk
-	// Call onDialogEnded
-
 	return (
 		<div className={styles.container}>
 			<div className={styles.text}>{textChunks[activeTextIndex]}</div>

@@ -9,6 +9,8 @@ const defaultProps = {
 	onChoice: vi.fn(),
 	onDialogEnded: vi.fn(),
 	interactionKey: "e",
+    downKey: "s",
+    upKey: "w"
 };
 
 describe("<Dialog />", () => {
@@ -38,36 +40,58 @@ describe("<Dialog />", () => {
 		expect(screen.getByText("guru!")).toBeInTheDocument();
 	});
 
-	it("should call onDialogEnded", () => {
-		// text fits within section
-		// mock onDialogEnded
-		// press interaction key
-		// confirm onDialogEnded was called
+	it("should call onDialogEnded", async () => {
+        const text = "I'm the fishing guru!";
+		const maxCharacters = 25;
+        const onDialogEndedMock = vi.fn();
+
+		render(
+			<Dialog {...defaultProps} text={text} maxCharacters={maxCharacters} onDialogEnded={onDialogEndedMock} />,
+		);
+		
+		await userEvent.keyboard("e");
+
+        expect(onDialogEndedMock).toHaveBeenCalled();
 	});
 
 	it("should show choice menu", () => {
-		// text fits
-		// isMultiChoice
-		// Cofirm yes/no options visible
+        render(<Dialog {...defaultProps} isMultiChoice />);
+		
+        expect(screen.getByRole('button', { name: 'Yes' })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'No' })).toBeInTheDocument();
 	});
 
-	it("should show choice menu once all text has been shown", () => {
-		// text does not fit
-		// isMultiChoice
-		// check first text section shown
-		// check yes/no not shown
-		// press interaction key
-		// check yes/no shown
+	it("should show choice menu once all text has been shown", async () => {
+        const text = "I'm the fishing guru!";
+		const maxCharacters = 20;
+
+		render(
+			<Dialog {...defaultProps} text={text} maxCharacters={maxCharacters} isMultiChoice />,
+		);
+
+        expect(screen.getByText("I'm the fishing")).toBeInTheDocument();
+        expect(screen.queryByRole('button', { name: 'Yes' })).not.toBeInTheDocument();
+        expect(screen.queryByRole('button', { name: 'No' })).not.toBeInTheDocument();
+
+		await userEvent.keyboard("e");
+
+        expect(screen.getByRole('button', { name: 'Yes' })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'No' })).toBeInTheDocument();
 	});
 
-	it("should make choice", () => {
-		// text fits
-		// isMultiChoice
-		// Check yes/no options visible
-		// press interaction key
-		// check onChoice called with "yes"
-		// press "down" key (forgot we'd need one!)
-		// press interaction key
-		// check onChoice called with "no"
+	it("should make choice", async () => {
+        const onChoiceMock = vi.fn();
+
+        render(<Dialog {...defaultProps} isMultiChoice onChoice={onChoiceMock} />);
+
+        // Select "Yes"
+        await userEvent.keyboard('e');
+        expect(onChoiceMock).toHaveBeenCalledWith('Yes');
+
+        // Select "No"
+        await userEvent.keyboard('s');
+        await userEvent.keyboard('e');
+        expect(onChoiceMock).toHaveBeenLastCalledWith('No');
+
 	});
 });
