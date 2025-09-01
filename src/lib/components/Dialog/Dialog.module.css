@@ -1,0 +1,21 @@
+.dialog {
+    anchor-name: --dialogbox;
+}
+
+.choices {
+    position: absolute;
+    position-anchor: --dialogbox;
+    position-area: top right;
+
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    gap: 6px;
+
+    /* TODO: How to get pixelated look? */
+    border: 1px solid;
+}
+
+.choice {
+}

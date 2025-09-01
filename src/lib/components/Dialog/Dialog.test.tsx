@@ -57,7 +57,7 @@ describe("<Dialog />", () => {
 	it("should show choice menu", () => {
         render(<Dialog {...defaultProps} isMultiChoice />);
 		
-        expect(screen.getByRole('button', { name: 'Yes' })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: '> Yes' })).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'No' })).toBeInTheDocument();
 	});
 
@@ -75,14 +75,15 @@ describe("<Dialog />", () => {
 
 		await userEvent.keyboard("e");
 
-        expect(screen.getByRole('button', { name: 'Yes' })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: '> Yes' })).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'No' })).toBeInTheDocument();
 	});
 
 	it("should make choice", async () => {
         const onChoiceMock = vi.fn();
+		const onDialogEndedMock = vi.fn();
 
-        render(<Dialog {...defaultProps} isMultiChoice onChoice={onChoiceMock} />);
+        render(<Dialog {...defaultProps} isMultiChoice onChoice={onChoiceMock} onDialogEnded={onDialogEndedMock} />);
 
         // Select "Yes"
         await userEvent.keyboard('e');
@@ -92,6 +93,6 @@ describe("<Dialog />", () => {
         await userEvent.keyboard('s');
         await userEvent.keyboard('e');
         expect(onChoiceMock).toHaveBeenLastCalledWith('No');
-
+		expect(onDialogEndedMock).toHaveBeenCalledTimes(2);
 	});
 });
