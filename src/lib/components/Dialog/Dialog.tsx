@@ -10,6 +10,7 @@ type SupportedClass =
 	| "contentsContainer"
 	| "choices"
 	| "choice"
+	| "choiceIndicator"
 	| "indicator"
 	| "text"
 	| "dialog";
@@ -44,6 +45,7 @@ export const Dialog = ({
 		contents: styles.contents,
 		choices: styles.choices,
 		choice: styles.choice,
+		choiceIndicator: styles.choiceIndicator,
 		dialog: styles.dialog,
 		text: styles.text,
 	},
@@ -121,7 +123,7 @@ export const Dialog = ({
 	]);
 
 	return (
-		<div className={classNames.container}>
+		<div aria-label="game-dialog" className={classNames.container}>
 			<div className={classNames.contentsContainer}>
 				<div className={classNames.contents}>
 					<div className={classNames.dialog}>
@@ -137,14 +139,20 @@ export const Dialog = ({
 								type="button"
 								onClick={() => onChoice("Yes")}
 							>
-								{highlightedOption === "Yes" ? ">" : ""} Yes
+								<span className={classNames.choiceIndicator}>
+									{highlightedOption === "Yes" ? ">" : ""}
+								</span>
+								<span>Yes</span>
 							</button>
 							<button
 								className={classNames.choice}
 								type="button"
 								onClick={() => onChoice("No")}
 							>
-								{highlightedOption === "No" ? ">" : ""} No
+								<span className={classNames.choiceIndicator}>
+									{highlightedOption === "No" ? ">" : ""}
+								</span>
+								<span>No</span>
 							</button>
 						</div>
 					)}

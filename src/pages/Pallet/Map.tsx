@@ -10,8 +10,8 @@ import type { Direction, SpriteMap } from "../../types/sprite";
 import { getObjectWithinTiles } from "@/lib/utils/object";
 import { TILE_SIZE } from "./constants/tile";
 import { getNextTile, getSideLength } from "@/lib/utils/grid";
-import { Dialog } from "@/lib/components/Dialog/Dialog";
 import { useGameStateContext } from "./providers/GameStateProvider";
+import { DialogLayer } from "./components/DialogLayer/DialogLayer";
 
 type MapProps = {
 	map: MapType;
@@ -38,6 +38,7 @@ export const Map = ({ map }: MapProps) => {
 	const [isMoving, setIsMoving] = useState(false);
 	const [characterDirection, setCharacterDirection] =
 		useState<Direction>("down");
+	const [dialog, setDialog] = useState("");
 	const {
 		state: { objects },
 		dispatch,
@@ -48,7 +49,13 @@ export const Map = ({ map }: MapProps) => {
 	const onMoveComplete = (dir: Direction) =>
 		setCharacterPos(getNextTile(characterPos, mapSideLength, dir, 2));
 
-	const onKeyPressed = () => setIsMoving(true);
+	const onKeyPressed = () => {
+		if (!!dialog) {
+			return;
+		}
+
+		setIsMoving(true);
+	};
 	// TODO: Need to check that key released matches the direction! Creates bug where gif stops looping even though we're still moving
 	// Maybe not the most elegant solution to fix it here, consider how to fix later
 	const onKeyReleased = () => setIsMoving(false);
@@ -63,8 +70,9 @@ export const Map = ({ map }: MapProps) => {
 		);
 		const targetObject = getObjectWithinTiles(targetTile, objects);
 
-		if (targetObject && targetObject.events.length) {
-			targetObject.events.forEach((event) => dispatch({ type: event, payload: { id: targetObject.id } }));
+		if (targetObject) {
+			dispatch({ type: "remove-item", payload: { id: targetObject.id } });
+			setDialog("An interesting item was found!");
 		}
 	};
 
@@ -78,11 +86,12 @@ export const Map = ({ map }: MapProps) => {
 		<div className={styles.container}>
 			<VirtualisedTileRenderer
 				map={map}
-				objects={objects} // TODO: This should be stateful, allowing objects to be removed during the course of the game
+				objects={objects}
 				characterPos={characterPos}
 				onMoveStart={setCharacterDirection}
 				onMoveComplete={onMoveComplete}
 				tileSize={TILE_SIZE}
+				disableMovement={!!dialog}
 				viewAreaSize={13}
 			/>
 			<CharacterLayer
@@ -90,15 +99,7 @@ export const Map = ({ map }: MapProps) => {
 				sprites={characterSprites}
 				direction={characterDirection}
 			/>
-			{/* <Dialog
-				text="I'm the fishing guru!"
-				maxCharacters={20}
-				onChoice={() => {}}
-				onDialogEnded={() => {}}
-				interactionKey="e"
-				downKey="s"
-				upKey="w"
-			/> */}
+			<DialogLayer text={dialog} onDialogEnded={() => setDialog("")} />
 		</div>
 	);
 };

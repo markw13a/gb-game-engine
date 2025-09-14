@@ -1,1 +1,1 @@
-export type Actions = "remove-item";
+export type Actions = "remove-item" | "dialog";

@@ -19,12 +19,11 @@
 	--font-size-large: 18px;
 
 	--radius: 4px;
-
-	font-family: "Pixelated";
 }
 
 * {
 	box-sizing: border-box;
+	font-family: "Pixelated";
 }
 
 body {

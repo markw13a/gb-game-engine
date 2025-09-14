@@ -5,17 +5,16 @@ import {
 	type PropsWithChildren,
 } from "react";
 import { objects } from "../constants/objects";
-import type { PalletGameObject } from "../types/PalletGameObject";
-import type { Actions } from "../types/actions";
+import type { GameObject } from "@/lib/types/object";
 
 type GameStateObject = {
-	objects: PalletGameObject[];
+	objects: GameObject[];
 };
 
-type GameStateAction = {
-	type: Actions;
-	payload: { id: string };
-};
+type RemoveItemAction = { type: "remove-item"; payload: { id: string } };
+type DialogAction = { type: "dialog"; payload: { dialog: string } };
+
+type GameStateAction = RemoveItemAction | DialogAction;
 
 const reducer = (
 	state: GameStateObject,
