@@ -1,26 +1,44 @@
-import { createContext, useContext, useReducer, type PropsWithChildren } from "react";
+import {
+	createContext,
+	useContext,
+	useReducer,
+	type PropsWithChildren,
+} from "react";
 import { objects } from "../constants/objects";
-import type { GameObject } from "@/lib/types/object";
+import type { PalletGameObject } from "../types/PalletGameObject";
+import type { Actions } from "../types/actions";
 
 type GameStateObject = {
-    map: {
-        objects: GameObject[];
-    };
+	objects: PalletGameObject[];
 };
 
-type AllowedActions = "remove-item";
+type GameStateAction = {
+	type: Actions;
+	payload: { id: string };
+};
 
-const reducer = (state: GameStateObject, action: AllowedActions) => {
-    return state;
+const reducer = (
+	state: GameStateObject,
+	{ type, payload }: GameStateAction,
+) => {
+	switch (type) {
+		case "remove-item":
+			const objects = state.objects;
+			const nextObjects = objects.filter((object) => object.id !== payload.id);
+
+			return { ...state, objects: nextObjects };
+		default:
+			throw new Error(`Unsupported action type ${type}`);
+	}
 };
 
 const GameStateContext = createContext<{
 	state: GameStateObject;
-	dispatch: React.ActionDispatch<[action: AllowedActions]>;
+	dispatch: React.ActionDispatch<[action: GameStateAction]>;
 } | null>(null);
 
 export const GameStateProvider = ({ children }: PropsWithChildren) => {
-	const [state, dispatch] = useReducer(reducer, { map: { objects } });
+	const [state, dispatch] = useReducer(reducer, { objects });
 
 	return (
 		<GameStateContext value={{ state, dispatch }}>{children}</GameStateContext>
@@ -28,11 +46,13 @@ export const GameStateProvider = ({ children }: PropsWithChildren) => {
 };
 
 export const useGameStateContext = () => {
-    const context = useContext(GameStateContext);
+	const context = useContext(GameStateContext);
 
-    if (!context) {
-        throw new Error('GameStateContext consumer not wrapped in appropriate provider')
-    }
+	if (!context) {
+		throw new Error(
+			"GameStateContext consumer not wrapped in appropriate provider",
+		);
+	}
 
-    return context;
+	return context;
 };

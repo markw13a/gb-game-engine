@@ -7,13 +7,11 @@ import styles from "./Map.module.css";
 import { useKeyListener } from "../../hooks/useKeyListener/useKeyListener";
 import type { Direction, SpriteMap } from "../../types/sprite";
 
-import {
-	dispatchObjectInteractionEvent,
-	getObjectWithinTiles,
-} from "@/lib/utils/object";
-import { objects } from "./constants/objects";
+import { getObjectWithinTiles } from "@/lib/utils/object";
 import { TILE_SIZE } from "./constants/tile";
 import { getNextTile, getSideLength } from "@/lib/utils/grid";
+import { Dialog } from "@/lib/components/Dialog/Dialog";
+import { useGameStateContext } from "./providers/GameStateProvider";
 
 type MapProps = {
 	map: MapType;
@@ -40,6 +38,10 @@ export const Map = ({ map }: MapProps) => {
 	const [isMoving, setIsMoving] = useState(false);
 	const [characterDirection, setCharacterDirection] =
 		useState<Direction>("down");
+	const {
+		state: { objects },
+		dispatch,
+	} = useGameStateContext();
 
 	const mapSideLength = getSideLength(map);
 
@@ -61,8 +63,8 @@ export const Map = ({ map }: MapProps) => {
 		);
 		const targetObject = getObjectWithinTiles(targetTile, objects);
 
-		if (targetObject) {
-			dispatchObjectInteractionEvent(targetObject);
+		if (targetObject && targetObject.events.length) {
+			targetObject.events.forEach((event) => dispatch({ type: event, payload: { id: targetObject.id } }));
 		}
 	};
 
@@ -76,7 +78,7 @@ export const Map = ({ map }: MapProps) => {
 		<div className={styles.container}>
 			<VirtualisedTileRenderer
 				map={map}
-				objects={objects}
+				objects={objects} // TODO: This should be stateful, allowing objects to be removed during the course of the game
 				characterPos={characterPos}
 				onMoveStart={setCharacterDirection}
 				onMoveComplete={onMoveComplete}
@@ -88,6 +90,15 @@ export const Map = ({ map }: MapProps) => {
 				sprites={characterSprites}
 				direction={characterDirection}
 			/>
+			{/* <Dialog
+				text="I'm the fishing guru!"
+				maxCharacters={20}
+				onChoice={() => {}}
+				onDialogEnded={() => {}}
+				interactionKey="e"
+				downKey="s"
+				upKey="w"
+			/> */}
 		</div>
 	);
 };
