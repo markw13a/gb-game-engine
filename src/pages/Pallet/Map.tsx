@@ -106,7 +106,7 @@ export const Map = ({ map }: MapProps) => {
 					onDialogEnded={() => setDialog("")}
 					interactionKey="e"
 					downKey="s"
-					upKey="w"  
+					upKey="w"
 				/>
 			)}
 		</div>
