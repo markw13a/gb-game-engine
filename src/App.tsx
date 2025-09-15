@@ -3,11 +3,14 @@ import { MapEditor } from "./pages/MapEditor/MapEditor";
 import { map } from "./pages/Pallet/constants/map";
 import { TILE_DATA, TILES } from "./pages/Pallet/constants/symbols";
 import { Map } from "./pages/Pallet/Map";
+import { GameStateProvider } from "./pages/Pallet/providers/GameStateProvider";
 
 function App() {
 	return (
 		<>
-			<Map map={map} />
+			<GameStateProvider>
+				<Map map={map} />
+			</GameStateProvider>
 			{/* <MapEditor
 				tileOptions={TILE_DATA}
 				tileSize="32px"

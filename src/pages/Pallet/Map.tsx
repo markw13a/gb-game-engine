@@ -7,13 +7,11 @@ import styles from "./Map.module.css";
 import { useKeyListener } from "../../hooks/useKeyListener/useKeyListener";
 import type { Direction, SpriteMap } from "../../types/sprite";
 
-import {
-	dispatchObjectInteractionEvent,
-	getObjectWithinTiles,
-} from "@/lib/utils/object";
-import { objects } from "./constants/objects";
+import { getObjectWithinTiles } from "@/lib/utils/object";
 import { TILE_SIZE } from "./constants/tile";
 import { getNextTile, getSideLength } from "@/lib/utils/grid";
+import { useGameStateContext } from "./providers/GameStateProvider";
+import { Dialog } from "@/lib/components/Dialog/Dialog";
 
 type MapProps = {
 	map: MapType;
@@ -40,13 +38,24 @@ export const Map = ({ map }: MapProps) => {
 	const [isMoving, setIsMoving] = useState(false);
 	const [characterDirection, setCharacterDirection] =
 		useState<Direction>("down");
+	const [dialog, setDialog] = useState("");
+	const {
+		state: { objects },
+		dispatch,
+	} = useGameStateContext();
 
 	const mapSideLength = getSideLength(map);
 
 	const onMoveComplete = (dir: Direction) =>
 		setCharacterPos(getNextTile(characterPos, mapSideLength, dir, 2));
 
-	const onKeyPressed = () => setIsMoving(true);
+	const onKeyPressed = () => {
+		if (!!dialog) {
+			return;
+		}
+
+		setIsMoving(true);
+	};
 	// TODO: Need to check that key released matches the direction! Creates bug where gif stops looping even though we're still moving
 	// Maybe not the most elegant solution to fix it here, consider how to fix later
 	const onKeyReleased = () => setIsMoving(false);
@@ -62,7 +71,8 @@ export const Map = ({ map }: MapProps) => {
 		const targetObject = getObjectWithinTiles(targetTile, objects);
 
 		if (targetObject) {
-			dispatchObjectInteractionEvent(targetObject);
+			dispatch({ type: "remove-item", payload: { id: targetObject.id } });
+			setDialog("An interesting item was found!");
 		}
 	};
 
@@ -81,6 +91,7 @@ export const Map = ({ map }: MapProps) => {
 				onMoveStart={setCharacterDirection}
 				onMoveComplete={onMoveComplete}
 				tileSize={TILE_SIZE}
+				disableMovement={!!dialog}
 				viewAreaSize={13}
 			/>
 			<CharacterLayer
@@ -88,6 +99,16 @@ export const Map = ({ map }: MapProps) => {
 				sprites={characterSprites}
 				direction={characterDirection}
 			/>
+			{!!dialog && (
+				<Dialog
+					text={dialog}
+					maxCharacters={20}
+					onDialogEnded={() => setDialog("")}
+					interactionKey="e"
+					downKey="s"
+					upKey="w"
+				/>
+			)}
 		</div>
 	);
 };

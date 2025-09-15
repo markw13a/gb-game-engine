@@ -4,11 +4,11 @@ import type { GameObject } from "@/lib/types/object";
 // Maybe they should live together too?
 export const objects: GameObject[] = [
 	{
+		id: "1",
 		width: 2,
 		height: 2,
 		position: 300,
 		occupiedTiles: [300, 301, 340, 341],
 		sprite: "/sprites/objects/pokeball.png",
-		event: "item",
 	},
 ];

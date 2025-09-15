@@ -22,6 +22,7 @@ type VirtualisedTileRendererProps<T> = {
 	objects: T[];
 	tileSize: number;
 	viewAreaSize?: number;
+	disableMovement: boolean;
 	onMoveStart: (dir: Direction) => void;
 	onMoveComplete: (dir: Direction) => void;
 };
@@ -33,6 +34,7 @@ export const VirtualisedTileRenderer = <T extends GameObject = GameObject>({
 	objects,
 	tileSize,
 	viewAreaSize = 5,
+	disableMovement,
 	onMoveStart,
 	onMoveComplete,
 }: VirtualisedTileRendererProps<T>) => {
@@ -45,6 +47,7 @@ export const VirtualisedTileRenderer = <T extends GameObject = GameObject>({
 		callbackRef.current = onMoveComplete;
 	}, [onMoveComplete]);
 
+	// TODO: Not sure I like how movement is spread across a few hooks + components
 	const move = useCallback(
 		async (dir: Direction) => {
 			const nextCharacterPos = getNextTile(characterPos, mapSideLength, dir, 2);
@@ -59,7 +62,7 @@ export const VirtualisedTileRenderer = <T extends GameObject = GameObject>({
 				(tile) => map[tile]?.isPassable && !getObjectWithinTiles(tile, objects),
 			);
 
-			if (!isPassable || isScrollingRef.current) {
+			if (!isPassable || isScrollingRef.current || disableMovement) {
 				return;
 			}
 
