@@ -17,7 +17,7 @@ type SupportedClass =
 
 type DialogProps = {
 	text: string;
-	onChoice: (choice: Choice) => void;
+	onChoice?: (choice: Choice) => void;
 	onDialogEnded: () => void;
 	maxCharacters: number;
 	interactionKey: string;
@@ -52,7 +52,7 @@ export const Dialog = ({
 	text,
 	maxCharacters,
 	isMultiChoice = false,
-	onChoice,
+	onChoice = () => {},
 	onDialogEnded,
 	interactionKey,
 	downKey,

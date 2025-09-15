@@ -11,7 +11,7 @@ import { getObjectWithinTiles } from "@/lib/utils/object";
 import { TILE_SIZE } from "./constants/tile";
 import { getNextTile, getSideLength } from "@/lib/utils/grid";
 import { useGameStateContext } from "./providers/GameStateProvider";
-import { DialogLayer } from "./components/DialogLayer/DialogLayer";
+import { Dialog } from "@/lib/components/Dialog/Dialog";
 
 type MapProps = {
 	map: MapType;
@@ -99,7 +99,16 @@ export const Map = ({ map }: MapProps) => {
 				sprites={characterSprites}
 				direction={characterDirection}
 			/>
-			<DialogLayer text={dialog} onDialogEnded={() => setDialog("")} />
+			{!!dialog && (
+				<Dialog
+					text={dialog}
+					maxCharacters={20}
+					onDialogEnded={() => setDialog("")}
+					interactionKey="e"
+					downKey="s"
+					upKey="w"  
+				/>
+			)}
 		</div>
 	);
 };

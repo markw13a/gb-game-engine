@@ -7,16 +7,15 @@ import {
 import { objects } from "../constants/objects";
 import type { GameObject } from "@/lib/types/object";
 
-type GameStateObject = {
+export type GameStateObject = {
 	objects: GameObject[];
 };
 
 type RemoveItemAction = { type: "remove-item"; payload: { id: string } };
-type DialogAction = { type: "dialog"; payload: { dialog: string } };
 
-type GameStateAction = RemoveItemAction | DialogAction;
+type GameStateAction = RemoveItemAction;
 
-const reducer = (
+export const reducer = (
 	state: GameStateObject,
 	{ type, payload }: GameStateAction,
 ) => {
