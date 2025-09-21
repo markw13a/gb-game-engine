@@ -42,7 +42,7 @@ export const useWhileKeyPressed = (
 	}, [key]);
 
 	useEffect(() => {
-		let timerId: null | number = null;
+		let timerId: NodeJS.Timeout | null = null;
 
 		const cb = () => {
 			timerId = setTimeout(async () => {
@@ -61,5 +61,5 @@ export const useWhileKeyPressed = (
 				clearTimeout(timerId);
 			}
 		};
-	}, [key, interval]);
+	}, [interval]);
 };

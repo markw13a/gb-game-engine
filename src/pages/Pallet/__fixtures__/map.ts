@@ -9,4 +9,4 @@ export const generateTile = (overrides: Partial<Tile> = {}): Tile => ({
 });
 
 export const generateMap = (sideLength: number): Map =>
-	Array.from({ length: Math.pow(sideLength, 2) }).map(() => generateTile());
+	Array.from({ length: sideLength ** 2 }).map(() => generateTile());

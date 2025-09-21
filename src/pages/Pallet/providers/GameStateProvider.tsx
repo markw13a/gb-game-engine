@@ -20,11 +20,12 @@ export const reducer = (
 	{ type, payload }: GameStateAction,
 ) => {
 	switch (type) {
-		case "remove-item":
+		case "remove-item": {
 			const objects = state.objects;
 			const nextObjects = objects.filter((object) => object.id !== payload.id);
 
 			return { ...state, objects: nextObjects };
+		}
 		default:
 			throw new Error(`Unsupported action type ${type}`);
 	}

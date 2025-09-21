@@ -69,11 +69,13 @@ export const Menu = <T,>({
 						{brush ? getBrushLabel(brush) : "None"}
 					</div>
 					<div className={styles.tiles}>
-						{tileOptions.map((tile) => (
+						{tileOptions.map((tile, index) => (
 							<button
 								className={styles.tile}
 								aria-label={`Select ${getBrushLabel(tile)} brush`}
 								onClick={() => onBrushChange(tile)}
+								type="button"
+								key={`${getBrushLabel(tile) + index}`}
 							>
 								<img alt={getBrushLabel(tile)} src={getBrushImgSrc(tile)} />
 							</button>
@@ -83,14 +85,14 @@ export const Menu = <T,>({
 				<div className={styles.controls}>
 					<Input
 						type="number"
-						onChange={(e) => onWidthChange(parseInt(e.target.value))}
+						onChange={(e) => onWidthChange(parseInt(e.target.value, 10))}
 						value={width}
 					>
 						Width (tiles)
 					</Input>
 					<Input
 						type="number"
-						onChange={(e) => onHeightChange(parseInt(e.target.value))}
+						onChange={(e) => onHeightChange(parseInt(e.target.value, 10))}
 						value={height}
 					>
 						Height (tiles)

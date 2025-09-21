@@ -31,7 +31,7 @@ export const Map = <T,>({
 				{tiles.map((tile, index) =>
 					tile === null ? (
 						<div
-							aria-label="Empty tile"
+							data-testid="Empty tile"
 							className={styles.emptyTile}
 							style={{ width: tileSize, height: tileSize }}
 							onClick={() => onClickTile(index)}
@@ -39,7 +39,7 @@ export const Map = <T,>({
 						/>
 					) : (
 						<div
-							aria-label={`${getTileLabel(tile)} tile`}
+							data-testid={`${getTileLabel(tile)} tile`}
 							className={styles.tile}
 							style={{ width: tileSize, height: tileSize }}
 							onClick={() => onClickTile(index)}

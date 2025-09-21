@@ -50,7 +50,7 @@ export const Map = ({ map }: MapProps) => {
 		setCharacterPos(getNextTile(characterPos, mapSideLength, dir, 2));
 
 	const onKeyPressed = () => {
-		if (!!dialog) {
+		if (dialog) {
 			return;
 		}
 

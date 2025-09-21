@@ -24,9 +24,9 @@ export const calculateTiles = (
 	mapSideLength: number,
 	position: number,
 ) =>
-	calculateRow(columns, mapSideLength, position)
-		.map((index) => calculateColumn(rows, index))
-		.flat();
+	calculateRow(columns, mapSideLength, position).flatMap((index) =>
+		calculateColumn(rows, index),
+	);
 
 /**
  * Used to generate subsection of an n x n array

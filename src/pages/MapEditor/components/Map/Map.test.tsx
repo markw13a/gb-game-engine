@@ -21,8 +21,8 @@ describe("<Map />", () => {
 			/>,
 		);
 
-		expect(screen.getByLabelText("Label tile")).toBeInTheDocument();
-		expect(screen.getByLabelText("Empty tile")).toBeInTheDocument();
+		expect(screen.getByTestId("Label tile")).toBeInTheDocument();
+		expect(screen.getByTestId("Empty tile")).toBeInTheDocument();
 	});
 
 	it("should call onClick", async () => {
@@ -36,8 +36,8 @@ describe("<Map />", () => {
 			/>,
 		);
 
-		await userEvent.click(screen.getByLabelText("Empty tile"));
-		await userEvent.click(screen.getByLabelText("Label tile"));
+		await userEvent.click(screen.getByTestId("Empty tile"));
+		await userEvent.click(screen.getByTestId("Label tile"));
 
 		expect(onClickTileMock).toHaveBeenCalledTimes(2);
 	});

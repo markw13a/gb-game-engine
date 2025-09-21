@@ -112,18 +112,18 @@ export const Dialog = ({
 			document.removeEventListener("keydown", multiListener);
 		};
 	}, [
-		activeTextIndex,
-		textChunks,
 		interactionKey,
 		downKey,
 		upKey,
 		isMultiChoice,
 		highlightedOption,
 		isAtLastChunk,
+		onChoice,
+		onDialogEnded,
 	]);
 
 	return (
-		<div aria-label="game-dialog" className={classNames.container}>
+		<div className={classNames.container}>
 			<div className={classNames.contentsContainer}>
 				<div className={classNames.contents}>
 					<div className={classNames.dialog}>
