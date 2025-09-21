@@ -6,6 +6,6 @@ export type Tile = {
 	isPassable: boolean;
 };
 
-export type Map = Tile[];
+export type GameMap = Tile[];
 
 export type Symbol = "G" | "g" | "p" | "B" | "b" | "N" | "n" | "d" | "R" | "r";

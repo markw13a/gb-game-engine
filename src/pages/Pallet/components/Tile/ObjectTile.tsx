@@ -19,6 +19,7 @@ export const ObjectTile = ({
 	>
 		{sprite && (
 			<img
+				alt="object"
 				src={sprite}
 				style={{ width: width * tileSize, height: height * tileSize }}
 			/>

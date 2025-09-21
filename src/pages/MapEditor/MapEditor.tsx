@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styles from "./MapEditor.module.css";
 import { Menu } from "./components/Menu/Menu";
-import { Map } from "./components/Map/Map";
+import { TileGrid } from "./components/Map/TileGrid";
 import { EMPTY_TILE_SYMBOL } from "./constants/constants";
 
 type MapEditorProps<T> = {
@@ -60,13 +60,9 @@ export const MapEditor = <T,>({
 		return str + getTileSymbol(tile);
 	}, "");
 
-	// TODO: Can/should we repurpose map for rendering tiles here? Not sure, think this is potentially very simple
-	// Render width x height number of tiles, set grid properties accordingly
-	// If no img or whatever available for the select tile, display an empty tile placeholder
-	// Click on the tile updates it to match whatever the selected 'brush' is
 	return (
 		<div className={styles.container}>
-			<Map
+			<TileGrid
 				width={width}
 				height={height}
 				tileSize={tileSize}

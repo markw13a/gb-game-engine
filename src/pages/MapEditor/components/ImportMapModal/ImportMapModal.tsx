@@ -30,14 +30,14 @@ export const ImportMapModal = ({
 			<div className={styles.container}>
 				<div className={styles.contents}>
 					<Input
-						onChange={(e) => setWidth(parseInt(e.target.value))}
+						onChange={(e) => setWidth(parseInt(e.target.value, 10))}
 						type="number"
 						value={width}
 					>
 						Width (tiles)
 					</Input>
 					<Input
-						onChange={(e) => setHeight(parseInt(e.target.value))}
+						onChange={(e) => setHeight(parseInt(e.target.value, 10))}
 						type="number"
 						value={height}
 					>

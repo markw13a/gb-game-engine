@@ -1,10 +1,10 @@
 import styles from "./VirtualisedTileRenderer.module.css";
 import { Tile } from "../Tile/Tile";
 
-import { useCallback, useEffect, useLayoutEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import { useScroll } from "../../../../lib/hooks/useScroll";
 import { useWhileKeyPressed } from "../../../../hooks/useWhileKeyPressed/useWhileKeyPressed";
-import type { Map } from "../../../../types/map";
+import type { GameMap } from "../../../../types/map";
 import type { Direction } from "../../../../types/sprite";
 import { getObjectWithinTiles, getObjectAtTile } from "@/lib/utils/object";
 import type { GameObject } from "@/lib/types/object";
@@ -18,7 +18,7 @@ import { ObjectTile } from "../Tile/ObjectTile";
 
 type VirtualisedTileRendererProps<T> = {
 	characterPos: number;
-	map: Map;
+	map: GameMap;
 	objects: T[];
 	tileSize: number;
 	viewAreaSize?: number;
@@ -48,30 +48,27 @@ export const VirtualisedTileRenderer = <T extends GameObject = GameObject>({
 	}, [onMoveComplete]);
 
 	// TODO: Not sure I like how movement is spread across a few hooks + components
-	const move = useCallback(
-		async (dir: Direction) => {
-			const nextCharacterPos = getNextTile(characterPos, mapSideLength, dir, 2);
-			const nextCharacterPosOccupiedTiles = calculateTiles(
-				2,
-				2,
-				mapSideLength,
-				nextCharacterPos,
-			);
+	const move = async (dir: Direction) => {
+		const nextCharacterPos = getNextTile(characterPos, mapSideLength, dir, 2);
+		const nextCharacterPosOccupiedTiles = calculateTiles(
+			2,
+			2,
+			mapSideLength,
+			nextCharacterPos,
+		);
 
-			const isPassable = nextCharacterPosOccupiedTiles.every(
-				(tile) => map[tile]?.isPassable && !getObjectWithinTiles(tile, objects),
-			);
+		const isPassable = nextCharacterPosOccupiedTiles.every(
+			(tile) => map[tile]?.isPassable && !getObjectWithinTiles(tile, objects),
+		);
 
-			if (!isPassable || isScrollingRef.current || disableMovement) {
-				return;
-			}
+		if (!isPassable || isScrollingRef.current || disableMovement) {
+			return;
+		}
 
-			onMoveStart(dir);
-			await scroll(dir);
-			callbackRef.current(dir);
-		},
-		[onMoveComplete, characterPos],
-	);
+		onMoveStart(dir);
+		await scroll(dir);
+		callbackRef.current(dir);
+	};
 
 	useWhileKeyPressed("a", () => move("left"), 10);
 	useWhileKeyPressed("d", () => move("right"), 10);
@@ -80,12 +77,13 @@ export const VirtualisedTileRenderer = <T extends GameObject = GameObject>({
 
 	// Our movement animation is based on rendering additional layers of hidden tiles
 	// Around the visible section. When rendering, we need to scroll to the centre of this container
+	// biome-ignore lint/correctness/useExhaustiveDependencies: don't need ref, should be refreshed when char pos updates
 	useLayoutEffect(() => {
 		if (scrollContainerRef.current === null) return;
 		// Want there to be one unseen tile to the left and right of the visible area
 		scrollContainerRef.current.scrollLeft = tileSize * 2;
 		scrollContainerRef.current.scrollTop = tileSize * 2;
-	}, [characterPos]);
+	}, [characterPos, tileSize]);
 
 	const tileIndices = calculateIndices(
 		viewAreaSize,

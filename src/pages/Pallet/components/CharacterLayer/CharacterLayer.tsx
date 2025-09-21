@@ -24,7 +24,9 @@ export const CharacterLayer = ({
 
 		const spriteUrls = [...idleSpriteUrls, ...movingSpriteUrls];
 
-		spriteUrls.forEach((url) => preload(url, { as: "image" }));
+		spriteUrls.forEach((url) => {
+			preload(url, { as: "image" });
+		});
 	}, [sprites]);
 
 	return (

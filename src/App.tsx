@@ -1,15 +1,17 @@
 import "./App.css";
+// biome-ignore lint/correctness/noUnusedImports: TODO introduce react router
 import { MapEditor } from "./pages/MapEditor/MapEditor";
 import { map } from "./pages/Pallet/constants/map";
+// biome-ignore lint/correctness/noUnusedImports: TODO introduce react router
 import { TILE_DATA, TILES } from "./pages/Pallet/constants/symbols";
-import { Map } from "./pages/Pallet/Map";
+import { Pallet } from "./pages/Pallet/Pallet";
 import { GameStateProvider } from "./pages/Pallet/providers/GameStateProvider";
 
 function App() {
 	return (
 		<>
 			<GameStateProvider>
-				<Map map={map} />
+				<Pallet map={map} />
 			</GameStateProvider>
 			{/* <MapEditor
 				tileOptions={TILE_DATA}

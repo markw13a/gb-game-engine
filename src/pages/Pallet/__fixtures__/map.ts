@@ -1,4 +1,4 @@
-import type { Map, Tile } from "@/types/map";
+import type { GameMap, Tile } from "@/types/map";
 
 export const generateTile = (overrides: Partial<Tile> = {}): Tile => ({
 	type: "G",
@@ -8,5 +8,5 @@ export const generateTile = (overrides: Partial<Tile> = {}): Tile => ({
 	...overrides,
 });
 
-export const generateMap = (sideLength: number): Map =>
-	Array.from({ length: Math.pow(sideLength, 2) }).map(() => generateTile());
+export const generateMap = (sideLength: number): GameMap =>
+	Array.from({ length: sideLength ** 2 }).map(() => generateTile());

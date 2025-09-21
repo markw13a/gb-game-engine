@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { Map } from "./Map";
+import { TileGrid } from "./TileGrid";
 import userEvent from "@testing-library/user-event";
 
 const defaultProps = {
@@ -12,32 +12,32 @@ const defaultProps = {
 	onClickTile: vi.fn(),
 };
 
-describe("<Map />", () => {
+describe("<TileGrid />", () => {
 	it("should render", () => {
 		render(
-			<Map
+			<TileGrid
 				{...defaultProps}
 				getTileLabel={(tile) => (tile ? tile.label : "")}
 			/>,
 		);
 
-		expect(screen.getByLabelText("Label tile")).toBeInTheDocument();
-		expect(screen.getByLabelText("Empty tile")).toBeInTheDocument();
+		expect(screen.getByTestId("Label tile")).toBeInTheDocument();
+		expect(screen.getByTestId("Empty tile")).toBeInTheDocument();
 	});
 
 	it("should call onClick", async () => {
 		const onClickTileMock = vi.fn();
 
 		render(
-			<Map
+			<TileGrid
 				{...defaultProps}
 				onClickTile={onClickTileMock}
 				getTileLabel={(tile) => (tile ? tile.label : "")}
 			/>,
 		);
 
-		await userEvent.click(screen.getByLabelText("Empty tile"));
-		await userEvent.click(screen.getByLabelText("Label tile"));
+		await userEvent.click(screen.getByTestId("Empty tile"));
+		await userEvent.click(screen.getByTestId("Label tile"));
 
 		expect(onClickTileMock).toHaveBeenCalledTimes(2);
 	});
