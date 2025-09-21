@@ -4,7 +4,7 @@ import { Tile } from "../Tile/Tile";
 import { useEffect, useLayoutEffect, useRef } from "react";
 import { useScroll } from "../../../../lib/hooks/useScroll";
 import { useWhileKeyPressed } from "../../../../hooks/useWhileKeyPressed/useWhileKeyPressed";
-import type { Map } from "../../../../types/map";
+import type { GameMap } from "../../../../types/map";
 import type { Direction } from "../../../../types/sprite";
 import { getObjectWithinTiles, getObjectAtTile } from "@/lib/utils/object";
 import type { GameObject } from "@/lib/types/object";
@@ -18,7 +18,7 @@ import { ObjectTile } from "../Tile/ObjectTile";
 
 type VirtualisedTileRendererProps<T> = {
 	characterPos: number;
-	map: Map;
+	map: GameMap;
 	objects: T[];
 	tileSize: number;
 	viewAreaSize?: number;

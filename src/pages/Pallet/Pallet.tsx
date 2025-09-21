@@ -1,9 +1,9 @@
 import { useMemo, useState } from "react";
 import { CharacterLayer } from "./components/CharacterLayer/CharacterLayer";
-import type { Map as MapType } from "../../types/map";
+import type { GameMap } from "../../types/map";
 import { VirtualisedTileRenderer } from "./components/VirtualisedTileRenderer/VirtualisedTileRenderer";
 
-import styles from "./Map.module.css";
+import styles from "./Pallet.module.css";
 import { useKeyListener } from "../../hooks/useKeyListener/useKeyListener";
 import type { Direction, SpriteMap } from "../../types/sprite";
 
@@ -13,8 +13,8 @@ import { getNextTile, getSideLength } from "@/lib/utils/grid";
 import { useGameStateContext } from "./providers/GameStateProvider";
 import { Dialog } from "@/lib/components/Dialog/Dialog";
 
-type MapProps = {
-	map: MapType;
+type PalletProps = {
+	map: GameMap;
 };
 
 const characterSprites: SpriteMap = {
@@ -32,7 +32,7 @@ const characterSprites: SpriteMap = {
 	},
 };
 
-export const Map = ({ map }: MapProps) => {
+export const Pallet = ({ map }: PalletProps) => {
 	// Represents "top-right" tile which character sits on
 	const [characterPos, setCharacterPos] = useState(292);
 	const [isMoving, setIsMoving] = useState(false);

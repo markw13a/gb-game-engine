@@ -1,5 +1,5 @@
 import { TILES } from "./symbols";
-import type { Map, Tile } from "@/types/map";
+import type { GameMap, Tile } from "@/types/map";
 
 // TODO: Not convinced stringified map is worth the overhead: consider using JSON throughout
 // Originally was making these maps by hand, string representation was much easier for that purpose
@@ -17,7 +17,7 @@ export const getDataForSymbol = (symbol: string): Tile => {
 	return data;
 };
 
-export const decodeMap = (map: string): Map =>
+export const decodeMap = (map: string): GameMap =>
 	map.split("").map((char) => getDataForSymbol(char));
 
 export const map = decodeMap(rawMap.replace(/\s+/g, ""));

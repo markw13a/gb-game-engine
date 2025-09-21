@@ -1,6 +1,6 @@
-import styles from "./Map.module.css";
+import styles from "./TileGrid.module.css";
 
-type MapProps<T> = {
+type TileGridProps<T> = {
 	width: number;
 	height: number;
 	tileSize: string;
@@ -10,7 +10,7 @@ type MapProps<T> = {
 	onClickTile: (i: number) => void;
 };
 
-export const Map = <T,>({
+export const TileGrid = <T,>({
 	width,
 	height,
 	tileSize,
@@ -18,7 +18,7 @@ export const Map = <T,>({
 	getTileLabel,
 	getTileImgSrc,
 	onClickTile,
-}: MapProps<T>) => {
+}: TileGridProps<T>) => {
 	return (
 		<div className={styles.mapContainer}>
 			<div
@@ -30,26 +30,29 @@ export const Map = <T,>({
 			>
 				{tiles.map((tile, index) =>
 					tile === null ? (
-						<div
+						<button
 							data-testid="Empty tile"
 							className={styles.emptyTile}
 							style={{ width: tileSize, height: tileSize }}
 							onClick={() => onClickTile(index)}
 							key={index}
+							type="button"
 						/>
 					) : (
-						<div
+				 		<button
 							data-testid={`${getTileLabel(tile)} tile`}
 							className={styles.tile}
 							style={{ width: tileSize, height: tileSize }}
 							onClick={() => onClickTile(index)}
 							key={index}
+							type="button"
 						>
 							<img
+								alt={`${getTileLabel(tile)}`}
 								src={getTileImgSrc(tile)}
 								style={{ width: "100%", height: "100%" }}
 							/>
-						</div>
+						</button>
 					),
 				)}
 			</div>

@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { Map } from "./Map";
+import { TileGrid } from "./TileGrid";
 import userEvent from "@testing-library/user-event";
 
 const defaultProps = {
@@ -12,10 +12,10 @@ const defaultProps = {
 	onClickTile: vi.fn(),
 };
 
-describe("<Map />", () => {
+describe("<TileGrid />", () => {
 	it("should render", () => {
 		render(
-			<Map
+			<TileGrid
 				{...defaultProps}
 				getTileLabel={(tile) => (tile ? tile.label : "")}
 			/>,
@@ -29,7 +29,7 @@ describe("<Map />", () => {
 		const onClickTileMock = vi.fn();
 
 		render(
-			<Map
+			<TileGrid
 				{...defaultProps}
 				onClickTile={onClickTileMock}
 				getTileLabel={(tile) => (tile ? tile.label : "")}
