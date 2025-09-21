@@ -43,3 +43,7 @@ describe("getObjectWithinTiles", () => {
 		expect(result).toEqual(null);
 	});
 });
+
+describe("getIsObjectVisible", () => {
+	
+})

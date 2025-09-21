@@ -6,7 +6,7 @@ import { useScroll } from "../../../../lib/hooks/useScroll";
 import { useWhileKeyPressed } from "../../../../hooks/useWhileKeyPressed/useWhileKeyPressed";
 import type { GameMap } from "../../../../types/map";
 import type { Direction } from "../../../../types/sprite";
-import { getObjectWithinTiles, getObjectAtTile } from "@/lib/utils/object";
+import { getObjectWithinTiles, getObjectAtTile, getIsObjectVisible } from "@/lib/utils/object";
 import type { GameObject } from "@/lib/types/object";
 import {
 	calculateIndices,
@@ -16,10 +16,10 @@ import {
 } from "@/lib/utils/grid";
 import { ObjectTile } from "../Tile/ObjectTile";
 
-type VirtualisedTileRendererProps<T> = {
+type VirtualisedTileRendererProps = {
 	characterPos: number;
 	map: GameMap;
-	objects: T[];
+	objects: GameObject[];
 	tileSize: number;
 	viewAreaSize?: number;
 	disableMovement: boolean;
@@ -28,7 +28,7 @@ type VirtualisedTileRendererProps<T> = {
 };
 
 // Responsible for rendering grid, animating background scroll, rendering items + NPCs
-export const VirtualisedTileRenderer = <T extends GameObject = GameObject>({
+export const VirtualisedTileRenderer = ({
 	characterPos,
 	map,
 	objects,
@@ -37,7 +37,7 @@ export const VirtualisedTileRenderer = <T extends GameObject = GameObject>({
 	disableMovement,
 	onMoveStart,
 	onMoveComplete,
-}: VirtualisedTileRendererProps<T>) => {
+}: VirtualisedTileRendererProps) => {
 	const { scrollContainerRef, scroll, isScrollingRef } = useScroll();
 	const callbackRef = useRef(onMoveComplete);
 
@@ -92,6 +92,8 @@ export const VirtualisedTileRenderer = <T extends GameObject = GameObject>({
 	);
 	const tilesData = tileIndices.map((i) => map[i]);
 	const objectsData = tileIndices.map((tile) => getObjectAtTile(tile, objects));
+	// Only display an object if all of its occupied tiles are visible - prevents 'popping' effect
+	const visibleObjects = objectsData.filter((object) => object === null || getIsObjectVisible(tileIndices, object));
 
 	// Check if object present in rendered tile - get object data
 	const tilesContainerStyles = {
@@ -109,7 +111,7 @@ export const VirtualisedTileRenderer = <T extends GameObject = GameObject>({
 				))}
 			</div>
 			<div className={styles.objectsContainer} style={tilesContainerStyles}>
-				{objectsData.map((obj, i) => (
+				{visibleObjects.map((obj, i) => (
 					<ObjectTile
 						tileSize={tileSize}
 						sprite={obj?.sprite}
