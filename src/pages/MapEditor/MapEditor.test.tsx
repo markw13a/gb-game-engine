@@ -46,7 +46,7 @@ describe("<MapEditor />", () => {
 
 		expect(widthElement).toHaveValue("10");
 		expect(heightElement).toHaveValue("12");
-		expect(screen.getAllByLabelText("Empty tile")).toHaveLength(120);
+		expect(screen.getAllByTestId("Empty tile")).toHaveLength(120);
 	});
 
 	it("should select a tile brush", async () => {
@@ -65,12 +65,12 @@ describe("<MapEditor />", () => {
 		await userEvent.type(screen.getByLabelText("Width (tiles)"), "1");
 		await userEvent.type(screen.getByLabelText("Height (tiles)"), "1");
 
-		expect(screen.getByLabelText("Empty tile")).toBeInTheDocument();
+		expect(screen.getByTestId("Empty tile")).toBeInTheDocument();
 
 		await userEvent.click(screen.getByLabelText("Select grass brush"));
-		await userEvent.click(screen.getAllByLabelText("Empty tile")[0]);
+		await userEvent.click(screen.getAllByTestId("Empty tile")[0]);
 
-		expect(screen.getByLabelText("grass tile")).toBeInTheDocument();
+		expect(screen.getByTestId("grass tile")).toBeInTheDocument();
 		expect(screen.getByLabelText("Output")).toHaveValue(
 			JSON.stringify(
 				{ dimensions: { width: 1, height: 1 }, map: "G" },
