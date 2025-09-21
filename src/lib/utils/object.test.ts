@@ -1,5 +1,9 @@
 import type { GameObject } from "../types/object";
-import { getObjectAtTile, getObjectWithinTiles } from "./object";
+import {
+	getIsObjectVisible,
+	getObjectAtTile,
+	getObjectWithinTiles,
+} from "./object";
 
 const gameObjects: GameObject[] = [
 	{
@@ -41,5 +45,17 @@ describe("getObjectWithinTiles", () => {
 	it("should return null if no object touches tile", () => {
 		const result = getObjectWithinTiles(0, gameObjects);
 		expect(result).toEqual(null);
+	});
+});
+
+describe("getIsObjectVisible", () => {
+	it("should return true if object contained within tiles", () => {
+		const result = getIsObjectVisible([2, 5], gameObjects[1]);
+		expect(result).toEqual(true);
+	});
+
+	it("should return false if object not contained within tiles", () => {
+		const result = getIsObjectVisible([2], gameObjects[1]);
+		expect(result).toEqual(false);
 	});
 });
