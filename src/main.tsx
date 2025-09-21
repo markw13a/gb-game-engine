@@ -11,4 +11,4 @@ if (root) {
 			<App />
 		</StrictMode>,
 	);
-} 
+}

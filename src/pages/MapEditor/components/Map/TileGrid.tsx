@@ -39,7 +39,7 @@ export const TileGrid = <T,>({
 							type="button"
 						/>
 					) : (
-				 		<button
+						<button
 							data-testid={`${getTileLabel(tile)} tile`}
 							className={styles.tile}
 							style={{ width: tileSize, height: tileSize }}
