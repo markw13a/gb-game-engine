@@ -95,6 +95,7 @@ export const VirtualisedTileRenderer = ({
 		characterPos,
 	);
 	const tilesData = tileIndices.map((i) => map[i]);
+	// Second set of "tiles" for objects
 	const objectsData = tileIndices.map((tile) => getObjectAtTile(tile, objects));
 	// Only display an object if all of its occupied tiles are visible - prevents 'popping' effect
 	const visibleObjects = objectsData.filter(
