@@ -6,7 +6,11 @@ import { useScroll } from "../../../../lib/hooks/useScroll";
 import { useWhileKeyPressed } from "../../../../hooks/useWhileKeyPressed/useWhileKeyPressed";
 import type { GameMap } from "../../../../types/map";
 import type { Direction } from "../../../../types/sprite";
-import { getObjectWithinTiles, getObjectAtTile, getIsObjectVisible } from "@/lib/utils/object";
+import {
+	getObjectWithinTiles,
+	getObjectAtTile,
+	getIsObjectVisible,
+} from "@/lib/utils/object";
 import type { GameObject } from "@/lib/types/object";
 import {
 	calculateIndices,
@@ -93,7 +97,9 @@ export const VirtualisedTileRenderer = ({
 	const tilesData = tileIndices.map((i) => map[i]);
 	const objectsData = tileIndices.map((tile) => getObjectAtTile(tile, objects));
 	// Only display an object if all of its occupied tiles are visible - prevents 'popping' effect
-	const visibleObjects = objectsData.filter((object) => object === null || getIsObjectVisible(tileIndices, object));
+	const visibleObjects = objectsData.filter(
+		(object) => object === null || getIsObjectVisible(tileIndices, object),
+	);
 
 	// Check if object present in rendered tile - get object data
 	const tilesContainerStyles = {
