@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactElement } from "react";
 import styles from "./Dialog.module.css";
 import { chunkText } from "@/lib/utils/dialog";
+
+import borderOrnament from "./assets/border-ornament.svg";
 
 type Choice = "Yes" | "No";
 
@@ -24,7 +26,8 @@ type DialogProps = {
 	downKey: string;
 	upKey: string;
 	isMultiChoice?: boolean;
-	classNames?: Record<SupportedClass, string>;
+	classNames?: Partial<Record<SupportedClass, string>>;
+	indicator?: ReactElement | string;
 };
 
 /**
@@ -38,17 +41,7 @@ type DialogProps = {
  * @param classNames Style overrides for various parts of the rendered UI
  */
 export const Dialog = ({
-	classNames = {
-		contentsContainer: styles.contentsContainer,
-		container: styles.container,
-		indicator: styles.indicator,
-		contents: styles.contents,
-		choices: styles.choices,
-		choice: styles.choice,
-		choiceIndicator: styles.choiceIndicator,
-		dialog: styles.dialog,
-		text: styles.text,
-	},
+	classNames = {},
 	text,
 	maxCharacters,
 	isMultiChoice = false,
@@ -57,6 +50,7 @@ export const Dialog = ({
 	interactionKey,
 	downKey,
 	upKey,
+	indicator = "/",
 }: DialogProps) => {
 	const [textChunks, setTextChunks] = useState<string[]>([]);
 	const [activeTextIndex, setActiveTextIndex] = useState(0);
@@ -123,33 +117,33 @@ export const Dialog = ({
 	]);
 
 	return (
-		<div className={classNames.container}>
-			<div className={classNames.contentsContainer}>
-				<div className={classNames.contents}>
-					<div className={classNames.dialog}>
-						<div className={classNames.text}>{textChunks[activeTextIndex]}</div>
-						<div className={classNames.indicator}>
-							{isAtLastChunk ? "" : "/"}
+		<div className={`${styles.container} ${classNames.container}`}>
+			<div className={`${styles.contentsContainer} ${classNames.contentsContainer}`}>
+				<div className={`${styles.contents} ${classNames.contents}`}>
+					<div className={`${styles.dialog} ${classNames.dialog}`}>
+						<div className={`${styles.text} ${classNames.text}`}>{textChunks[activeTextIndex]}</div>
+						<div className={`${styles.indicator} ${classNames.indicator}`}>
+							{isAtLastChunk ? "" : indicator}
 						</div>
 					</div>
 					{isMultiChoice && isAtLastChunk && (
-						<div className={classNames.choices}>
+						<div className={`${styles.choices} ${classNames.choices}`}>
 							<button
-								className={classNames.choice}
+								className={`${styles.choice} ${classNames.choice}`}
 								type="button"
 								onClick={() => onChoice("Yes")}
 							>
-								<span className={classNames.choiceIndicator}>
+								<span className={`${styles.choiceIndicator} ${classNames.choiceIndicator}`}>
 									{highlightedOption === "Yes" ? ">" : ""}
 								</span>
 								<span>Yes</span>
 							</button>
 							<button
-								className={classNames.choice}
+								className={`${styles.choice} ${classNames.choice}`}
 								type="button"
 								onClick={() => onChoice("No")}
 							>
-								<span className={classNames.choiceIndicator}>
+								<span className={`${styles.choiceIndicator} ${classNames.choiceIndicator}`}>
 									{highlightedOption === "No" ? ">" : ""}
 								</span>
 								<span>No</span>
@@ -157,6 +151,12 @@ export const Dialog = ({
 						</div>
 					)}
 				</div>
+			</div>
+			<div className={styles.borderOrnaments}>
+				<img aria-hidden src={borderOrnament} />
+				<img aria-hidden src={borderOrnament} />
+				<img aria-hidden src={borderOrnament} />
+				<img aria-hidden src={borderOrnament} />
 			</div>
 		</div>
 	);
