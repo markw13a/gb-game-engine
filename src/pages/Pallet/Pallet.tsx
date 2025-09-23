@@ -102,9 +102,15 @@ export const Pallet = ({ map }: PalletProps) => {
 			{!!dialog && (
 				<Dialog
 					classNames={{
-						dialog: styles.dialog__contents
+						dialog: styles.dialog__contents,
 					}}
-					indicator={<img aria-hidden className={styles.dialog__indicator} src="/icons/arrow-down.svg" />}
+					indicator={
+						<img
+							aria-hidden
+							className={styles.dialog__indicator}
+							src="/icons/arrow-down.svg"
+						/>
+					}
 					text={dialog}
 					maxCharacters={20}
 					onDialogEnded={() => setDialog("")}

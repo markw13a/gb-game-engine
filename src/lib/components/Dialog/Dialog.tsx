@@ -118,25 +118,36 @@ export const Dialog = ({
 
 	return (
 		<>
-			<DialogContainer classNames={{
-				container: `${styles.container} ${classNames.container}`,
-				contentsContainer: `${styles.contentsContainer}`
-			}}>
+			<DialogContainer
+				classNames={{
+					container: `${styles.container} ${classNames.container}`,
+					contentsContainer: `${styles.contentsContainer}`,
+				}}
+			>
 				<div className={`${styles.dialog} ${classNames.dialog}`}>
-					<div className={`${styles.text} ${classNames.text}`}>{textChunks[activeTextIndex]}</div>
+					<div className={`${styles.text} ${classNames.text}`}>
+						{textChunks[activeTextIndex]}
+					</div>
 					<div className={`${styles.indicator} ${classNames.indicator}`}>
 						{isAtLastChunk ? "" : indicator}
 					</div>
 				</div>
 			</DialogContainer>
 			{isMultiChoice && isAtLastChunk && (
-				<DialogContainer classNames={{ container: `${styles.choices} ${classNames.choices}`, contents: styles.choices__contents}}>
+				<DialogContainer
+					classNames={{
+						container: `${styles.choices} ${classNames.choices}`,
+						contents: styles.choices__contents,
+					}}
+				>
 					<button
 						className={`${styles.choice} ${classNames.choice}`}
 						type="button"
 						onClick={() => onChoice("Yes")}
 					>
-						<span className={`${styles.choiceIndicator} ${classNames.choiceIndicator}`}>
+						<span
+							className={`${styles.choiceIndicator} ${classNames.choiceIndicator}`}
+						>
 							{highlightedOption === "Yes" ? ">" : ""}
 						</span>
 						<span>Yes</span>
@@ -146,7 +157,9 @@ export const Dialog = ({
 						type="button"
 						onClick={() => onChoice("No")}
 					>
-						<span className={`${styles.choiceIndicator} ${classNames.choiceIndicator}`}>
+						<span
+							className={`${styles.choiceIndicator} ${classNames.choiceIndicator}`}
+						>
 							{highlightedOption === "No" ? ">" : ""}
 						</span>
 						<span>No</span>
