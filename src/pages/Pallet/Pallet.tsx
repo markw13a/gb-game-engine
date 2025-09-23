@@ -111,6 +111,7 @@ export const Pallet = ({ map }: PalletProps) => {
 					interactionKey="e"
 					downKey="s"
 					upKey="w"
+					isMultiChoice
 				/>
 			)}
 		</div>

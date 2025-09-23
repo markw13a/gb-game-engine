@@ -1,35 +1,10 @@
 .container {
-	display: flex;
-	align-items: flex-end;
-	justify-content: center;
-	justify-self: center;
-	position: absolute;
-	z-index: 1000;
+	anchor-name: --dialogbox;
 	width: 98%;
-
-	margin: 0;
-	padding: 0;
-	border: none;
-	bottom: 4px;
 }
 
 .contentsContainer {
-	anchor-name: --dialogbox;
-	background-color: white;
-	width: 100%;
 	height: 100px;
-	padding: 2px;
-	border: 2px solid;
-	border-bottom: 6px solid;
-	border-radius: 4px;
-}
-
-.contents {
-	border: 2px solid;
-	border-top: 6px solid;
-	border-radius: 4px;
-	padding: 12px;
-	height: 100%;
 }
 
 .dialog {
@@ -45,22 +20,15 @@
 	align-items: flex-end;
 }
 
-.choices {
-	position: absolute;
+.choices.choices {
 	position-anchor: --dialogbox;
 	position-area: top right;
-	justify-self: flex-start;
+	margin-right: 4px;
+	margin-bottom: 4px;
+}
 
-	display: flex;
-	flex-direction: column;
-	justify-content: space-around;
-	gap: 6px;
-
-	border: 2px solid;
-	border-radius: 4px;
-	background-color: #fff;
-
-	margin-bottom: 2px;
+.choices__contents.choices__contents {
+	padding: 4px;
 }
 
 .choice {
@@ -74,35 +42,4 @@
 
 .choiceIndicator {
 	width: 12px;
-}
-
-.borderOrnaments {
-	position: absolute;
-	width: 100%;
-	height: 100%;
-
-	& img {
-		position: absolute;
-		width: 12px;
-	}
-
-	:nth-child(1) {
-		top: -3px;
-		left: -2px;
-	}
-
-	:nth-child(2) {
-		top: -3px;
-		right: -2px;
-	}
-
-	:nth-child(3) {
-		bottom: -3px;
-		left: -2px;
-	}
-
-	:nth-child(4) {
-		bottom: -3px;
-		right: -2px;
-	}
 }

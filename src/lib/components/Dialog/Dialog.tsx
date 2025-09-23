@@ -2,7 +2,7 @@ import { useEffect, useState, type ReactElement } from "react";
 import styles from "./Dialog.module.css";
 import { chunkText } from "@/lib/utils/dialog";
 
-import borderOrnament from "./assets/border-ornament.svg";
+import { DialogContainer } from "./components/DialogContainer";
 
 type Choice = "Yes" | "No";
 
@@ -117,47 +117,42 @@ export const Dialog = ({
 	]);
 
 	return (
-		<div className={`${styles.container} ${classNames.container}`}>
-			<div className={`${styles.contentsContainer} ${classNames.contentsContainer}`}>
-				<div className={`${styles.contents} ${classNames.contents}`}>
-					<div className={`${styles.dialog} ${classNames.dialog}`}>
-						<div className={`${styles.text} ${classNames.text}`}>{textChunks[activeTextIndex]}</div>
-						<div className={`${styles.indicator} ${classNames.indicator}`}>
-							{isAtLastChunk ? "" : indicator}
-						</div>
+		<>
+			<DialogContainer classNames={{
+				container: `${styles.container} ${classNames.container}`,
+				contentsContainer: `${styles.contentsContainer}`
+			}}>
+				<div className={`${styles.dialog} ${classNames.dialog}`}>
+					<div className={`${styles.text} ${classNames.text}`}>{textChunks[activeTextIndex]}</div>
+					<div className={`${styles.indicator} ${classNames.indicator}`}>
+						{isAtLastChunk ? "" : indicator}
 					</div>
-					{isMultiChoice && isAtLastChunk && (
-						<div className={`${styles.choices} ${classNames.choices}`}>
-							<button
-								className={`${styles.choice} ${classNames.choice}`}
-								type="button"
-								onClick={() => onChoice("Yes")}
-							>
-								<span className={`${styles.choiceIndicator} ${classNames.choiceIndicator}`}>
-									{highlightedOption === "Yes" ? ">" : ""}
-								</span>
-								<span>Yes</span>
-							</button>
-							<button
-								className={`${styles.choice} ${classNames.choice}`}
-								type="button"
-								onClick={() => onChoice("No")}
-							>
-								<span className={`${styles.choiceIndicator} ${classNames.choiceIndicator}`}>
-									{highlightedOption === "No" ? ">" : ""}
-								</span>
-								<span>No</span>
-							</button>
-						</div>
-					)}
 				</div>
-			</div>
-			<div className={styles.borderOrnaments}>
-				<img aria-hidden src={borderOrnament} />
-				<img aria-hidden src={borderOrnament} />
-				<img aria-hidden src={borderOrnament} />
-				<img aria-hidden src={borderOrnament} />
-			</div>
-		</div>
+			</DialogContainer>
+			{isMultiChoice && isAtLastChunk && (
+				<DialogContainer classNames={{ container: `${styles.choices} ${classNames.choices}`, contents: styles.choices__contents}}>
+					<button
+						className={`${styles.choice} ${classNames.choice}`}
+						type="button"
+						onClick={() => onChoice("Yes")}
+					>
+						<span className={`${styles.choiceIndicator} ${classNames.choiceIndicator}`}>
+							{highlightedOption === "Yes" ? ">" : ""}
+						</span>
+						<span>Yes</span>
+					</button>
+					<button
+						className={`${styles.choice} ${classNames.choice}`}
+						type="button"
+						onClick={() => onChoice("No")}
+					>
+						<span className={`${styles.choiceIndicator} ${classNames.choiceIndicator}`}>
+							{highlightedOption === "No" ? ">" : ""}
+						</span>
+						<span>No</span>
+					</button>
+				</DialogContainer>
+			)}
+		</>
 	);
 };
