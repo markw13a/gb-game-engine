@@ -2,6 +2,11 @@ import { useEffect, useState } from "react";
 import styles from "./Dialog.module.css";
 import { chunkText } from "@/lib/utils/dialog";
 
+import indicatorDownSrc from "./assets/indicator-down.svg";
+import indicatorRightSrc from "./assets/indicator-right.svg";
+
+import { DialogContainer } from "./components/DialogContainer";
+
 type Choice = "Yes" | "No";
 
 type SupportedClass =
@@ -11,7 +16,6 @@ type SupportedClass =
 	| "choices"
 	| "choice"
 	| "choiceIndicator"
-	| "indicator"
 	| "text"
 	| "dialog";
 
@@ -24,7 +28,7 @@ type DialogProps = {
 	downKey: string;
 	upKey: string;
 	isMultiChoice?: boolean;
-	classNames?: Record<SupportedClass, string>;
+	classNames?: Partial<Record<SupportedClass, string>>;
 };
 
 /**
@@ -38,17 +42,7 @@ type DialogProps = {
  * @param classNames Style overrides for various parts of the rendered UI
  */
 export const Dialog = ({
-	classNames = {
-		contentsContainer: styles.contentsContainer,
-		container: styles.container,
-		indicator: styles.indicator,
-		contents: styles.contents,
-		choices: styles.choices,
-		choice: styles.choice,
-		choiceIndicator: styles.choiceIndicator,
-		dialog: styles.dialog,
-		text: styles.text,
-	},
+	classNames = {},
 	text,
 	maxCharacters,
 	isMultiChoice = false,
@@ -122,42 +116,54 @@ export const Dialog = ({
 		onDialogEnded,
 	]);
 
+	const selectedOptionIndicator = (
+		<img aria-hidden src={indicatorRightSrc} width="12px" />
+	);
+
 	return (
-		<div className={classNames.container}>
-			<div className={classNames.contentsContainer}>
-				<div className={classNames.contents}>
-					<div className={classNames.dialog}>
-						<div className={classNames.text}>{textChunks[activeTextIndex]}</div>
-						<div className={classNames.indicator}>
-							{isAtLastChunk ? "" : "/"}
-						</div>
+		<>
+			<DialogContainer
+				classNames={{
+					container: `${styles.container} ${classNames.container}`,
+					contentsContainer: `${styles.contentsContainer}`,
+				}}
+			>
+				<div className={`${styles.dialog} ${classNames.dialog}`}>
+					<div className={`${styles.text} ${classNames.text}`}>
+						{textChunks[activeTextIndex]}
 					</div>
-					{isMultiChoice && isAtLastChunk && (
-						<div className={classNames.choices}>
-							<button
-								className={classNames.choice}
-								type="button"
-								onClick={() => onChoice("Yes")}
-							>
-								<span className={classNames.choiceIndicator}>
-									{highlightedOption === "Yes" ? ">" : ""}
-								</span>
-								<span>Yes</span>
-							</button>
-							<button
-								className={classNames.choice}
-								type="button"
-								onClick={() => onChoice("No")}
-							>
-								<span className={classNames.choiceIndicator}>
-									{highlightedOption === "No" ? ">" : ""}
-								</span>
-								<span>No</span>
-							</button>
-						</div>
-					)}
+					<div className={styles.indicator}>
+						{!isAtLastChunk && (
+							<img aria-hidden src={indicatorDownSrc} width="18px" />
+						)}
+					</div>
 				</div>
-			</div>
-		</div>
+			</DialogContainer>
+			{isMultiChoice && isAtLastChunk && (
+				<DialogContainer
+					classNames={{
+						container: `${styles.choices} ${classNames.choices}`,
+						contents: styles.choices__contents,
+					}}
+				>
+					<div className={`${styles.choice} ${classNames.choice}`}>
+						<div
+							className={`${styles.choiceIndicator} ${classNames.choiceIndicator}`}
+						>
+							{highlightedOption === "Yes" ? selectedOptionIndicator : null}
+						</div>
+						<span>Yes</span>
+					</div>
+					<div className={`${styles.choice} ${classNames.choice}`}>
+						<div
+							className={`${styles.choiceIndicator} ${classNames.choiceIndicator}`}
+						>
+							{highlightedOption === "No" ? selectedOptionIndicator : null}
+						</div>
+						<span>No</span>
+					</div>
+				</DialogContainer>
+			)}
+		</>
 	);
 };
