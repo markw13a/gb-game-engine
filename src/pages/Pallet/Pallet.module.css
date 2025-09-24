@@ -2,11 +2,3 @@
 	position: relative;
 	width: fit-content;
 }
-
-.dialog__contents {
-	color: var(--font-color);
-}
-
-.dialog__indicator {
-	width: 18px;
-}

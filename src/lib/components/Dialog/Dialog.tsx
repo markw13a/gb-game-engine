@@ -1,6 +1,8 @@
-import { useEffect, useState, type ReactElement } from "react";
+import { useEffect, useState } from "react";
 import styles from "./Dialog.module.css";
 import { chunkText } from "@/lib/utils/dialog";
+
+import indicatorSrc from "./assets/indicator.svg";
 
 import { DialogContainer } from "./components/DialogContainer";
 
@@ -13,7 +15,6 @@ type SupportedClass =
 	| "choices"
 	| "choice"
 	| "choiceIndicator"
-	| "indicator"
 	| "text"
 	| "dialog";
 
@@ -27,7 +28,6 @@ type DialogProps = {
 	upKey: string;
 	isMultiChoice?: boolean;
 	classNames?: Partial<Record<SupportedClass, string>>;
-	indicator?: ReactElement | string;
 };
 
 /**
@@ -50,7 +50,6 @@ export const Dialog = ({
 	interactionKey,
 	downKey,
 	upKey,
-	indicator = "/",
 }: DialogProps) => {
 	const [textChunks, setTextChunks] = useState<string[]>([]);
 	const [activeTextIndex, setActiveTextIndex] = useState(0);
@@ -128,8 +127,17 @@ export const Dialog = ({
 					<div className={`${styles.text} ${classNames.text}`}>
 						{textChunks[activeTextIndex]}
 					</div>
-					<div className={`${styles.indicator} ${classNames.indicator}`}>
-						{isAtLastChunk ? "" : indicator}
+					<div className={styles.indicator}>
+						{isAtLastChunk ? (
+							""
+						) : (
+							<img
+								aria-hidden
+								className={styles.dialog__indicator}
+								src={indicatorSrc}
+								width="18px"
+							/>
+						)}
 					</div>
 				</div>
 			</DialogContainer>
