@@ -62,8 +62,8 @@ describe("<Dialog />", () => {
 	it("should show choice menu", () => {
 		render(<Dialog {...defaultProps} isMultiChoice />);
 
-		expect(screen.getByRole("button", { name: "> Yes" })).toBeInTheDocument();
-		expect(screen.getByRole("button", { name: "No" })).toBeInTheDocument();
+		expect(screen.getByText("Yes")).toBeInTheDocument();
+		expect(screen.getByText("No")).toBeInTheDocument();
 	});
 
 	it("should show choice menu once all text has been shown", async () => {
@@ -80,17 +80,13 @@ describe("<Dialog />", () => {
 		);
 
 		expect(screen.getByText("I'm the fishing")).toBeInTheDocument();
-		expect(
-			screen.queryByRole("button", { name: "Yes" }),
-		).not.toBeInTheDocument();
-		expect(
-			screen.queryByRole("button", { name: "No" }),
-		).not.toBeInTheDocument();
+		expect(screen.queryByText("Yes")).not.toBeInTheDocument();
+		expect(screen.queryByText("No")).not.toBeInTheDocument();
 
 		await userEvent.keyboard("e");
 
-		expect(screen.getByRole("button", { name: "> Yes" })).toBeInTheDocument();
-		expect(screen.getByRole("button", { name: "No" })).toBeInTheDocument();
+		expect(screen.getByText("Yes")).toBeInTheDocument();
+		expect(screen.getByText("No")).toBeInTheDocument();
 	});
 
 	it("should make choice", async () => {

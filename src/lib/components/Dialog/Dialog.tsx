@@ -117,11 +117,7 @@ export const Dialog = ({
 	]);
 
 	const selectedOptionIndicator = (
-		<img
-			aria-hidden
-			src={indicatorRightSrc}
-			width="12px"
-		/>
+		<img aria-hidden src={indicatorRightSrc} width="12px" />
 	);
 
 	return (
@@ -137,14 +133,8 @@ export const Dialog = ({
 						{textChunks[activeTextIndex]}
 					</div>
 					<div className={styles.indicator}>
-						{isAtLastChunk ? (
-							""
-						) : (
-							<img
-								aria-hidden
-								src={indicatorDownSrc}
-								width="18px"
-							/>
+						{!isAtLastChunk && (
+							<img aria-hidden src={indicatorDownSrc} width="18px" />
 						)}
 					</div>
 				</div>
