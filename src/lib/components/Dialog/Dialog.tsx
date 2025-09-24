@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import styles from "./Dialog.module.css";
 import { chunkText } from "@/lib/utils/dialog";
 
-import indicatorSrc from "./assets/indicator.svg";
+import indicatorDownSrc from "./assets/indicator-down.svg";
+import indicatorRightSrc from "./assets/indicator-right.svg";
 
 import { DialogContainer } from "./components/DialogContainer";
 
@@ -115,6 +116,14 @@ export const Dialog = ({
 		onDialogEnded,
 	]);
 
+	const selectedOptionIndicator = (
+		<img
+			aria-hidden
+			src={indicatorRightSrc}
+			width="12px"
+		/>
+	);
+
 	return (
 		<>
 			<DialogContainer
@@ -133,8 +142,7 @@ export const Dialog = ({
 						) : (
 							<img
 								aria-hidden
-								className={styles.dialog__indicator}
-								src={indicatorSrc}
+								src={indicatorDownSrc}
 								width="18px"
 							/>
 						)}
@@ -148,30 +156,22 @@ export const Dialog = ({
 						contents: styles.choices__contents,
 					}}
 				>
-					<button
-						className={`${styles.choice} ${classNames.choice}`}
-						type="button"
-						onClick={() => onChoice("Yes")}
-					>
-						<span
+					<div className={`${styles.choice} ${classNames.choice}`}>
+						<div
 							className={`${styles.choiceIndicator} ${classNames.choiceIndicator}`}
 						>
-							{highlightedOption === "Yes" ? ">" : ""}
-						</span>
+							{highlightedOption === "Yes" ? selectedOptionIndicator : null}
+						</div>
 						<span>Yes</span>
-					</button>
-					<button
-						className={`${styles.choice} ${classNames.choice}`}
-						type="button"
-						onClick={() => onChoice("No")}
-					>
-						<span
+					</div>
+					<div className={`${styles.choice} ${classNames.choice}`}>
+						<div
 							className={`${styles.choiceIndicator} ${classNames.choiceIndicator}`}
 						>
-							{highlightedOption === "No" ? ">" : ""}
-						</span>
+							{highlightedOption === "No" ? selectedOptionIndicator : null}
+						</div>
 						<span>No</span>
-					</button>
+					</div>
 				</DialogContainer>
 			)}
 		</>

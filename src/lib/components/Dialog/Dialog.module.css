@@ -25,6 +25,7 @@
 	position-area: top right;
 	margin-right: 4px;
 	margin-bottom: 4px;
+	min-width: 85px;
 }
 
 .choices__contents.choices__contents {
@@ -41,5 +42,7 @@
 }
 
 .choiceIndicator {
-	width: 12px;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
 }
