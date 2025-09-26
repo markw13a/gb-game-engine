@@ -19,6 +19,7 @@ import {
 	getSideLength,
 } from "@/lib/utils/grid";
 import { ObjectTile } from "../Tile/ObjectTile";
+import { getWarpPointAtTile } from "../../constants/warpPoints";
 
 type VirtualisedTileRendererProps = {
 	characterPos: number;
@@ -27,6 +28,7 @@ type VirtualisedTileRendererProps = {
 	tileSize: number;
 	viewAreaSize?: number;
 	disableMovement: boolean;
+	onWarpPoint: (tile: number) => void;
 	onMoveStart: (dir: Direction) => void;
 	onMoveComplete: (tile: number) => void;
 };
@@ -39,6 +41,7 @@ export const VirtualisedTileRenderer = ({
 	tileSize,
 	viewAreaSize = 5,
 	disableMovement,
+	onWarpPoint,
 	onMoveStart,
 	onMoveComplete,
 }: VirtualisedTileRendererProps) => {
@@ -64,8 +67,14 @@ export const VirtualisedTileRenderer = ({
 		const isPassable = nextCharacterPosOccupiedTiles.every(
 			(tile) => map[tile]?.isPassable && !getObjectWithinTiles(tile, objects),
 		);
+		const warpPoint = getWarpPointAtTile(nextCharacterPos);
 
 		if (!isPassable || isScrollingRef.current || disableMovement) {
+			return;
+		}
+
+		if (warpPoint) {
+			onWarpPoint(warpPoint);
 			return;
 		}
 

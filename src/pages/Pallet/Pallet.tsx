@@ -12,7 +12,7 @@ import { TILE_SIZE } from "./constants/tile";
 import { getNextTile, getSideLength } from "@/lib/utils/grid";
 import { useGameStateContext } from "./providers/GameStateProvider";
 import { Dialog } from "@/lib/components/Dialog/Dialog";
-import { getWarpPointAtTile } from "./constants/warpPoints";
+import { ScreenWipe } from "./components/ScreenWipe/ScreenWipe";
 
 type PalletProps = {
 	map: GameMap;
@@ -41,6 +41,7 @@ export const Pallet = ({ map }: PalletProps) => {
 	const [characterDirection, setCharacterDirection] =
 		useState<Direction>("down");
 	const [dialog, setDialog] = useState("");
+	const [isScreenWipeActive, setIsScreenWipeActive] = useState(false);
 	const {
 		state: { objects },
 		dispatch,
@@ -48,10 +49,16 @@ export const Pallet = ({ map }: PalletProps) => {
 
 	const mapSideLength = getSideLength(map);
 
-	const onMoveComplete = (nextCharacterPos: number) => {
-		const warpPoint = getWarpPointAtTile(nextCharacterPos);
-		setCharacterPos(warpPoint || nextCharacterPos);
-	}
+	const onWarpPoint = (tile: number) => {
+		setIsScreenWipeActive(true);
+		setTimeout(() => {
+			setIsScreenWipeActive(false);
+			setCharacterPos(tile);
+		}, 500);
+	};
+
+	const onMoveComplete = (nextCharacterPos: number) =>
+		setCharacterPos(nextCharacterPos);
 
 	const onKeyPressed = () => {
 		if (dialog) {
@@ -92,10 +99,11 @@ export const Pallet = ({ map }: PalletProps) => {
 				map={map}
 				objects={objects}
 				characterPos={characterPos}
+				onWarpPoint={onWarpPoint}
 				onMoveStart={setCharacterDirection}
 				onMoveComplete={onMoveComplete}
 				tileSize={TILE_SIZE}
-				disableMovement={!!dialog}
+				disableMovement={!!dialog || isScreenWipeActive}
 				viewAreaSize={13}
 			/>
 			<CharacterLayer
@@ -113,6 +121,7 @@ export const Pallet = ({ map }: PalletProps) => {
 					upKey="w"
 				/>
 			)}
+			<ScreenWipe isVisible={isScreenWipeActive} />
 		</div>
 	);
 };
