@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { CharacterLayer } from "./components/CharacterLayer/CharacterLayer";
-import type { GameMap } from "../../types/map";
+import type { GameMap, WarpPoint } from "../../types/map";
 import { VirtualisedTileRenderer } from "./components/VirtualisedTileRenderer/VirtualisedTileRenderer";
 
 import styles from "./Pallet.module.css";
@@ -12,9 +12,11 @@ import { TILE_SIZE } from "./constants/tile";
 import { getNextTile, getSideLength } from "@/lib/utils/grid";
 import { useGameStateContext } from "./providers/GameStateProvider";
 import { Dialog } from "@/lib/components/Dialog/Dialog";
+import { getWarpPointAtTile } from "./constants/warpPoints";
 
 type PalletProps = {
 	map: GameMap;
+	warpPoints: WarpPoint[];
 };
 
 const characterSprites: SpriteMap = {
@@ -46,8 +48,10 @@ export const Pallet = ({ map }: PalletProps) => {
 
 	const mapSideLength = getSideLength(map);
 
-	const onMoveComplete = (dir: Direction) =>
-		setCharacterPos(getNextTile(characterPos, mapSideLength, dir, 2));
+	const onMoveComplete = (nextCharacterPos: number) => {
+		const warpPoint = getWarpPointAtTile(nextCharacterPos);
+		setCharacterPos(warpPoint || nextCharacterPos);
+	}
 
 	const onKeyPressed = () => {
 		if (dialog) {

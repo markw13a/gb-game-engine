@@ -28,7 +28,7 @@ type VirtualisedTileRendererProps = {
 	viewAreaSize?: number;
 	disableMovement: boolean;
 	onMoveStart: (dir: Direction) => void;
-	onMoveComplete: (dir: Direction) => void;
+	onMoveComplete: (tile: number) => void;
 };
 
 // Responsible for rendering grid, animating background scroll, rendering items + NPCs
@@ -71,7 +71,7 @@ export const VirtualisedTileRenderer = ({
 
 		onMoveStart(dir);
 		await scroll(dir);
-		callbackRef.current(dir);
+		callbackRef.current(nextCharacterPos);
 	};
 
 	useWhileKeyPressed("a", () => move("left"), 10);
