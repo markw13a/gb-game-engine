@@ -34,7 +34,7 @@ const characterSprites: SpriteMap = {
 	},
 };
 
-export const Pallet = ({ map }: PalletProps) => {
+export const Pallet = ({ map, warpPoints }: PalletProps) => {
 	// Represents "top-right" tile which character sits on
 	const [characterPos, setCharacterPos] = useState(292);
 	const [isMoving, setIsMoving] = useState(false);
@@ -96,9 +96,10 @@ export const Pallet = ({ map }: PalletProps) => {
 	return (
 		<div className={styles.container}>
 			<VirtualisedTileRenderer
+				characterPos={characterPos}
 				map={map}
 				objects={objects}
-				characterPos={characterPos}
+				warpPoints={warpPoints}
 				onWarpPoint={onWarpPoint}
 				onMoveStart={setCharacterDirection}
 				onMoveComplete={onMoveComplete}

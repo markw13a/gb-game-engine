@@ -4,7 +4,7 @@ import { Tile } from "../Tile/Tile";
 import { useEffect, useLayoutEffect, useRef } from "react";
 import { useScroll } from "../../../../lib/hooks/useScroll";
 import { useWhileKeyPressed } from "../../../../hooks/useWhileKeyPressed/useWhileKeyPressed";
-import type { GameMap } from "../../../../types/map";
+import type { GameMap, WarpPoint } from "../../../../types/map";
 import type { Direction } from "../../../../types/sprite";
 import {
 	getObjectWithinTiles,
@@ -25,6 +25,7 @@ type VirtualisedTileRendererProps = {
 	characterPos: number;
 	map: GameMap;
 	objects: GameObject[];
+	warpPoints: WarpPoint[];
 	tileSize: number;
 	viewAreaSize?: number;
 	disableMovement: boolean;
@@ -38,6 +39,7 @@ export const VirtualisedTileRenderer = ({
 	characterPos,
 	map,
 	objects,
+	warpPoints,
 	tileSize,
 	viewAreaSize = 5,
 	disableMovement,
@@ -67,7 +69,7 @@ export const VirtualisedTileRenderer = ({
 		const isPassable = nextCharacterPosOccupiedTiles.every(
 			(tile) => map[tile]?.isPassable && !getObjectWithinTiles(tile, objects),
 		);
-		const warpPoint = getWarpPointAtTile(nextCharacterPos);
+		const warpPoint = getWarpPointAtTile(nextCharacterPos, warpPoints);
 
 		if (!isPassable || isScrollingRef.current || disableMovement) {
 			return;

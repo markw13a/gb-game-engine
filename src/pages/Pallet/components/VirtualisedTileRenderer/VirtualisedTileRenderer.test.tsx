@@ -3,6 +3,7 @@ import { VirtualisedTileRenderer } from "./VirtualisedTileRenderer";
 import { generateMap } from "../../__fixtures__/map";
 import { generateGameObject } from "../../__fixtures__/gameObject";
 import userEvent from "@testing-library/user-event";
+import { generateWarpPoint } from "../../__fixtures__/warpPoint";
 
 // Can't scroll fake DOM: mock so scroll function resolves
 vi.mock("@/lib/utils/scrollToEnd");
@@ -14,6 +15,8 @@ const defaultProps = {
 	viewAreaSize: 3,
 	disableMovement: false,
 	tileSize: 10,
+	warpPoints: [],
+	onWarpPoint: vi.fn(),
 	onMoveStart: vi.fn(),
 	onMoveComplete: vi.fn(),
 };
@@ -80,5 +83,31 @@ describe("<VirtualisedTileRenderer />", () => {
 
 		expect(moveStartMock).not.toHaveBeenCalled();
 		expect(moveCompleteMock).not.toHaveBeenCalled();
+	});
+
+	it("should call onWarpPoint", async () => {
+		const warpMock = vi.fn();
+		const interval = 10;
+
+		vi.useFakeTimers();
+
+		const user = userEvent.setup({
+			advanceTimers: vi.advanceTimersByTime.bind(vi),
+		});
+
+		render(
+			<VirtualisedTileRenderer
+				{...defaultProps}
+				characterPos={13}
+				warpPoints={[generateWarpPoint()]}
+				onWarpPoint={warpMock}
+			/>,
+		);
+
+		await user.keyboard("{a>}");
+		await act(() => vi.advanceTimersByTime(interval));
+		await user.keyboard("{/a}");
+
+		expect(warpMock).toHaveBeenCalled();
 	});
 });
