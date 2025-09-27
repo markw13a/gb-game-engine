@@ -123,6 +123,10 @@ export const Pallet = ({ map, warpPoints }: PalletProps) => {
 				/>
 			)}
 			<ScreenWipe isVisible={isScreenWipeActive} />
+			{/* Maybe these components should be controlled via context, and moved out of Pallet */}
+			{/* Pallet opens these by dispatching an event? */}
+			{/* Menu + its Modals (for Pokemon + Pokedex) */}
+			{/* Battle-scene (just a modal!) updates pokemon health + stats via context */}
 		</div>
 	);
 };
