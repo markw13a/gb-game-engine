@@ -1,6 +1,5 @@
 import { useMemo, useState } from "react";
 import { CharacterLayer } from "./components/CharacterLayer/CharacterLayer";
-import type { GameMap, WarpPoint } from "../../types/map";
 import { VirtualisedTileRenderer } from "./components/VirtualisedTileRenderer/VirtualisedTileRenderer";
 
 import styles from "./Pallet.module.css";
@@ -13,11 +12,8 @@ import { getNextTile, getSideLength } from "@/lib/utils/grid";
 import { useGameStateContext } from "./providers/GameStateProvider";
 import { Dialog } from "@/lib/components/Dialog/Dialog";
 import { ScreenWipe } from "./components/ScreenWipe/ScreenWipe";
-
-type PalletProps = {
-	map: GameMap;
-	warpPoints: WarpPoint[];
-};
+import { map } from "./constants/map";
+import { warpPoints } from "./constants/warpPoints";
 
 const characterSprites: SpriteMap = {
 	moving: {
@@ -34,7 +30,7 @@ const characterSprites: SpriteMap = {
 	},
 };
 
-export const Pallet = ({ map, warpPoints }: PalletProps) => {
+export const Pallet = () => {
 	// Represents "top-right" tile which character sits on
 	const [characterPos, setCharacterPos] = useState(292);
 	const [isMoving, setIsMoving] = useState(false);
