@@ -11,15 +11,15 @@ import {
 // Still, prefer it to commenting/uncommenting code when I need to switch between editor and game
 const rootRoute = createRootRoute();
 
-const gameRoute = createRoute({ 
-	getParentRoute: () => rootRoute, 
-	path: "/" 
-}).lazy(() => import('./pages/Pallet/routes').then((d) => d.Route));
+const gameRoute = createRoute({
+	getParentRoute: () => rootRoute,
+	path: "/",
+}).lazy(() => import("./pages/Pallet/routes").then((d) => d.Route));
 
 const mapEditorRoute = createRoute({
 	getParentRoute: () => rootRoute,
-	path: "editor"
-}).lazy(() => import('./pages/MapEditor/routes').then((d) => d.Route));
+	path: "editor",
+}).lazy(() => import("./pages/MapEditor/routes").then((d) => d.Route));
 
 const routeTree = rootRoute.addChildren([gameRoute, mapEditorRoute]);
 

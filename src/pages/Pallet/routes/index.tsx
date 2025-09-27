@@ -3,9 +3,9 @@ import { createLazyRoute } from "@tanstack/react-router";
 import { GameStateProvider } from "../providers/GameStateProvider";
 
 const ComponentWithContext = () => (
-    <GameStateProvider>
-        <Pallet />
-    </GameStateProvider>
-)
+	<GameStateProvider>
+		<Pallet />
+	</GameStateProvider>
+);
 
-export const Route = createLazyRoute('/')({ component: ComponentWithContext })
+export const Route = createLazyRoute("/")({ component: ComponentWithContext });

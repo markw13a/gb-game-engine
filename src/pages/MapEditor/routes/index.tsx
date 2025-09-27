@@ -4,14 +4,14 @@ import { MapEditor } from "../MapEditor";
 import { TILE_DATA, TILES } from "@/pages/Pallet/constants/symbols";
 
 const Component = () => (
-    <MapEditor 
-        tileOptions={TILE_DATA}
-        tileSize="32px"
-        getTileSymbol={(tile) => tile.type}
-        getTileFromSymbol={(symbol) => TILES[symbol]}
-        getTileLabel={(tile) => tile.label}
-        getTileImgSrc={(tile) => tile.sprite}
-    />
-)
+	<MapEditor
+		tileOptions={TILE_DATA}
+		tileSize="32px"
+		getTileSymbol={(tile) => tile.type}
+		getTileFromSymbol={(symbol) => TILES[symbol]}
+		getTileLabel={(tile) => tile.label}
+		getTileImgSrc={(tile) => tile.sprite}
+	/>
+);
 
-export const Route = createLazyRoute('/')({ component: Component })
+export const Route = createLazyRoute("/")({ component: Component });
