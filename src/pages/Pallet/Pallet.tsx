@@ -5,13 +5,13 @@ import { VirtualisedTileRenderer } from "./components/VirtualisedTileRenderer/Vi
 
 import styles from "./Pallet.module.css";
 import { useKeyListener } from "../../hooks/useKeyListener/useKeyListener";
-import type { Direction } from "../../types/sprite";
 
 import { getObjectWithinTiles } from "@/lib/utils/object";
 import { TILE_SIZE } from "./constants/tile";
 import { getNextTile, getSideLength } from "@/lib/utils/grid";
 import { useGameStateContext } from "./providers/GameStateProvider";
 import { Dialog } from "@/lib/components/Dialog/Dialog";
+import type { Direction } from "@/lib/types/direction";
 
 type PalletProps = {
 	map: GameMap;

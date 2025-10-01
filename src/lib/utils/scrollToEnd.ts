@@ -1,4 +1,4 @@
-import type { Direction } from "../../types/sprite";
+import type { Direction } from "../types/direction";
 
 const SUB_PIXEL_SIZE = 0.33;
 

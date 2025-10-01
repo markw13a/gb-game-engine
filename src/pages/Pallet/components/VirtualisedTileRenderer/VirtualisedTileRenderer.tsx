@@ -5,7 +5,6 @@ import { useEffect, useLayoutEffect, useRef } from "react";
 import { useScroll } from "../../../../lib/hooks/useScroll";
 import { useWhileKeyPressed } from "../../../../hooks/useWhileKeyPressed/useWhileKeyPressed";
 import type { GameMap } from "../../../../types/map";
-import type { Direction } from "../../../../types/sprite";
 import {
 	getObjectWithinTiles,
 	getObjectAtTile,
@@ -19,6 +18,7 @@ import {
 	getSideLength,
 } from "@/lib/utils/grid";
 import { ObjectTile } from "../Tile/ObjectTile";
+import type { Direction } from "@/lib/types/direction";
 
 type VirtualisedTileRendererProps = {
 	characterPos: number;
