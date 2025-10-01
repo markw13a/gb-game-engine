@@ -4,7 +4,7 @@ import { Tile } from "../Tile/Tile";
 import { useEffect, useLayoutEffect, useRef } from "react";
 import { useScroll } from "../../../../lib/hooks/useScroll";
 import { useWhileKeyPressed } from "../../../../hooks/useWhileKeyPressed/useWhileKeyPressed";
-import type { GameMap } from "../../../../types/map";
+import type { GameMap, WarpPoint } from "../../../../types/map";
 import {
 	getObjectWithinTiles,
 	getObjectAtTile,
@@ -19,16 +19,19 @@ import {
 } from "@/lib/utils/grid";
 import { ObjectTile } from "../Tile/ObjectTile";
 import type { Direction } from "@/lib/types/direction";
+import { getWarpPointAtTile } from "../../constants/warpPoints";
 
 type VirtualisedTileRendererProps = {
 	characterPos: number;
 	map: GameMap;
 	objects: GameObject[];
+	warpPoints: WarpPoint[];
 	tileSize: number;
 	viewAreaSize?: number;
 	disableMovement: boolean;
+	onWarpPoint: (tile: number) => void;
 	onMoveStart: (dir: Direction) => void;
-	onMoveComplete: (dir: Direction) => void;
+	onMoveComplete: (tile: number) => void;
 };
 
 // Responsible for rendering grid, animating background scroll, rendering items + NPCs
@@ -36,9 +39,11 @@ export const VirtualisedTileRenderer = ({
 	characterPos,
 	map,
 	objects,
+	warpPoints,
 	tileSize,
 	viewAreaSize = 5,
 	disableMovement,
+	onWarpPoint,
 	onMoveStart,
 	onMoveComplete,
 }: VirtualisedTileRendererProps) => {
@@ -64,14 +69,20 @@ export const VirtualisedTileRenderer = ({
 		const isPassable = nextCharacterPosOccupiedTiles.every(
 			(tile) => map[tile]?.isPassable && !getObjectWithinTiles(tile, objects),
 		);
+		const warpPoint = getWarpPointAtTile(nextCharacterPos, warpPoints);
 
 		if (!isPassable || isScrollingRef.current || disableMovement) {
 			return;
 		}
 
+		if (warpPoint) {
+			onWarpPoint(warpPoint);
+			return;
+		}
+
 		onMoveStart(dir);
 		await scroll(dir);
-		callbackRef.current(dir);
+		callbackRef.current(nextCharacterPos);
 	};
 
 	useWhileKeyPressed("a", () => move("left"), 10);

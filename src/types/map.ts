@@ -8,4 +8,6 @@ export type Tile = {
 
 export type GameMap = Tile[];
 
+export type WarpPoint = { from: number[]; to: number };
+
 export type Symbol = "G" | "g" | "p" | "B" | "b" | "N" | "n" | "d" | "R" | "r";

@@ -1,6 +1,5 @@
 import { useMemo, useState } from "react";
 import { CharacterLayer } from "./components/CharacterLayer/CharacterLayer";
-import type { GameMap } from "../../types/map";
 import { VirtualisedTileRenderer } from "./components/VirtualisedTileRenderer/VirtualisedTileRenderer";
 
 import styles from "./Pallet.module.css";
@@ -13,17 +12,18 @@ import { useGameStateContext } from "./providers/GameStateProvider";
 import { Dialog } from "@/lib/components/Dialog/Dialog";
 import type { Direction } from "@/lib/types/direction";
 
-type PalletProps = {
-	map: GameMap;
-};
+import { ScreenWipe } from "./components/ScreenWipe/ScreenWipe";
+import { map } from "./constants/map";
+import { warpPoints } from "./constants/warpPoints";
 
-export const Pallet = ({ map }: PalletProps) => {
+export const Pallet = () => {
 	// Represents "top-right" tile which character sits on
 	const [characterPos, setCharacterPos] = useState(292);
 	const [isMoving, setIsMoving] = useState(false);
 	const [characterDirection, setCharacterDirection] =
 		useState<Direction>("down");
 	const [dialog, setDialog] = useState("");
+	const [isScreenWipeActive, setIsScreenWipeActive] = useState(false);
 	const {
 		state: { objects },
 		dispatch,
@@ -31,8 +31,16 @@ export const Pallet = ({ map }: PalletProps) => {
 
 	const mapSideLength = getSideLength(map);
 
-	const onMoveComplete = (dir: Direction) =>
-		setCharacterPos(getNextTile(characterPos, mapSideLength, dir, 2));
+	const onWarpPoint = (tile: number) => {
+		setIsScreenWipeActive(true);
+		setTimeout(() => {
+			setIsScreenWipeActive(false);
+			setCharacterPos(tile);
+		}, 500);
+	};
+
+	const onMoveComplete = (nextCharacterPos: number) =>
+		setCharacterPos(nextCharacterPos);
 
 	const onKeyPressed = () => {
 		if (dialog) {
@@ -70,13 +78,15 @@ export const Pallet = ({ map }: PalletProps) => {
 	return (
 		<div className={styles.container}>
 			<VirtualisedTileRenderer
+				characterPos={characterPos}
 				map={map}
 				objects={objects}
-				characterPos={characterPos}
+				warpPoints={warpPoints}
+				onWarpPoint={onWarpPoint}
 				onMoveStart={setCharacterDirection}
 				onMoveComplete={onMoveComplete}
 				tileSize={TILE_SIZE}
-				disableMovement={!!dialog}
+				disableMovement={!!dialog || isScreenWipeActive}
 				viewAreaSize={13}
 			/>
 			<CharacterLayer moving={isMoving} direction={characterDirection} />
@@ -90,6 +100,11 @@ export const Pallet = ({ map }: PalletProps) => {
 					upKey="w"
 				/>
 			)}
+			<ScreenWipe isVisible={isScreenWipeActive} />
+			{/* Maybe these components should be controlled via context, and moved out of Pallet */}
+			{/* Pallet opens these by dispatching an event? */}
+			{/* Menu + its Modals (for Pokemon + Pokedex) */}
+			{/* Battle-scene (just a modal!) updates pokemon health + stats via context */}
 		</div>
 	);
 };
