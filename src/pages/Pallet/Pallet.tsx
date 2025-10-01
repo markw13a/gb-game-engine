@@ -4,31 +4,17 @@ import { VirtualisedTileRenderer } from "./components/VirtualisedTileRenderer/Vi
 
 import styles from "./Pallet.module.css";
 import { useKeyListener } from "../../hooks/useKeyListener/useKeyListener";
-import type { Direction, SpriteMap } from "../../types/sprite";
 
 import { getObjectWithinTiles } from "@/lib/utils/object";
 import { TILE_SIZE } from "./constants/tile";
 import { getNextTile, getSideLength } from "@/lib/utils/grid";
 import { useGameStateContext } from "./providers/GameStateProvider";
 import { Dialog } from "@/lib/components/Dialog/Dialog";
+import type { Direction } from "@/lib/types/direction";
+
 import { ScreenWipe } from "./components/ScreenWipe/ScreenWipe";
 import { map } from "./constants/map";
 import { warpPoints } from "./constants/warpPoints";
-
-const characterSprites: SpriteMap = {
-	moving: {
-		left: "/clefairy/moving/left.gif",
-		right: "/clefairy/moving/right.gif",
-		up: "/clefairy/moving/up.gif",
-		down: "/clefairy/moving/down.gif",
-	},
-	idle: {
-		left: "/clefairy/static/left.png",
-		right: "/clefairy/static/right.png",
-		up: "/clefairy/static/up.png",
-		down: "/clefairy/static/down.png",
-	},
-};
 
 export const Pallet = () => {
 	// Represents "top-right" tile which character sits on
@@ -103,11 +89,7 @@ export const Pallet = () => {
 				disableMovement={!!dialog || isScreenWipeActive}
 				viewAreaSize={13}
 			/>
-			<CharacterLayer
-				moving={isMoving}
-				sprites={characterSprites}
-				direction={characterDirection}
-			/>
+			<CharacterLayer moving={isMoving} direction={characterDirection} />
 			{!!dialog && (
 				<Dialog
 					text={dialog}

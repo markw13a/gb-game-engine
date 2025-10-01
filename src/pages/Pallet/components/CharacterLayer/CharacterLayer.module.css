@@ -12,14 +12,14 @@
 	z-index: var(--character-layer-z-index);
 }
 
-.character {
+.characterContainer {
 	grid-row: 5 / span 2;
 	grid-column: 5 / span 2;
 
 	width: calc(var(--tile-size) * 2);
 	height: calc(var(--tile-size) * 2);
+}
 
-	background-size: cover;
-	background-position: center;
-	background-repeat: no-repeat;
+.character {
+	width: 100%;
 }
