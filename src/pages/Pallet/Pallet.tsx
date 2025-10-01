@@ -5,7 +5,7 @@ import { VirtualisedTileRenderer } from "./components/VirtualisedTileRenderer/Vi
 
 import styles from "./Pallet.module.css";
 import { useKeyListener } from "../../hooks/useKeyListener/useKeyListener";
-import type { Direction, SpriteMap } from "../../types/sprite";
+import type { Direction } from "../../types/sprite";
 
 import { getObjectWithinTiles } from "@/lib/utils/object";
 import { TILE_SIZE } from "./constants/tile";
@@ -15,21 +15,6 @@ import { Dialog } from "@/lib/components/Dialog/Dialog";
 
 type PalletProps = {
 	map: GameMap;
-};
-
-const characterSprites: SpriteMap = {
-	moving: {
-		left: "/clefairy/moving/left.gif",
-		right: "/clefairy/moving/right.gif",
-		up: "/clefairy/moving/up.gif",
-		down: "/clefairy/moving/down.gif",
-	},
-	idle: {
-		left: "/clefairy/static/left.png",
-		right: "/clefairy/static/right.png",
-		up: "/clefairy/static/up.png",
-		down: "/clefairy/static/down.png",
-	},
 };
 
 export const Pallet = ({ map }: PalletProps) => {
@@ -94,11 +79,7 @@ export const Pallet = ({ map }: PalletProps) => {
 				disableMovement={!!dialog}
 				viewAreaSize={13}
 			/>
-			<CharacterLayer
-				moving={isMoving}
-				sprites={characterSprites}
-				direction={characterDirection}
-			/>
+			<CharacterLayer moving={isMoving} direction={characterDirection} />
 			{!!dialog && (
 				<Dialog
 					text={dialog}
