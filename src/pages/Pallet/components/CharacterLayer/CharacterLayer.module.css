@@ -1,7 +1,7 @@
 .container {
 	display: grid;
-	grid-template-columns: repeat(9, 50px);
-	grid-template-rows: repeat(9, 50px);
+	grid-template-columns: repeat(var(--tiles-in-screen-row), var(--tile-size));
+	grid-template-rows: repeat(var(--tiles-in-screen-row), var(--tile-size));
 
 	position: absolute;
 	width: 100%;

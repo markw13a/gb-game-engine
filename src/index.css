@@ -5,6 +5,9 @@
 
 :root {
 	--tile-size: 50px;
+	--tiles-in-screen-row: 9;
+	--screen-size: calc(var(--tile-size) * var(--tiles-in-screen-row));
+
 	--background-layer-z-index: 1;
 	--character-layer-z-index: 10;
 	--modal-z-index: 10000;

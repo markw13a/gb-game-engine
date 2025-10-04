@@ -2,8 +2,8 @@
 	position: relative;
 	overflow: hidden;
 
-	width: calc(var(--tile-size) * 9);
-	height: calc(var(--tile-size) * 9);
+	width: var(--screen-size);
+	height: var(--screen-size);
 }
 
 .tilesContainer {
