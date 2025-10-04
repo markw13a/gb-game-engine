@@ -1,3 +1,4 @@
+// biome-ignore-all lint/suspicious/noAssignInExpressions: compromise style for performance within animation loop
 import type { Direction } from "../types/direction";
 
 const SUB_PIXEL_SIZE = 0.33;
@@ -39,7 +40,6 @@ export const scrollToEnd = (
 
 			// Aimed to minimise calls to scrollLeft/scrollTop to avoid triggering a repaint
 			if (direction === "right" || direction === "left") {
-				// biome-ignore lint/suspicious/noAssignInExpressions: performance over readibility here
 				const nextValue =
 					direction === "right"
 						? (scrollContainer.scrollLeft += distanceToScroll)
@@ -49,7 +49,6 @@ export const scrollToEnd = (
 			}
 
 			if (direction === "up" || direction === "down") {
-				// biome-ignore lint/suspicious/noAssignInExpressions: performance over readibility here
 				const nextValue =
 					direction === "up"
 						? (scrollContainer.scrollTop -= distanceToScroll)
