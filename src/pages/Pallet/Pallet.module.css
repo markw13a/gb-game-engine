@@ -6,5 +6,6 @@
 .topLevelContainer {
 	display: flex;
 	justify-content: center;
-	background-color: rebeccapurple;
+	background-color: #3c3c3c;
+	height: 100vh;
 }
