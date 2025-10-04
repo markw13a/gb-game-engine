@@ -9,7 +9,7 @@
 .controlsContainer {
 	display: flex;
 	justify-content: space-around;
-	padding: var(--spacing-3) 0;
+	padding-top: var(--spacing-4);
 }
 
 .actionControls {
