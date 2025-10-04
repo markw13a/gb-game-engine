@@ -77,37 +77,39 @@ export const Pallet = () => {
 	useKeyListener("e", onInteractionKeyPressed, () => {}, options);
 
 	return (
-		<ConsoleShell>
-			<div className={styles.container}>
-				<VirtualisedTileRenderer
-					characterPos={characterPos}
-					map={map}
-					objects={objects}
-					warpPoints={warpPoints}
-					onWarpPoint={onWarpPoint}
-					onMoveStart={setCharacterDirection}
-					onMoveComplete={onMoveComplete}
-					tileSize={TILE_SIZE}
-					disableMovement={!!dialog || isScreenWipeActive}
-					viewAreaSize={13}
-				/>
-				<CharacterLayer moving={isMoving} direction={characterDirection} />
-				{!!dialog && (
-					<Dialog
-						text={dialog}
-						maxCharacters={20}
-						onDialogEnded={() => setDialog("")}
-						interactionKey="e"
-						downKey="s"
-						upKey="w"
+		<div className={styles.topLevelContainer}>
+			<ConsoleShell>
+				<div className={styles.container}>
+					<VirtualisedTileRenderer
+						characterPos={characterPos}
+						map={map}
+						objects={objects}
+						warpPoints={warpPoints}
+						onWarpPoint={onWarpPoint}
+						onMoveStart={setCharacterDirection}
+						onMoveComplete={onMoveComplete}
+						tileSize={TILE_SIZE}
+						disableMovement={!!dialog || isScreenWipeActive}
+						viewAreaSize={13}
 					/>
-				)}
-				<ScreenWipe isVisible={isScreenWipeActive} />
-				{/* Maybe these components should be controlled via context, and moved out of Pallet */}
-				{/* Pallet opens these by dispatching an event? */}
-				{/* Menu + its Modals (for Pokemon + Pokedex) */}
-				{/* Battle-scene (just a modal!) updates pokemon health + stats via context */}
-			</div>
-		</ConsoleShell>
+					<CharacterLayer moving={isMoving} direction={characterDirection} />
+					{!!dialog && (
+						<Dialog
+							text={dialog}
+							maxCharacters={20}
+							onDialogEnded={() => setDialog("")}
+							interactionKey="e"
+							downKey="s"
+							upKey="w"
+						/>
+					)}
+					<ScreenWipe isVisible={isScreenWipeActive} />
+					{/* Maybe these components should be controlled via context, and moved out of Pallet */}
+					{/* Pallet opens these by dispatching an event? */}
+					{/* Menu + its Modals (for Pokemon + Pokedex) */}
+					{/* Battle-scene (just a modal!) updates pokemon health + stats via context */}
+				</div>
+			</ConsoleShell>
+		</div>
 	);
 };
