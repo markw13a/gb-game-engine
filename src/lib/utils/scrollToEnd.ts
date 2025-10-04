@@ -22,8 +22,12 @@ export const scrollToEnd = (
 	let lastFrameTimestamp = performance.now();
 
 	// Calculate outside of render loop to avoid triggering repaint
-	const scrollLeftMax = scrollContainer.scrollWidth - scrollContainer.clientWidth - SUB_PIXEL_SIZE;
-	const scrollTopMax = scrollContainer.scrollHeight - scrollContainer.clientHeight - SUB_PIXEL_SIZE;
+	const scrollLeftMax =
+		scrollContainer.scrollWidth - scrollContainer.clientWidth - SUB_PIXEL_SIZE;
+	const scrollTopMax =
+		scrollContainer.scrollHeight -
+		scrollContainer.clientHeight -
+		SUB_PIXEL_SIZE;
 
 	return new Promise((resolve) => {
 		const animate = () => {
@@ -35,15 +39,24 @@ export const scrollToEnd = (
 
 			// Aimed to minimise calls to scrollLeft/scrollTop to avoid triggering a repaint
 			if (direction === "right" || direction === "left") {
-				const nextValue = direction === "right" ? scrollContainer.scrollLeft += distanceToScroll : scrollContainer.scrollLeft -= distanceToScroll;
-				isAtMax = direction === "right" ? nextValue >= scrollLeftMax : nextValue <= 0;
+				// biome-ignore lint/suspicious/noAssignInExpressions: performance over readibility here
+				const nextValue =
+					direction === "right"
+						? (scrollContainer.scrollLeft += distanceToScroll)
+						: (scrollContainer.scrollLeft -= distanceToScroll);
+				isAtMax =
+					direction === "right" ? nextValue >= scrollLeftMax : nextValue <= 0;
 			}
 
 			if (direction === "up" || direction === "down") {
-				const nextValue = direction === "up" ? scrollContainer.scrollTop -= distanceToScroll : scrollContainer.scrollTop += distanceToScroll;
-				isAtMax = direction === "up" ? nextValue <= 0 : nextValue >= scrollTopMax;
+				// biome-ignore lint/suspicious/noAssignInExpressions: performance over readibility here
+				const nextValue =
+					direction === "up"
+						? (scrollContainer.scrollTop -= distanceToScroll)
+						: (scrollContainer.scrollTop += distanceToScroll);
+				isAtMax =
+					direction === "up" ? nextValue <= 0 : nextValue >= scrollTopMax;
 			}
-
 
 			lastFrameTimestamp = timestamp;
 
