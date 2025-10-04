@@ -14,50 +14,38 @@ const defaultScrollFunction = (timeElapsed: number) => {
 	return TILE_SIZE * TILE_PER_MILISECOND * timeElapsed * MATCH_WITH_GB_CONSTANT;
 };
 
-const getIsAtMaxScroll = (scrollContainer: HTMLDivElement) => {
-	const scrollLeftMax =
-		scrollContainer.scrollWidth - scrollContainer.clientWidth - SUB_PIXEL_SIZE;
-	const scrollTopMax =
-		scrollContainer.scrollHeight -
-		scrollContainer.clientHeight -
-		SUB_PIXEL_SIZE;
-
-	return {
-		left: scrollContainer.scrollLeft <= 0,
-		right: scrollContainer.scrollLeft >= scrollLeftMax,
-		up: scrollContainer.scrollTop <= 0,
-		down: scrollContainer.scrollTop >= scrollTopMax,
-	};
-};
-
 export const scrollToEnd = (
 	scrollContainer: HTMLDivElement,
 	direction: Direction,
 	scrollFunction = defaultScrollFunction,
 ): Promise<void> => {
-	let lastFrameTimestamp = Date.now();
+	let lastFrameTimestamp = performance.now();
+
+	// Calculate outside of render loop to avoid triggering repaint
+	const scrollLeftMax = scrollContainer.scrollWidth - scrollContainer.clientWidth - SUB_PIXEL_SIZE;
+	const scrollTopMax = scrollContainer.scrollHeight - scrollContainer.clientHeight - SUB_PIXEL_SIZE;
 
 	return new Promise((resolve) => {
 		const animate = () => {
-			const timestamp = Date.now();
+			const timestamp = performance.now();
 			const timeElapsed = timestamp - lastFrameTimestamp;
 			const distanceToScroll = scrollFunction(timeElapsed);
 
-			if (direction === "right") {
-				scrollContainer.scrollLeft += distanceToScroll;
-			} else if (direction === "left") {
-				scrollContainer.scrollLeft -= distanceToScroll;
-			} else if (direction === "up") {
-				scrollContainer.scrollTop -= distanceToScroll;
-			} else if (direction === "down") {
-				scrollContainer.scrollTop += distanceToScroll;
+			let isAtMax = false;
+
+			// Aimed to minimise calls to scrollLeft/scrollTop to avoid triggering a repaint
+			if (direction === "right" || direction === "left") {
+				const nextValue = direction === "right" ? scrollContainer.scrollLeft += distanceToScroll : scrollContainer.scrollLeft -= distanceToScroll;
+				isAtMax = direction === "right" ? nextValue >= scrollLeftMax : nextValue <= 0;
 			}
 
-			lastFrameTimestamp = timestamp;
+			if (direction === "up" || direction === "down") {
+				const nextValue = direction === "up" ? scrollContainer.scrollTop -= distanceToScroll : scrollContainer.scrollTop += distanceToScroll;
+				isAtMax = direction === "up" ? nextValue <= 0 : nextValue >= scrollTopMax;
+			}
 
-			// Scroll container could start at 0 or end of container, so need to check direction too
-			const isAtMaxByDirection = getIsAtMaxScroll(scrollContainer);
-			const isAtMax = isAtMaxByDirection[direction];
+
+			lastFrameTimestamp = timestamp;
 
 			if (isAtMax) {
 				resolve();
