@@ -25,3 +25,36 @@
 	align-self: end;
 	padding-left: var(--spacing-3);
 }
+
+.title {
+	display: flex;
+	justify-content: center;
+	gap: var(--spacing-3);
+	grid-area: 3 / 2 / 4 / 3;
+	color: #b3b3b3;
+	font-size: var(--font-size-x-large);
+	/* Wouldn't usually mess with kerning, but this is a one-off mimic of the GB font */
+	letter-spacing: -0.2em;
+}
+
+.rainbow {
+	&:nth-child(n + 1) {
+		color: red;
+	}
+
+	&:nth-child(n + 2) {
+		color: blue;
+	}
+
+	&:nth-child(n + 3) {
+		color: lightgreen;
+	}
+
+	&:nth-child(n + 4) {
+		color: yellow;
+	}
+
+	&:nth-child(n + 5) {
+		color: greenyellow;
+	}
+}
