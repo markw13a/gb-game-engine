@@ -3,7 +3,7 @@ import type { Direction } from "../types/direction";
 const SUB_PIXEL_SIZE = 0.33;
 
 const defaultScrollFunction = (timeElapsed: number) => {
-	const TILE_SIZE = 50;
+	const TILE_SIZE = 40;
 	const TILE_PER_SECOND = 4;
 	const TILE_PER_MILISECOND = TILE_PER_SECOND / 1000;
 
