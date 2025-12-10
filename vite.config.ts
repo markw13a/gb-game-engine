@@ -4,7 +4,7 @@ import react from "@vitejs/plugin-react";
 
 // https://vite.dev/config/
 export default defineConfig({
-	base: '/gb-game-engine/', // github pages url
+	base: "/gb-game-engine/", // github pages url
 	plugins: [react()],
 	test: {
 		globals: true,

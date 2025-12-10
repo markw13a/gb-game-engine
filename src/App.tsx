@@ -5,6 +5,7 @@ import {
 	createRootRoute,
 	createRouter,
 	RouterProvider,
+	rewriteBasepath,
 } from "@tanstack/react-router";
 
 // Router bundle size is way larger than what we save by code-splitting
@@ -23,7 +24,10 @@ const mapEditorRoute = createRoute({
 
 const routeTree = rootRoute.addChildren([gameRoute, mapEditorRoute]);
 
-const router = createRouter({ routeTree });
+const router = createRouter({
+	routeTree,
+	rewrite: rewriteBasepath({ basepath: import.meta.env.BASE_URL }),
+});
 
 function App() {
 	return <RouterProvider router={router} />;
