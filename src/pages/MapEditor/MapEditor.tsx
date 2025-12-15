@@ -3,7 +3,7 @@ import styles from "./MapEditor.module.css";
 import { Menu } from "./components/Menu/Menu";
 import { TileGrid } from "./components/Map/TileGrid";
 import { EMPTY_TILE_SYMBOL } from "./constants/constants";
-import { appendColumn, appendRow } from "./utils/map";
+import { appendColumn, appendColumns, appendRow, appendRows } from "./utils/map";
 
 type MapEditorProps<T> = {
 	tileSize: string;
@@ -25,7 +25,6 @@ export const MapEditor = <T,>({
 	const [width, setWidth] = useState(0);
 	const [height, setHeight] = useState(0);
 	const [output, setOutput] = useState<(T | null)[]>([]);
-	console.log(output)
 	const [brush, setBrush] = useState<T>();
 
 	const onImport = (width: number, height: number, mapString: string) => {
@@ -44,15 +43,12 @@ export const MapEditor = <T,>({
 	};
 
 	const onResize = (nextWidth: number, nextHeight: number) => {
+		const outWithRows = appendRows(output, height, nextHeight - height);
+		const outWithColumns = appendColumns(outWithRows, width, nextWidth - width);
+		
 		setWidth(nextWidth);
 		setHeight(nextHeight);
-
-		const changeInNumberOfRows = nextHeight - height;
-		const changeInNumberOfColumns = nextWidth - width;
-
-		// const rows = new Array(changeInNumberOfRows).fill(null);
-		const nextOutput = appendColumn(output, nextHeight);
-		setOutput(nextOutput);
+		setOutput(outWithColumns);
 	};
 
 	const onTileClick = (index: number) => {
