@@ -3,7 +3,7 @@ import styles from "./MapEditor.module.css";
 import { Menu } from "./components/Menu/Menu";
 import { TileGrid } from "./components/Map/TileGrid";
 import { EMPTY_TILE_SYMBOL } from "./constants/constants";
-import { appendColumn, appendColumns, appendRow, appendRows } from "./utils/map";
+import { appendColumns, appendRows } from "./utils/map";
 
 type MapEditorProps<T> = {
 	tileSize: string;
