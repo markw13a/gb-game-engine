@@ -44,7 +44,7 @@ export const MapEditor = <T,>({
 
 	const onResize = (nextWidth: number, nextHeight: number) => {
 		const outWithRows = appendRows(output, height, nextHeight - height);
-		const outWithColumns = appendColumns(outWithRows, width, nextWidth - width);
+		const outWithColumns = appendColumns(outWithRows, nextHeight, nextWidth - width);
 		
 		setWidth(nextWidth);
 		setHeight(nextHeight);
