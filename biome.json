@@ -8,5 +8,8 @@
 				"noArrayIndexKey": "off"
 			}
 		}
+	},
+	"files": {
+		"includes": ["src/**"]
 	}
 }
