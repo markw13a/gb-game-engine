@@ -24,6 +24,7 @@
 
 .tile {
 	display: flex;
+	padding: 0;
 }
 
 .emptyTile {
