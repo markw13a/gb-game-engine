@@ -82,7 +82,7 @@ export const Menu = <T,>({
 					onImport={onImport}
 				/>
 				{isResizeModalOpen && (
-					<ResizeMapModal 
+					<ResizeMapModal
 						onClose={() => setIsResizeModalOpen(false)}
 						onResize={onResize}
 						initialHeight={`${height}`}

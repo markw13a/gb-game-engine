@@ -44,8 +44,12 @@ export const MapEditor = <T,>({
 
 	const onResize = (nextWidth: number, nextHeight: number) => {
 		const outWithRows = appendRows(output, height, nextHeight - height);
-		const outWithColumns = appendColumns(outWithRows, nextHeight, nextWidth - width);
-		
+		const outWithColumns = appendColumns(
+			outWithRows,
+			nextHeight,
+			nextWidth - width,
+		);
+
 		setWidth(nextWidth);
 		setHeight(nextHeight);
 		setOutput(outWithColumns);
@@ -70,8 +74,6 @@ export const MapEditor = <T,>({
 
 		return str + getTileSymbol(tile);
 	}, "");
-
-	console.log(mapString);
 
 	return (
 		<div className={styles.container}>
