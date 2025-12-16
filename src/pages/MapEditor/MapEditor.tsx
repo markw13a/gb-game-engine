@@ -65,11 +65,13 @@ export const MapEditor = <T,>({
 
 	const mapString = output.reduce((str, tile) => {
 		if (tile === null) {
-			return EMPTY_TILE_SYMBOL;
+			return str + EMPTY_TILE_SYMBOL;
 		}
 
 		return str + getTileSymbol(tile);
 	}, "");
+
+	console.log(mapString);
 
 	return (
 		<div className={styles.container}>
