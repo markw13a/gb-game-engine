@@ -35,17 +35,11 @@ describe("<MapEditor />", () => {
 	it("should set width and height", async () => {
 		render(<MapEditor {...defaultProps} />);
 
-		const widthElement = screen.getByLabelText("Width (tiles)");
-		const heightElement = screen.getByLabelText("Height (tiles)");
+		await userEvent.click(screen.getByRole("button", { name: "Resize" }));
+		await userEvent.type(screen.getByLabelText("Width (tiles)"), "10");
+		await userEvent.type(screen.getByLabelText("Height (tiles)"), "12");
+		await userEvent.click(screen.getByText("Update"));
 
-		expect(widthElement).toHaveValue("0");
-		expect(heightElement).toHaveValue("0");
-
-		await userEvent.type(widthElement, "10");
-		await userEvent.type(heightElement, "12");
-
-		expect(widthElement).toHaveValue("10");
-		expect(heightElement).toHaveValue("12");
 		expect(screen.getAllByTestId("Empty tile")).toHaveLength(120);
 	});
 
@@ -62,8 +56,10 @@ describe("<MapEditor />", () => {
 	it("should paint a tile", async () => {
 		render(<MapEditor {...defaultProps} />);
 
+		await userEvent.click(screen.getByText("Resize"));
 		await userEvent.type(screen.getByLabelText("Width (tiles)"), "1");
 		await userEvent.type(screen.getByLabelText("Height (tiles)"), "1");
+		await userEvent.click(screen.getByText("Update"));
 
 		expect(screen.getByTestId("Empty tile")).toBeInTheDocument();
 

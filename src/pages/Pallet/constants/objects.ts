@@ -1,7 +1,7 @@
 import type { GameObject } from "@/lib/types/object";
 
 // HACK: Function would make more sense rather than tacking this on as/when
-const BASE_URL = import.meta.env.BASE_URL
+const BASE_URL = import.meta.env.BASE_URL;
 
 // These objects are tightly coupled with their maps because of the position fields
 // Maybe they should live together too?

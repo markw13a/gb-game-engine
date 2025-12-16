@@ -44,13 +44,6 @@
 	}
 }
 
-.controls {
-	display: flex;
-	flex-direction: column;
-
-	gap: var(--spacing-2);
-}
-
 .control {
 	display: flex;
 	flex-direction: column;
@@ -65,4 +58,10 @@
 		border: none;
 		border-radius: var(--radius);
 	}
+}
+
+.modals {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-2);
 }

@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styles from "./MapEditor.module.css";
 import { Menu } from "./components/Menu/Menu";
 import { TileGrid } from "./components/Map/TileGrid";
 import { EMPTY_TILE_SYMBOL } from "./constants/constants";
+import { appendColumns, appendRows } from "./utils/map";
 
 type MapEditorProps<T> = {
 	tileSize: string;
@@ -24,8 +25,36 @@ export const MapEditor = <T,>({
 	const [width, setWidth] = useState(0);
 	const [height, setHeight] = useState(0);
 	const [output, setOutput] = useState<(T | null)[]>([]);
-
 	const [brush, setBrush] = useState<T>();
+
+	const onImport = (width: number, height: number, mapString: string) => {
+		const nextOutput = mapString.split("").map((symbol) => {
+			if (symbol === EMPTY_TILE_SYMBOL) {
+				return null;
+			}
+
+			return getTileFromSymbol(symbol);
+		});
+
+		setWidth(width);
+		setHeight(height);
+		// @ts-expect-error TS assumes nextOutput can contain undefined, but we've guarded against this
+		setOutput(nextOutput);
+	};
+
+	const onResize = (nextWidth: number, nextHeight: number) => {
+		const outWithRows = appendRows(output, height, nextHeight - height);
+		const outWithColumns = appendColumns(
+			outWithRows,
+			nextHeight,
+			nextWidth - width,
+		);
+
+		setWidth(nextWidth);
+		setHeight(nextHeight);
+		// @ts-expect-error TODO: complains because in/out of this function is unknown[] - tighten the type
+		setOutput(outWithColumns);
+	};
 
 	const onTileClick = (index: number) => {
 		if (!brush) {
@@ -39,22 +68,9 @@ export const MapEditor = <T,>({
 		setOutput(nextOutput);
 	};
 
-	// TODO: Need to handle what happens when height/width changed while editing map
-	// Updating an existing map much harder than making one from scratch!
-	useEffect(() => {
-		const mapSizeInTiles = width * height;
-
-		if (mapSizeInTiles === 0 || Number.isNaN(mapSizeInTiles)) {
-			return;
-		}
-
-		const blankMap = new Array(width * height).fill(null);
-		setOutput(blankMap);
-	}, [width, height]);
-
 	const mapString = output.reduce((str, tile) => {
 		if (tile === null) {
-			return EMPTY_TILE_SYMBOL;
+			return str + EMPTY_TILE_SYMBOL;
 		}
 
 		return str + getTileSymbol(tile);
@@ -74,9 +90,8 @@ export const MapEditor = <T,>({
 			<Menu
 				width={width}
 				height={height}
-				onWidthChange={setWidth}
-				onHeightChange={setHeight}
-				onOutputChange={setOutput}
+				onImport={onImport}
+				onResize={onResize}
 				tileOptions={tileOptions}
 				brush={brush}
 				mapString={mapString}

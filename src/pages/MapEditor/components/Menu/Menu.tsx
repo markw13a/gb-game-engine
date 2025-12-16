@@ -2,15 +2,13 @@ import { useState } from "react";
 import styles from "./Menu.module.css";
 import { Button } from "@/components/Button/Button";
 import { ImportMapModal } from "../ImportMapModal/ImportMapModal";
-import { Input } from "@/components/Input/Input";
-import { EMPTY_TILE_SYMBOL } from "../../constants/constants";
+import { ResizeMapModal } from "../ResizeMapModal/ResizeMapModal";
 
 type MenuProps<T> = {
 	width: number;
 	height: number;
-	onWidthChange: (width: number) => void;
-	onHeightChange: (height: number) => void;
-	onOutputChange: (tiles: T[]) => void;
+	onImport: (width: number, height: number, mapString: string) => void;
+	onResize: (width: number, height: number) => void;
 	tileOptions: T[];
 	brush: T | undefined;
 	mapString: string;
@@ -23,33 +21,17 @@ type MenuProps<T> = {
 export const Menu = <T,>({
 	width,
 	height,
-	onWidthChange,
-	onHeightChange,
-	onOutputChange,
+	onImport,
+	onResize,
 	tileOptions,
 	brush,
 	mapString,
 	onBrushChange,
 	getBrushLabel,
 	getBrushImgSrc,
-	getTileFromSymbol,
 }: MenuProps<T>) => {
 	const [isImportModalOpen, setIsImportModalOpen] = useState(false);
-
-	const onImport = (width: number, height: number, mapString: string) => {
-		const nextOutput = mapString.split("").map((symbol) => {
-			if (symbol === EMPTY_TILE_SYMBOL) {
-				return null;
-			}
-
-			return getTileFromSymbol(symbol);
-		});
-
-		onWidthChange(width);
-		onHeightChange(height);
-		// @ts-expect-error TS assumes nextOutput can contain undefined, but we've guarded against this
-		onOutputChange(nextOutput);
-	};
+	const [isResizeModalOpen, setIsResizeModalOpen] = useState(false);
 
 	const output = JSON.stringify(
 		{
@@ -82,37 +64,32 @@ export const Menu = <T,>({
 						))}
 					</div>
 				</div>
-				<div className={styles.controls}>
-					<Input
-						type="number"
-						onChange={(e) => onWidthChange(parseInt(e.target.value, 10))}
-						value={width}
-					>
-						Width (tiles)
-					</Input>
-					<Input
-						type="number"
-						onChange={(e) => onHeightChange(parseInt(e.target.value, 10))}
-						value={height}
-					>
-						Height (tiles)
-					</Input>
-				</div>
 				<div className={styles.outputContainer}>
 					<label className={styles.control}>
 						Output
 						<textarea readOnly value={output} />
 					</label>
 				</div>
-				<div>
+				<div className={styles.modals}>
 					<Button onClick={() => setIsImportModalOpen(true)}>Import</Button>
+					<Button onClick={() => setIsResizeModalOpen(true)}>Resize</Button>
 				</div>
 			</div>
-			<ImportMapModal
-				isOpen={isImportModalOpen}
-				onClose={() => setIsImportModalOpen(false)}
-				onImport={onImport}
-			/>
+			<div>
+				<ImportMapModal
+					isOpen={isImportModalOpen}
+					onClose={() => setIsImportModalOpen(false)}
+					onImport={onImport}
+				/>
+				{isResizeModalOpen && (
+					<ResizeMapModal
+						onClose={() => setIsResizeModalOpen(false)}
+						onResize={onResize}
+						initialHeight={`${height}`}
+						initialWidth={`${width}`}
+					/>
+				)}
+			</div>
 		</>
 	);
 };
