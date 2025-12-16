@@ -4,7 +4,6 @@ describe("array", () => {
 	it("should break array in to chunks", () => {
 		const testArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 		const chunkedArr = chunkArray(testArr, 3);
-		console.log(chunkedArr);
 
 		expect(chunkedArr).toHaveLength(4);
 		expect(chunkedArr[0]).toEqual([1, 2, 3]);
