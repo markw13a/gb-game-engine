@@ -52,6 +52,7 @@ export const MapEditor = <T,>({
 
 		setWidth(nextWidth);
 		setHeight(nextHeight);
+		// @ts-expect-error TODO: complains because in/out of this function is unknown[] - tighten the type
 		setOutput(outWithColumns);
 	};
 

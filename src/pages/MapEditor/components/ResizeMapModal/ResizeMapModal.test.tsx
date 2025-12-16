@@ -5,32 +5,23 @@ import type { ComponentProps } from "react";
 
 const defaultProps: ComponentProps<typeof ResizeMapModal> = {
 	onClose: vi.fn(),
-	onHeightChange: vi.fn(),
-	onWidthChange: vi.fn(),
+	onResize: vi.fn(),
 	initialHeight: "0",
 	initialWidth: "0",
 };
 
 describe("<ImportMapModal />", () => {
-	it("should call onWidthChange and onHeightChange", async () => {
-		const onWidthChangeMock = vi.fn();
-		const onHeightChangeMock = vi.fn();
+	it("should call onResize", async () => {
+		const onResize = vi.fn();
 
-		render(
-			<ResizeMapModal
-				{...defaultProps}
-				onHeightChange={onHeightChangeMock}
-				onWidthChange={onWidthChangeMock}
-			/>,
-		);
+		render(<ResizeMapModal {...defaultProps} onResize={onResize} />);
 
 		await userEvent.type(screen.getByLabelText("Width (tiles)"), "2");
 		await userEvent.type(screen.getByLabelText("Height (tiles)"), "1");
 
 		await userEvent.click(screen.getByText("Update"));
 
-		expect(onWidthChangeMock).toHaveBeenCalledWith(2);
-		expect(onHeightChangeMock).toHaveBeenCalledWith(1);
+		expect(onResize).toHaveBeenCalledWith(2, 1);
 	});
 
 	it("should call onClose", async () => {

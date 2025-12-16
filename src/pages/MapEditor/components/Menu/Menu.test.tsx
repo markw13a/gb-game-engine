@@ -4,8 +4,7 @@ import userEvent from "@testing-library/user-event";
 
 describe("<Menu />", () => {
 	it("should render", async () => {
-		const widthChangeMock = vi.fn();
-		const heightChangeMock = vi.fn();
+		const resizeMock = vi.fn();
 		const brushChangeMock = vi.fn();
 
 		const brushOptions = [
@@ -30,14 +29,11 @@ describe("<Menu />", () => {
 				getBrushImgSrc={(tile) => tile.sprite}
 				getTileFromSymbol={vi.fn()}
 				onBrushChange={brushChangeMock}
-				onHeightChange={heightChangeMock}
-				onOutputChange={vi.fn()}
-				onWidthChange={widthChangeMock}
+				onResize={resizeMock}
+				onImport={vi.fn()}
 			/>,
 		);
 
-		expect(screen.getByLabelText("Width (tiles)")).toHaveValue("12");
-		expect(screen.getByLabelText("Height (tiles)")).toHaveValue("13");
 		expect(screen.getByLabelText("Output")).toHaveValue(
 			JSON.stringify(
 				{ dimensions: { width: 12, height: 13 }, map: "GGG" },
@@ -47,12 +43,14 @@ describe("<Menu />", () => {
 		);
 		expect(screen.getByText("Selected: Grass")).toBeInTheDocument();
 
-		await userEvent.type(screen.getByLabelText("Width (tiles)"), "15");
-		await userEvent.type(screen.getByLabelText("Height (tiles)"), "16");
 		await userEvent.click(screen.getByLabelText("Select Rocks brush"));
 
-		expect(widthChangeMock).toHaveBeenCalled();
-		expect(heightChangeMock).toHaveBeenCalled();
+		await userEvent.click(screen.getByRole("button", { name: "Resize" }));
+		await userEvent.type(screen.getByLabelText("Width (tiles)"), "15");
+		await userEvent.type(screen.getByLabelText("Height (tiles)"), "16");
+		await userEvent.click(screen.getByText("Update"));
+
+		expect(resizeMock).toHaveBeenCalled();
 		expect(brushChangeMock).toHaveBeenCalledWith(brushOptions[1]);
 	});
 });
